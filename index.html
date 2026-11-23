@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Brasas 28</title>
+<title>Brasas 35</title>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
@@ -17,6 +17,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Ubuntu',sans-s
 @keyframes emberPulse{0%,100%{opacity:.75;box-shadow:0 0 4px rgba(255,138,0,.45)}50%{opacity:1;box-shadow:0 0 9px rgba(255,138,0,.9)}}
 @media (prefers-reduced-motion: reduce){.ember{animation:none}}
 .top button{background:none;border:1px solid var(--faint);color:var(--muted);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:11px;line-height:1}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .wrap{max-width:680px;margin:0 auto;padding:28px 22px 40px}
 .heading{font-size:calc(28px * var(--bs-scale));font-weight:500;line-height:1.25;min-height:38px;padding:10px 0 14px;border-bottom:1px solid var(--faint);display:flex;gap:10px;align-items:baseline;cursor:pointer;white-space:pre-wrap;word-break:break-word}
 .heading:hover{background:rgba(127,127,127,.10)}
@@ -111,29 +114,29 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Ubuntu',sans-s
 </script>
 </head>
 <body data-theme="dark">
-<div class="top"><span class="brand" title="Brasas es el nombre de la app — el título principal editable es el de abajo"><i class="ember" aria-hidden="true"></i>Brasas</span><span style="display:flex;gap:6px"><button id="micBtn" title="Dictar por voz (F8)">🎤 Dictar</button><button id="soundBtn" title="Sonido de tecla (clic para apagar)">🔊</button><button id="themeBtn" title="Claro / Oscuro">○</button></span></div>
+<div class="top"><span class="brand" title="Brasas es el nombre de la app — el título principal editable es el de abajo"><i class="ember" aria-hidden="true"></i>Brasas</span><span style="display:flex;gap:6px"><button id="micBtn" title="Dictar por voz (F8)" aria-label="Dictar por voz">🎤 Dictar</button><button id="soundBtn" title="Sonido de tecla (clic para apagar)" aria-label="Sonido de tecla, clic para apagar o prender">🔊</button><button id="themeBtn" title="Claro / Oscuro" aria-label="Cambiar tema claro u oscuro">○</button></span></div>
 <div class="wrap">
 <div class="heading" id="heading"></div>
 <div class="list" id="list"></div>
 </div>
-<div class="foot"><span>Home entra &nbsp;·&nbsp; End sale</span><span><span id="gmailBtn">Gmail · .txt</span> &nbsp;·&nbsp; <span id="keepBtn">Keep</span> &nbsp;·&nbsp; <span id="trashBtn" style="cursor:pointer;text-decoration:underline">Papelera</span></span><span id="savedTag">Guardado ✓</span><span id="footRight">F1</span></div>
+<div class="foot"><span>Home entra &nbsp;·&nbsp; End sale</span><span><span id="gmailBtn">Gmail · .txt</span> &nbsp;·&nbsp; <span id="keepBtn">Keep</span> &nbsp;·&nbsp; <span id="trashBtn" style="cursor:pointer;text-decoration:underline">Papelera</span></span><span id="savedTag" aria-live="polite" role="status">Guardado ✓</span><span id="footRight" aria-live="polite" role="status">F1</span></div>
 <div class="overlay" id="helpOverlay"><div class="in"><h2>Brasas · Teclas</h2><p class="helpSub">Todo con teclado. Sin mouse, sin menús. F1 abre esto.</p><div id="helpText" class="helpGrid"></div><div class="close">Esc para cerrar &nbsp;·&nbsp; o clic afuera</div></div></div>
-<div class="overlay" id="searchOverlay"><div class="in"><h2>Buscar &nbsp;·&nbsp; Ctrl+K / /</h2><input id="searchInput" class="searchInput" placeholder="Buscar en brasas y notas largas..." autocomplete="off"><div id="searchResults"></div><div class="close">Enter para ir &nbsp;·&nbsp; ↑ ↓ para elegir &nbsp;·&nbsp; Esc para cerrar</div></div></div>
+<div class="overlay" id="searchOverlay"><div class="in"><h2>Buscar &nbsp;·&nbsp; Ctrl+K / /</h2><input id="searchInput" class="searchInput" placeholder="Buscar en brasas y notas largas..." autocomplete="off" aria-label="Buscar en brasas y notas largas"><div id="searchResults"></div><div class="close">Enter para ir &nbsp;·&nbsp; ↑ ↓ para elegir &nbsp;·&nbsp; Esc para cerrar</div></div></div>
 <div class="overlay" id="trashOverlay"><div class="in"><h2>Papelera &nbsp;·&nbsp; F9</h2><div id="trashList"></div><div class="close">Esc para cerrar</div></div></div>
-<div class="overlay" id="gmailOverlay"><div class="in"><h2>Gmail &nbsp;·&nbsp; .txt</h2><p style="font-size:13px;color:var(--muted);margin-bottom:12px">¿A qué correo lo querés mandar?</p><input id="gmailToInput" class="searchInput" placeholder="ejemplo@correo.com" autocomplete="email" inputmode="email"><div style="margin-top:18px"><button id="gmailSendBtn" style="background:var(--accent);border:none;color:#fff;border-radius:999px;padding:8px 18px;cursor:pointer;font-size:13px">Abrir Gmail</button> <button id="gmailCancelBtn" style="background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:8px 16px;cursor:pointer;font-size:13px">Cancelar</button></div><div class="close">Enter para abrir Gmail &nbsp;·&nbsp; Esc para cerrar</div></div></div>
+<div class="overlay" id="gmailOverlay"><div class="in"><h2>Gmail &nbsp;·&nbsp; .txt</h2><p style="font-size:13px;color:var(--muted);margin-bottom:12px">¿A qué correo lo querés mandar?</p><input id="gmailToInput" class="searchInput" placeholder="ejemplo@correo.com" autocomplete="email" inputmode="email" aria-label="Correo destinatario"><div style="margin-top:18px"><button id="gmailSendBtn" aria-label="Abrir Gmail para enviar" style="background:var(--accent);border:none;color:#fff;border-radius:999px;padding:8px 18px;cursor:pointer;font-size:13px">Abrir Gmail</button> <button id="gmailCancelBtn" aria-label="Cancelar envío por Gmail" style="background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:8px 16px;cursor:pointer;font-size:13px">Cancelar</button></div><div class="close">Enter para abrir Gmail &nbsp;·&nbsp; Esc para cerrar</div></div></div>
 <div class="overlay" id="aerialOverlay"><div class="in"><h2>Vista aérea &nbsp;·&nbsp; Ctrl+B</h2><div class="aerial" id="aerialText"></div><div class="close">Esc para volver &nbsp;·&nbsp; o clic afuera &nbsp;·&nbsp; Ctrl+B para cerrar</div></div></div>
 
 <div class="mobileBar" id="mobileBar">
-<button class="primary" id="btnNueva">+ Nueva</button>
-<button id="btnEntrar">Entrar</button>
-<button id="btnSalir">Salir</button>
-<button id="btnEditar">Editar</button>
-<button id="btnNota">Texto largo</button>
-<button id="btnCopiar">Copiar</button>
-<button id="btnCortar">Cortar</button>
-<button id="btnPegar">Pegar</button>
-<button id="btnFontMinus">A-</button><button id="btnFontPlus">A+</button><button id="btnDictar">🎤 Dictar</button><button id="btnGmail">Gmail</button>
-<button id="btnKeep">Keep</button>
+<button class="primary" id="btnNueva" aria-label="Crear nueva brasa">+ Nueva</button>
+<button id="btnEntrar" aria-label="Entrar en la brasa seleccionada">Entrar</button>
+<button id="btnSalir" aria-label="Salir al nivel anterior">Salir</button>
+<button id="btnEditar" aria-label="Editar la brasa seleccionada">Editar</button>
+<button id="btnNota" aria-label="Editar texto largo de la brasa">Texto largo</button>
+<button id="btnCopiar" aria-label="Copiar las brasas seleccionadas">Copiar</button>
+<button id="btnCortar" aria-label="Cortar las brasas seleccionadas">Cortar</button>
+<button id="btnPegar" aria-label="Pegar desde el portapapeles">Pegar</button>
+<button id="btnFontMinus" aria-label="Achicar letra">A-</button><button id="btnFontPlus" aria-label="Agrandar letra">A+</button><button id="btnDictar" aria-label="Dictar por voz">🎤 Dictar</button><button id="btnGmail" aria-label="Enviar por Gmail">Gmail</button>
+<button id="btnKeep" aria-label="Enviar a Google Keep">Keep</button>
 </div>
 
 <script>
@@ -148,25 +151,38 @@ function updateDictationVisibility(){
   if(!DICTATION_ENABLED){ if(b1) b1.style.display='none'; if(b2) b2.style.display='none'; }
   else { if(b1) b1.style.display=''; if(b2) b2.style.display=''; }
 }
-let title = localStorage.getItem('bs_title')||'';
-let data = JSON.parse(localStorage.getItem('bs_data')||'null');
+// Carga segura Brasas 34: si bs_data está corrupto, intenta con el respaldo. Nunca deja la pantalla en blanco.
+function safeGet(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+function safeParse(str, fallback){ try{ let v=JSON.parse(str); return (v===null||v===undefined)?fallback:v; }catch(e){ return fallback; } }
+let title = safeGet('bs_title')||'';
+let data = null;
+try{
+  data = safeParse(safeGet('bs_data'), null);
+  if(!Array.isArray(data)){
+    let backup = safeParse(safeGet('bs_data_backup'), null);
+    if(Array.isArray(backup) && backup.length){ data = backup; }
+    else if(Array.isArray(data)){ /* queda como está */ }
+    else { data = []; }
+  }
+}catch(e){ data = []; }
 if(!Array.isArray(data)) data=[];
 let path=[]; let selected=0; let editing=null; let editingIsHeading=false; let editingOrig='';
-let markedId=null; try{ let _m=localStorage.getItem('bs_marked'); if(_m) markedId=_m; }catch(e){} let undoStack=[], redoStack=[];
-let trash=JSON.parse(localStorage.getItem('bs_trash')||'[]');
-let theme=localStorage.getItem('bs_theme')||'dark';
+let markedId=null; try{ let _m=safeGet('bs_marked'); if(_m) markedId=_m; }catch(e){} let undoStack=[], redoStack=[];
+let trash=safeParse(safeGet('bs_trash'), []);
+if(!Array.isArray(trash)) trash=[];
+let theme=safeGet('bs_theme')||'dark';
 document.body.dataset.theme=theme;
 let editingNoteIdx=null; let editingNoteOrig=''; let editingNotePath=[];
 let multiSet=null; let multiAnchor=null;
 let clickEditTimer=null; let lastClickTime=0; let lastClickIdx=-1;
-let dragMouseDown=false; let dragMoved=false; let dragStartY=0; let dragStartIdx=-1; let dragAnchor=-1;
+let dragMouseDown=false; let dragMoved=false; let dragStartY=0; let dragStartIdx=-1; let dragAnchor=-1; let _lastDragHover=-1;
 let pendingCursorPos=null;
-let soundOn = localStorage.getItem('bs_sound')!=='off';
+let soundOn = safeGet('bs_sound')!=='off';
 let audioCtx=null;
-function playTypeSound(){ if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); let t0=audioCtx.currentTime; let dur=0.035; let buf=audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate*dur), audioCtx.sampleRate); let d=buf.getChannelData(0); for(let i=0;i<d.length;i++){ d[i]=(Math.random()*2-1)*(1-i/d.length); } let src=audioCtx.createBufferSource(); src.buffer=buf; let f=audioCtx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1800+Math.random()*1200; f.Q.value=1.2; let g=audioCtx.createGain(); g.gain.setValueAtTime(0.10,t0); g.gain.exponentialRampToValueAtTime(0.001,t0+dur); src.connect(f); f.connect(g); g.connect(audioCtx.destination); src.start(t0); let o=audioCtx.createOscillator(); o.type='triangle'; o.frequency.value=220+Math.random()*60; let g2=audioCtx.createGain(); g2.gain.setValueAtTime(0.018,t0); g2.gain.exponentialRampToValueAtTime(0.001,t0+0.02); o.connect(g2); g2.connect(audioCtx.destination); o.start(t0); o.stop(t0+0.025); }catch(e){} }
+let _typeNoiseBuf=null; function playTypeSound(){ if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); let t0=audioCtx.currentTime; let dur=0.035; if(!_typeNoiseBuf){ _typeNoiseBuf=audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate*dur), audioCtx.sampleRate); let dd=_typeNoiseBuf.getChannelData(0); for(let i=0;i<dd.length;i++){ dd[i]=(Math.random()*2-1)*(1-i/dd.length); } } let buf=_typeNoiseBuf; let d=buf.getChannelData(0); let src=audioCtx.createBufferSource(); src.buffer=buf; let f=audioCtx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1800+Math.random()*1200; f.Q.value=1.2; let g=audioCtx.createGain(); g.gain.setValueAtTime(0.10,t0); g.gain.exponentialRampToValueAtTime(0.001,t0+dur); src.connect(f); f.connect(g); g.connect(audioCtx.destination); src.start(t0); let o=audioCtx.createOscillator(); o.type='triangle'; o.frequency.value=220+Math.random()*60; let g2=audioCtx.createGain(); g2.gain.setValueAtTime(0.018,t0); g2.gain.exponentialRampToValueAtTime(0.001,t0+0.02); o.connect(g2); g2.connect(audioCtx.destination); o.start(t0); o.stop(t0+0.025); }catch(e){} }
 function toggleSound(){ soundOn=!soundOn; try{ localStorage.setItem('bs_sound', soundOn?'on':'off'); }catch(e){} let b=document.getElementById('soundBtn'); if(b){ b.textContent=soundOn?'🔊':'🔇'; b.title=soundOn?'Sonido de tecla (clic para apagar)':'Sonido apagado (clic para prender)'; } }
 function syncSoundBtn(){ let b=document.getElementById('soundBtn'); if(b){ b.textContent=soundOn?'🔊':'🔇'; b.title=soundOn?'Sonido de tecla (clic para apagar)':'Sonido apagado (clic para prender)'; } }
-let fontScale=parseFloat(localStorage.getItem('bs_font_scale')||'1'); if(isNaN(fontScale)||fontScale<0.8||fontScale>1.6) fontScale=1;
+let fontScale=parseFloat(safeGet('bs_font_scale')||'1'); if(isNaN(fontScale)||fontScale<0.8||fontScale>1.6) fontScale=1;
 function applyFontScale(){ document.documentElement.style.setProperty('--bs-scale', String(fontScale)); try{ localStorage.setItem('bs_font_scale', String(fontScale)); }catch(e){} }
 function showFontFeedback(){ let fr=document.getElementById('footRight'); if(fr && !dictListening){ fr.textContent='Letra '+Math.round(fontScale*100)+'%'; setTimeout(()=>{ if(!dictListening) fr.textContent = path.length? 'Nivel '+path.length : 'F1'; },1200); } }
 function changeFont(delta){ fontScale=Math.round((fontScale+delta)*100)/100; if(fontScale<0.8) fontScale=0.8; if(fontScale>1.6) fontScale=1.6; applyFontScale(); showFontFeedback(); }
@@ -204,7 +220,7 @@ function startDictation(){
   if(!DICTATION_ENABLED) return;
   if(dictListening){ stopDictation(); return; }
   let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ alert('Tu navegador no soporta dictado por voz. Probá con Chrome o Edge.'); return; }
+  if(!SR){ showFootMsg('Dictado no soportado en este navegador, probá con Chrome o Edge'); return; }
   dictPermissionDenied=false;
   if(editingNoteIdx!==null){
     let node=getNode(editingNotePath).children[editingNoteIdx];
@@ -274,9 +290,9 @@ function startDictation(){
       let rec=dictRec; dictRec=null; try{ if(rec) rec.stop(); }catch(e){}
       updateMicUI();
       if(ev.error==='audio-capture'){
-        alert('No encontré micrófono. Revisá que esté conectado y que otro programa no lo esté usando.');
+        showFootMsg('No encontré micrófono, revisá que esté conectado');
       } else {
-        alert('No me dejaste usar el micrófono.\n\nSi Brasas está abierto como archivo, Chrome te lo va a pedir a cada rato y no va a andar. Subilo a GitHub Pages con https y ahí permitilo una sola vez.');
+        showFootMsg('Micrófono no permitido, en https queda permitido una sola vez');
       }
     }
   };
@@ -285,7 +301,7 @@ function startDictation(){
 }
 function toggleDictation(){ if(!DICTATION_ENABLED) return; if(dictListening) stopDictation(); else startDictation(); }
 function clearMulti(){multiSet=null; multiAnchor=null;}
-// ===== BRASAS 33: SIN MAGIC PASTE NI LANZAR + SELECCION PERSISTE + ENTER EN BUSCAR/GMAIL NO CREA BRASA =====
+// ===== BRASAS 35: SIN MAGIC PASTE NI LANZAR + SELECCION PERSISTE + ENTER EN BUSCAR/GMAIL NO CREA BRASA =====
 function showFootMsg(msg){let fr=document.getElementById('footRight'); if(!fr) return; fr.textContent=msg; clearTimeout(showFootMsg._t); showFootMsg._t=setTimeout(()=>{ try{ fr.textContent = path.length? 'Nivel '+path.length : 'F1'; }catch(e){} },3000);}
 function namesakeKey(txt){ if(!txt) return ''; let s=String(txt).trim(); if(!s) return ''; if(/^[-•*—–+·\s]+$/.test(s)) return ''; if(s.length<2) return ''; return s; }
 function getNamesakeGroups(){ let map=new Map(); let all=[]; try{ all=flatten(data); }catch(e){ return new Map(); } all.forEach(({node})=>{ if(!node || node.namesakeOff) return; let k=namesakeKey(node.text); if(!k) return; if(!map.has(k)) map.set(k,[]); map.get(k).push(node); }); let out=new Map(); map.forEach((arr,k)=>{ if(arr.length>1) out.set(k,arr); }); return out; }
@@ -335,7 +351,35 @@ function breakNamesakeForSelected(){
     showFootMsg('No es namesake, aparece una sola vez');
   }
 }
-function save(){localStorage.setItem('bs_data',JSON.stringify(data)); localStorage.setItem('bs_title',title); try{localStorage.setItem('bs_trash',JSON.stringify(trash));}catch(e){} try{localStorage.setItem('bs_path',JSON.stringify(path)); localStorage.setItem('bs_selected',String(selected));}catch(e){} try{localStorage.setItem('bs_marked', markedId||'');}catch(e){} try{let d=new Date(); let hh=String(d.getHours()).padStart(2,'0'); let mm=String(d.getMinutes()).padStart(2,'0'); let el=document.getElementById('savedTag'); if(el) el.textContent='Guardado ✓ '+hh+':'+mm;}catch(e){}}
+// Guardado Brasas 34: debounce 250ms, todo con try/catch, respaldo en bs_data_backup,
+// y bs_path/bs_selected solo se escriben si cambiaron (no en cada tecla).
+let _saveTimer=null; let _lastPathSaved=''; let _lastSelectedSaved='';
+function saveNow(){
+  try{
+    let dataStr=JSON.stringify(data);
+    try{ localStorage.setItem('bs_data', dataStr); }catch(e){}
+    // Respaldo: si bs_data falló por cuota, el respaldo igual intenta quedar con lo último bueno.
+    try{ localStorage.setItem('bs_data_backup', dataStr); }catch(e){}
+    try{ localStorage.setItem('bs_title', title); }catch(e){}
+    try{ localStorage.setItem('bs_trash', JSON.stringify(trash)); }catch(e){}
+    try{
+      let pStr=JSON.stringify(path);
+      if(pStr!==_lastPathSaved){ localStorage.setItem('bs_path', pStr); _lastPathSaved=pStr; }
+      let sStr=String(selected);
+      if(sStr!==_lastSelectedSaved){ localStorage.setItem('bs_selected', sStr); _lastSelectedSaved=sStr; }
+    }catch(e){}
+    try{ localStorage.setItem('bs_marked', markedId||''); }catch(e){}
+  }catch(e){}
+  try{ let d=new Date(); let hh=String(d.getHours()).padStart(2,'0'); let mm=String(d.getMinutes()).padStart(2,'0'); let el=document.getElementById('savedTag'); if(el) el.textContent='Guardado ✓ '+hh+':'+mm; }catch(e){}
+}
+function save(){
+  // Debounce: juntar las teclas seguidas en un solo guardado.
+  if(_saveTimer) clearTimeout(_saveTimer);
+  _saveTimer=setTimeout(()=>{ _saveTimer=null; saveNow(); }, 250);
+}
+function flushSave(){ if(_saveTimer){ clearTimeout(_saveTimer); _saveTimer=null; saveNow(); } }
+window.addEventListener('beforeunload', flushSave);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushSave(); });
 function pushUndo(){undoStack.push(JSON.stringify({title,data,path,selected})); if(undoStack.length>80) undoStack.shift(); redoStack=[];}
 function getNode(p){let cur={children:data}; for(let id of p){cur=cur.children.find(n=>n.id===id); if(!cur) return {children:data};} return cur;}
 function curChildren(){return getNode(path).children;}
@@ -343,7 +387,7 @@ function headingNode(){if(path.length===0) return null; let cur={children:data};
 function getHeadingText(){ if(path.length===0) return title; let hn=headingNode(); return hn?hn.text:''; }
 function setHeadingText(v){ if(path.length===0){ title=v; } else { let hn=headingNode(); if(hn) hn.text=v; } }
 function startHeadingEdit(){ if(editingIsHeading) return; pushUndo(); if(editing!==null) finishEdit(true); if(editingNoteIdx!==null) closeNote(true); editingIsHeading=true; editing=null; editingOrig=getHeadingText(); render(); }
-function flatten(arr,depth=0){let out=[]; arr.forEach(n=>{out.push({node:n,depth}); out.push(...flatten(n.children,depth+1))}); return out;}
+function flatten(arr,depth=0){let out=[]; let stack=[]; for(let i=(arr||[]).length-1;i>=0;i--) stack.push({n:arr[i],d:depth}); while(stack.length){ let cur=stack.pop(); out.push({node:cur.n,depth:cur.d}); let ch=cur.n.children||[]; for(let i=ch.length-1;i>=0;i--) stack.push({n:ch[i],d:cur.d+1}); } return out;}
 function findPath(arr,target,acc=[]){for(let n of arr){if(n.id===target) return [...acc,n.id]; let s=findPath(n.children,target,[...acc,n.id]); if(s) return s;} return null;}
 function escapeHtmlNote(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function renderNoteHtml(txt){
@@ -389,18 +433,32 @@ function getBreadcrumb(id){
   for(let pid of p){ let n=cur.children.find(x=>x.id===pid); if(!n) break; parts.push(n.text||'(sin texto)'); cur=n; }
   return parts.join('  >  ');
 }
+function buildBreadcrumbMap(){
+  let map=new Map();
+  let stack=[];
+  for(let i=(data||[]).length-1;i>=0;i--) stack.push({n:data[i],parts:[]});
+  while(stack.length){
+    let cur=stack.pop();
+    let full=[...cur.parts, cur.n.text||'(sin texto)'];
+    map.set(cur.n.id, full.join('  >  '));
+    let ch=cur.n.children||[];
+    for(let i=ch.length-1;i>=0;i--) stack.push({n:ch[i],parts:full});
+  }
+  return map;
+}
 function renderSearchResults(q){
   let box=document.getElementById('searchResults'); box.innerHTML='';
   q=(q||'').trim().toLowerCase();
   if(!q){ box.innerHTML='<div style="padding:12px 0;color:var(--muted);font-size:13px">Escribí una palabra para buscar en brasas y en notas largas.</div>'; searchRes=[]; return; }
   let all=flatten(data);
+  let crumbMap=buildBreadcrumbMap();
   searchRes=all.filter(x=>((x.node.text||'')+' '+((x.node.note||''))).toLowerCase().includes(q));
   if(!searchRes.length){ box.innerHTML='<div style="padding:12px 0;color:var(--muted);font-size:13px">No hay resultados.</div>'; return; }
   if(searchSel>=searchRes.length) searchSel=0;
   if(searchSel<0) searchSel=searchRes.length-1;
   searchRes.forEach((r,i)=>{
     let d=document.createElement('div'); d.className='searchItem'+(i===searchSel?' sel':'');
-    let crumb=getBreadcrumb(r.node.id);
+    let crumb=crumbMap.get(r.node.id)||'';
     let parentCrumb=crumb.split('  >  ').slice(0,-1).join('  >  ');
     let txtLow=(r.node.text||'').toLowerCase();
     let noteLow=(r.node.note||'').toLowerCase();
@@ -561,7 +619,7 @@ function render(){
      selected=idx; clearMulti(); save(); render();
      if(isDot){
        if(isDouble){insertBlank(idx);}
-       else {let ti=idx; clickEditTimer=setTimeout(()=>{clickEditTimer=null; insertBlank(ti);},240);}
+       else {let ti=idx; clickEditTimer=setTimeout(()=>{clickEditTimer=null; insertBlank(ti);},150);}
        return;
      }
      if(isDouble){
@@ -578,7 +636,7 @@ function render(){
        let k=curChildren();
        editingOrig=k[targetIdx]?.text||'';
        editingIsHeading=false; render();
-     },240);
+     },150);
    };
    row.ondblclick=(ev)=>{ev.preventDefault();};
    let icon=document.createElement('span'); icon.className='ic'+(isDot?' dot':''); icon.textContent=isDot?'·':(node.children.length?'═':'—');
@@ -624,7 +682,7 @@ function render(){
      list.appendChild(view);
    }
  }
- try{let selRow=list.querySelector('.row.sel'); if(selRow) selRow.scrollIntoView({block:'nearest'})}catch(e){}
+ try{let selRow=list.querySelector('.row.sel'); if(selRow){ let r=selRow.getBoundingClientRect(); if(r.top<0 || r.bottom>window.innerHeight) selRow.scrollIntoView({block:'nearest'}); }}catch(e){}
  let fr=document.getElementById('footRight');
  if(fr.textContent!=='Copiado') fr.textContent = path.length? 'Nivel '+path.length : 'F1';
 }
@@ -797,7 +855,7 @@ async function pasteFromClipboardButton(){
       pushUndo(); let kids=curChildren(); let n={id:uid(),text:txt.trim(),children:[],note:''}; kids.splice(selected+1,0,n); selected=selected+1; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();
     }
   }catch(e){
-    alert('No pude leer el portapapeles. Copiá el texto y pegalo con Ctrl + V.');
+    showFootMsg('No pude leer el portapapeles, copiá y pegá con Ctrl + V');
   }
 }
 function showHelp(show){
@@ -881,7 +939,7 @@ function downloadTxt(){
 function showGmailOverlay(show){
   document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('searchOverlay').style.display='none'; document.getElementById('trashOverlay').style.display='none';
   let ov=document.getElementById('gmailOverlay'); ov.style.display=show?'block':'none';
-  if(show){ let inp=document.getElementById('gmailToInput'); inp.value=localStorage.getItem('bs_gmail_to')||''; setTimeout(()=>{inp.focus(); inp.select();},0); }
+  if(show){ let inp=document.getElementById('gmailToInput'); inp.value=safeGet('bs_gmail_to')||''; setTimeout(()=>{inp.focus(); inp.select();},0); }
 }
 function exportToGmail(){ showGmailOverlay(true); }
 function sendGmail(){
@@ -890,8 +948,15 @@ function sendGmail(){
   if(to && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)){ inp.style.borderBottom='1px solid #ff6b6b'; inp.focus(); return; }
   if(to) localStorage.setItem('bs_gmail_to', to);
   let txt = buildStructuredTxt();
-  try{ navigator.clipboard.writeText(txt); }catch(e){}
   let subj = 'Brasas - ' + (title || 'export .txt estructurado');
+  if(txt.length>1800){
+    try{ navigator.clipboard.writeText(txt); }catch(e){}
+    showGmailOverlay(false);
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(subj), '_blank');
+    showFootMsg('Texto largo copiado, pegalo en Gmail');
+    return;
+  }
+  try{ navigator.clipboard.writeText(txt); }catch(e){}
   let url = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to)
     + '&su=' + encodeURIComponent(subj)
     + '&body=' + encodeURIComponent(txt);
@@ -1087,13 +1152,14 @@ document.addEventListener('mousemove',(e)=>{
   if(!rowEl) return;
   let hoverIdx=parseInt(rowEl.dataset.idx,10);
   if(isNaN(hoverIdx)) return;
+  if(hoverIdx===_lastDragHover) return;
+  _lastDragHover=hoverIdx;
   let kids=curChildren();
   if(hoverIdx>=kids.length) return;
   if(multiSet===null){multiAnchor=dragAnchor; multiSet=new Set([dragAnchor]);}
   let a=Math.min(dragAnchor,hoverIdx), b=Math.max(dragAnchor,hoverIdx);
   multiSet=new Set(); for(let i=a;i<=b;i++) multiSet.add(i);
-  if(selected!==hoverIdx){selected=hoverIdx; render();}
-  else {render();}
+  selected=hoverIdx; render();
 });
 document.addEventListener('mouseup',()=>{
   if(!dragMouseDown) return;
@@ -1106,7 +1172,7 @@ document.addEventListener('mouseup',()=>{
     save();
     lastClickTime=0; lastClickIdx=-1;
   }
-  dragStartIdx=-1;
+  dragStartIdx=-1; _lastDragHover=-1;
 });
 document.addEventListener('paste',(e)=>{
   if(editingNoteIdx!==null) return;
