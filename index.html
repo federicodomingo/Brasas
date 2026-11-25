@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Brasas 35</title>
+<title>Brasas 37</title>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
@@ -59,7 +59,7 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 .trashItem button{background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:4px 10px;margin:6px 6px 0 0;cursor:pointer;font-size:12px}
 .trashItem button.danger{color:#ff6b6b;border-color:#ff6b6b}
 .txt a{color:var(--accent);word-break:break-all}
-.foot{max-width:680px;margin:0 auto;padding:0 22px 24px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 12px} #savedTag{white-space:nowrap}
+.foot{max-width:680px;margin:0 auto;padding:0 22px 24px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 12px} #savedTag{white-space:nowrap;opacity:1} #savedTag.save-saving{color:var(--muted)} #savedTag.save-ok{color:var(--muted)} #savedTag.save-error{color:#ff6b6b;font-weight:500;cursor:pointer;text-decoration:underline} #savedTag.save-needs-export{color:#FF8A00;font-weight:500;cursor:pointer;text-decoration:underline}
 .foot span{opacity:.6}
 .foot #gmailBtn,.foot #keepBtn{cursor:pointer;text-decoration:underline}
 .overlay{position:fixed;inset:0;background:var(--bg);display:none;z-index:20;overflow:auto}
@@ -101,6 +101,15 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 }
  .top button.listening{background:var(--accent);color:#fff;border-color:var(--accent)} .mobileBar button.listening{background:var(--accent);color:#fff;border-color:var(--accent)} #micBtn{width:auto;padding:0 10px;border-radius:999px;font-size:12px} .namesakeMark{color:var(--mark);font-size:12px;margin-left:6px;white-space:nowrap} .namesakeMark:hover{color:var(--accent)}
  .no-dict #micBtn, .no-dict #btnDictar{display:none!important}
+
+.backupBtn{background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:8px 16px;cursor:pointer;font-size:13px;font-family:inherit}
+.backupBtn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.backupBtn.danger{border-color:#ff6b6b;color:#ff6b6b}
+.backupHint{font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 10px}
+.backupHint b{color:var(--text);font-weight:500}
+.backupHint code{font-family:'Ubuntu Mono',monospace;font-size:12px;background:rgba(127,127,127,.12);padding:1px 6px;border-radius:4px;color:var(--text)}
+.backupStatus{font-size:13px;line-height:1.5;color:var(--accent);min-height:20px;margin:6px 0}
+.backupConfirm{margin:14px 0;padding:12px;border:1px solid var(--faint);border-radius:8px;font-size:13px;line-height:1.6}
 </style>
 <script>
 (function(){
@@ -119,11 +128,12 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 <div class="heading" id="heading"></div>
 <div class="list" id="list"></div>
 </div>
-<div class="foot"><span>Home entra &nbsp;·&nbsp; End sale</span><span><span id="gmailBtn">Gmail · .txt</span> &nbsp;·&nbsp; <span id="keepBtn">Keep</span> &nbsp;·&nbsp; <span id="trashBtn" style="cursor:pointer;text-decoration:underline">Papelera</span></span><span id="savedTag" aria-live="polite" role="status">Guardado ✓</span><span id="footRight" aria-live="polite" role="status">F1</span></div>
+<div class="foot"><span>Home entra &nbsp;·&nbsp; End sale</span><span><span id="gmailBtn">Gmail · .txt</span> &nbsp;·&nbsp; <span id="keepBtn">Keep</span> &nbsp;·&nbsp; <span id="backupBtn" style="cursor:pointer;text-decoration:underline">Respaldo · JSON</span> &nbsp;·&nbsp; <span id="trashBtn" style="cursor:pointer;text-decoration:underline">Papelera</span></span><span id="savedTag" aria-live="polite" role="status" title="Comprobando si el guardado quedó persistido…">Comprobando guardado…</span><span id="footRight" aria-live="polite" role="status">F1</span></div>
 <div class="overlay" id="helpOverlay"><div class="in"><h2>Brasas · Teclas</h2><p class="helpSub">Todo con teclado. Sin mouse, sin menús. F1 abre esto.</p><div id="helpText" class="helpGrid"></div><div class="close">Esc para cerrar &nbsp;·&nbsp; o clic afuera</div></div></div>
 <div class="overlay" id="searchOverlay"><div class="in"><h2>Buscar &nbsp;·&nbsp; Ctrl+K / /</h2><input id="searchInput" class="searchInput" placeholder="Buscar en brasas y notas largas..." autocomplete="off" aria-label="Buscar en brasas y notas largas"><div id="searchResults"></div><div class="close">Enter para ir &nbsp;·&nbsp; ↑ ↓ para elegir &nbsp;·&nbsp; Esc para cerrar</div></div></div>
 <div class="overlay" id="trashOverlay"><div class="in"><h2>Papelera &nbsp;·&nbsp; F9</h2><div id="trashList"></div><div class="close">Esc para cerrar</div></div></div>
 <div class="overlay" id="gmailOverlay"><div class="in"><h2>Gmail &nbsp;·&nbsp; .txt</h2><p style="font-size:13px;color:var(--muted);margin-bottom:12px">¿A qué correo lo querés mandar?</p><input id="gmailToInput" class="searchInput" placeholder="ejemplo@correo.com" autocomplete="email" inputmode="email" aria-label="Correo destinatario"><div style="margin-top:18px"><button id="gmailSendBtn" aria-label="Abrir Gmail para enviar" style="background:var(--accent);border:none;color:#fff;border-radius:999px;padding:8px 18px;cursor:pointer;font-size:13px">Abrir Gmail</button> <button id="gmailCancelBtn" aria-label="Cancelar envío por Gmail" style="background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:8px 16px;cursor:pointer;font-size:13px">Cancelar</button></div><div class="close">Enter para abrir Gmail &nbsp;·&nbsp; Esc para cerrar</div></div></div>
+<div class="overlay" id="backupOverlay"><div class="in"><h2>Respaldo · JSON / TXT</h2><p class="backupHint"><b>JSON es el respaldo completo.</b> Guarda título, brasas, notas largas completas, papelera y marca. Es el único que restaura todo tal cual.<br><b>TXT es solo lectura.</b> Sirve para leer, mandar por Gmail o Keep y pegar. Guarda título, estructura y notas, pero no guarda papelera, marca, ni saltos de línea dentro de una brasa.</p><p class="backupHint">En TXT las notas se marcan con <code>&gt;</code> para que no se confundan con subbrasas. Ejemplo:<br><code>- Idea<br>&nbsp;&nbsp;&gt; esta es la nota<br>&nbsp;&nbsp;- Subbrasa</code></p><div style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0"><button id="backupDownloadJsonBtn" class="backupBtn primary">Descargar JSON · respaldo completo</button><button id="backupDownloadTxtBtn" class="backupBtn">Descargar TXT · solo lectura</button><label class="backupBtn" style="cursor:pointer">Importar archivo…<input id="backupFileInput" type="file" accept=".json,application/json,.txt,text/plain" style="display:none"></label></div><div id="backupStatus" class="backupStatus" aria-live="polite"></div><div id="backupConfirm" class="backupConfirm" style="display:none"><div id="backupConfirmText"></div><div style="display:flex;gap:8px;margin-top:12px"><button id="backupConfirmReplaceBtn" class="backupBtn danger">Reemplazar todo</button><button id="backupConfirmCancelBtn" class="backupBtn">Cancelar</button></div><p class="backupHint" style="margin-top:10px">Antes de reemplazar, el documento actual queda en deshacer (Ctrl + Z).</p></div><div class="close">Esc para cerrar &nbsp;·&nbsp; o clic afuera &nbsp;·&nbsp; Ctrl + E para abrir</div></div></div>
 <div class="overlay" id="aerialOverlay"><div class="in"><h2>Vista aérea &nbsp;·&nbsp; Ctrl+B</h2><div class="aerial" id="aerialText"></div><div class="close">Esc para volver &nbsp;·&nbsp; o clic afuera &nbsp;·&nbsp; Ctrl+B para cerrar</div></div></div>
 
 <div class="mobileBar" id="mobileBar">
@@ -137,6 +147,7 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 <button id="btnPegar" aria-label="Pegar desde el portapapeles">Pegar</button>
 <button id="btnFontMinus" aria-label="Achicar letra">A-</button><button id="btnFontPlus" aria-label="Agrandar letra">A+</button><button id="btnDictar" aria-label="Dictar por voz">🎤 Dictar</button><button id="btnGmail" aria-label="Enviar por Gmail">Gmail</button>
 <button id="btnKeep" aria-label="Enviar a Google Keep">Keep</button>
+<button id="btnRespaldo" aria-label="Respaldo JSON o TXT">Respaldo</button>
 </div>
 
 <script>
@@ -151,18 +162,24 @@ function updateDictationVisibility(){
   if(!DICTATION_ENABLED){ if(b1) b1.style.display='none'; if(b2) b2.style.display='none'; }
   else { if(b1) b1.style.display=''; if(b2) b2.style.display=''; }
 }
-// Carga segura Brasas 34: si bs_data está corrupto, intenta con el respaldo. Nunca deja la pantalla en blanco.
+// Carga segura Brasas 35: si bs_data está corrupto, intenta con el respaldo. Nunca deja la pantalla en blanco.
+// El respaldo es HISTÓRICO: guarda la última versión confirmada, no la actual (ver saveNow).
 function safeGet(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
 function safeParse(str, fallback){ try{ let v=JSON.parse(str); return (v===null||v===undefined)?fallback:v; }catch(e){ return fallback; } }
+let _storageAvailable=true; try{ localStorage.setItem('__bs_probe','1'); if(localStorage.getItem('__bs_probe')!=='1') _storageAvailable=false; localStorage.removeItem('__bs_probe'); }catch(e){ _storageAvailable=false; }
+let _rawMain=safeGet('bs_data'); let _rawBackup=safeGet('bs_data_backup');
 let title = safeGet('bs_title')||'';
 let data = null;
+let _loadedFromBackup=false;
+let _lastSavedDataStr=null; // última versión confirmada en bs_data. Se promueve a respaldo en el próximo guardado distinto.
 try{
-  data = safeParse(safeGet('bs_data'), null);
+  data = safeParse(_rawMain, null);
   if(!Array.isArray(data)){
-    let backup = safeParse(safeGet('bs_data_backup'), null);
-    if(Array.isArray(backup) && backup.length){ data = backup; }
-    else if(Array.isArray(data)){ /* queda como está */ }
+    let backup = safeParse(_rawBackup, null);
+    if(Array.isArray(backup) && backup.length){ data = backup; _loadedFromBackup=true; }
     else { data = []; }
+  } else {
+    _lastSavedDataStr=_rawMain;
   }
 }catch(e){ data = []; }
 if(!Array.isArray(data)) data=[];
@@ -351,35 +368,97 @@ function breakNamesakeForSelected(){
     showFootMsg('No es namesake, aparece una sola vez');
   }
 }
-// Guardado Brasas 34: debounce 250ms, todo con try/catch, respaldo en bs_data_backup,
-// y bs_path/bs_selected solo se escriben si cambiaron (no en cada tecla).
+// Guardado Brasas 35 — estados honestos y respaldo histórico.
+// Principio: nunca mostrar "Guardado ✓" sin haber verificado la persistencia por relectura.
+// - Guardando: hay un guardado en curso / pendiente.
+// - Guardado correctamente: bs_data + título + papelera escritos SIN error y verificados por relectura.
+// - Error de almacenamiento: falló la escritura o la verificación. Los datos siguen en memoria, reintentá.
+// - Necesita exportar una copia de seguridad: el error persiste (2 fallos seguidos) o el almacenamiento no está disponible. Exportá con Ctrl+W / Gmail / Keep antes de cerrar.
+// Respaldo: bs_data_backup NUNCA recibe la versión actual. Antes de sobrescribir bs_data, promueve a respaldo la última versión confirmada (_lastSavedDataStr). Si la versión nueva se corrompe, queda la anterior.
 let _saveTimer=null; let _lastPathSaved=''; let _lastSelectedSaved='';
+let _saveStatus='idle'; // idle | saving | saved | error | needs-export
+let _saveFailCount=0; let _lastSaveError='';
+function setSaveStatus(status, detail){
+  _saveStatus=status;
+  let el=document.getElementById('savedTag'); if(!el) return;
+  el.classList.remove('save-saving','save-ok','save-error','save-needs-export');
+  let d=new Date(); let hh=String(d.getHours()).padStart(2,'0'); let mm=String(d.getMinutes()).padStart(2,'0');
+  if(status==='saving'){ el.classList.add('save-saving'); el.textContent='Guardando…'; el.title='Guardando los cambios…'; }
+  else if(status==='saved'){ el.classList.add('save-ok'); el.textContent='Guardado ✓ '+hh+':'+mm; el.title='Guardado y verificado en este navegador a las '+hh+':'+mm; }
+  else if(status==='error'){ el.classList.add('save-error'); el.textContent='Error de almacenamiento — clic para reintentar'; el.title='No se pudo confirmar el guardado. Tus cambios siguen en memoria. Clic para reintentar. '+((detail||_lastSaveError)||''); }
+  else if(status==='needs-export'){ el.classList.add('save-needs-export'); el.textContent='Necesita exportar una copia de seguridad — clic para exportar'; el.title='El almacenamiento sigue fallando. Exportá una copia con Ctrl+W / Gmail / Keep antes de cerrar esta pestaña. '+((detail||_lastSaveError)||''); }
+  else { el.textContent='Comprobando guardado…'; el.title='Comprobando si el guardado quedó persistido…'; }
+}
+function _trySet(key, value){ try{ localStorage.setItem(key, value); return true; }catch(e){ return e; } }
+function _verify(key, expected){ try{ return localStorage.getItem(key)===expected; }catch(e){ return false; } }
 function saveNow(){
+  // Devuelve true solo si la persistencia quedó verificada. Ningún error se silencia: se registra y se muestra.
+  setSaveStatus('saving');
+  let dataStr;
+  try{ dataStr=JSON.stringify(data); }catch(e){ _lastSaveError='No se pudo serializar los datos: '+((e&&e.message)||e); _saveFailCount++; setSaveStatus((!_storageAvailable||_saveFailCount>=2)?'needs-export':'error', _lastSaveError); return false; }
+  let titleStr=title||'';
+  let trashStr; try{ trashStr=JSON.stringify(trash); }catch(e){ trashStr='[]'; }
+  // 1) Respaldo HISTÓRICO: promover la versión anterior confirmada, NO la actual.
+  // Si es el primer guardado tras cargar desde el respaldo, NO pisamos el respaldo: todavía no hay versión principal confirmada distinta.
+  if(_lastSavedDataStr && _lastSavedDataStr!==dataStr){
+    let bErr=_trySet('bs_data_backup', _lastSavedDataStr);
+    if(bErr===true){ try{ localStorage.setItem('bs_data_backup_meta', JSON.stringify({savedAt:new Date().toISOString(), items:JSON.parse(_lastSavedDataStr).length})); }catch(e){} }
+    // Si el respaldo falla, no bloquea el guardado principal: el respaldo es mejor esfuerzo. El estado final depende solo del principal verificado.
+  }
+  // 2) Escritura principal + título + papelera. Cada fallo se registra.
+  let errors=[];
+  let e1=_trySet('bs_data', dataStr); if(e1!==true) errors.push('bs_data: '+((e1&&e1.message)||e1));
+  let e2=_trySet('bs_title', titleStr); if(e2!==true) errors.push('bs_title: '+((e2&&e2.message)||e2));
+  let e3=_trySet('bs_trash', trashStr); if(e3!==true) errors.push('bs_trash: '+((e3&&e3.message)||e3));
+  // bs_path / bs_selected / bs_marked son navegación, no datos: si fallan no invalidan el guardado.
   try{
-    let dataStr=JSON.stringify(data);
-    try{ localStorage.setItem('bs_data', dataStr); }catch(e){}
-    // Respaldo: si bs_data falló por cuota, el respaldo igual intenta quedar con lo último bueno.
-    try{ localStorage.setItem('bs_data_backup', dataStr); }catch(e){}
-    try{ localStorage.setItem('bs_title', title); }catch(e){}
-    try{ localStorage.setItem('bs_trash', JSON.stringify(trash)); }catch(e){}
-    try{
-      let pStr=JSON.stringify(path);
-      if(pStr!==_lastPathSaved){ localStorage.setItem('bs_path', pStr); _lastPathSaved=pStr; }
-      let sStr=String(selected);
-      if(sStr!==_lastSelectedSaved){ localStorage.setItem('bs_selected', sStr); _lastSelectedSaved=sStr; }
-    }catch(e){}
-    try{ localStorage.setItem('bs_marked', markedId||''); }catch(e){}
+    let pStr=JSON.stringify(path);
+    if(pStr!==_lastPathSaved){ let pe=_trySet('bs_path', pStr); if(pe===true) _lastPathSaved=pStr; }
+    let sStr=String(selected);
+    if(sStr!==_lastSelectedSaved){ let se=_trySet('bs_selected', sStr); if(se===true) _lastSelectedSaved=sStr; }
   }catch(e){}
-  try{ let d=new Date(); let hh=String(d.getHours()).padStart(2,'0'); let mm=String(d.getMinutes()).padStart(2,'0'); let el=document.getElementById('savedTag'); if(el) el.textContent='Guardado ✓ '+hh+':'+mm; }catch(e){}
+  _trySet('bs_marked', markedId||'');
+  // 3) Verificación por relectura: la única condición para decir "Guardado".
+  let verified=_verify('bs_data', dataStr) && _verify('bs_title', titleStr) && _verify('bs_trash', trashStr);
+  if(verified && errors.length===0){
+    _lastSavedDataStr=dataStr; _saveFailCount=0; _lastSaveError='';
+    setSaveStatus('saved');
+    return true;
+  }
+  // 4) Falló: NO mostrar Guardado.
+  _saveFailCount++;
+  _lastSaveError=errors.length?errors.join('; '):'La verificación por relectura no coincidió.';
+  setSaveStatus((!_storageAvailable||_saveFailCount>=2)?'needs-export':'error', _lastSaveError);
+  return false;
 }
 function save(){
-  // Debounce: juntar las teclas seguidas en un solo guardado.
+  // Mostrar "Guardando…" de inmediato, no solo cuando termina el debounce.
+  if(_saveStatus!=='saving') setSaveStatus('saving');
   if(_saveTimer) clearTimeout(_saveTimer);
   _saveTimer=setTimeout(()=>{ _saveTimer=null; saveNow(); }, 250);
 }
-function flushSave(){ if(_saveTimer){ clearTimeout(_saveTimer); _saveTimer=null; saveNow(); } }
+function flushSave(){ if(_saveTimer){ clearTimeout(_saveTimer); _saveTimer=null; } return saveNow(); }
+function retrySave(){ return saveNow(); }
+function exportBackupNow(){ try{ downloadJson(); }catch(e){ try{ downloadTxt(); }catch(e2){} } return false; }
+(function(){
+  let el=document.getElementById('savedTag'); if(!el) return;
+  el.addEventListener('click', ()=>{
+    if(_saveStatus==='needs-export'){ exportBackupNow(); showFootMsg('Respaldo JSON exportado — verificá el archivo antes de cerrar'); retrySave(); }
+    else if(_saveStatus==='error'){ retrySave(); }
+  });
+})();
 window.addEventListener('beforeunload', flushSave);
 document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushSave(); });
+// Estado inicial honesto: no afirmar Guardado sin verificar en esta sesión.
+(function(){
+  if(!_storageAvailable){ _saveFailCount=2; _lastSaveError='localStorage no disponible en este contexto.'; setSaveStatus('needs-export', _lastSaveError); }
+  else if(_loadedFromBackup){
+    _saveStatus='needs-export';
+    let el=document.getElementById('savedTag'); if(el){ el.classList.add('save-needs-export'); el.textContent='Recuperado desde respaldo — editá para guardar'; el.title='Se cargó la versión anterior desde bs_data_backup porque bs_data estaba corrupto. El próximo cambio intentará guardarlo como versión principal.'; }
+  } else {
+    try{ if(localStorage.getItem('bs_data')===_lastSavedDataStr){ setSaveStatus('saved'); } else { setSaveStatus('error','La relectura inicial no coincidió.'); } }catch(e){ setSaveStatus('needs-export','No se pudo leer el almacenamiento.'); }
+  }
+})();
 function pushUndo(){undoStack.push(JSON.stringify({title,data,path,selected})); if(undoStack.length>80) undoStack.shift(); redoStack=[];}
 function getNode(p){let cur={children:data}; for(let id of p){cur=cur.children.find(n=>n.id===id); if(!cur) return {children:data};} return cur;}
 function curChildren(){return getNode(path).children;}
@@ -420,7 +499,7 @@ function renderBrasaHtml(txt){
 }
 let searchSel=0; let searchRes=[];
 function openSearch(){
-  document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('trashOverlay').style.display='none';
+  document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('trashOverlay').style.display='none'; document.getElementById('backupOverlay').style.display='none';
   let ov=document.getElementById('searchOverlay'); ov.style.display='block';
   let inp=document.getElementById('searchInput'); inp.value=''; searchSel=0; searchRes=[];
   renderSearchResults('');
@@ -488,7 +567,7 @@ function goToSearchResult(i){
   editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); closeSearch(); save(); render();
 }
 function showTrash(show){
-  document.getElementById('searchOverlay').style.display='none'; document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none';
+  document.getElementById('searchOverlay').style.display='none'; document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('backupOverlay').style.display='none';
   let ov=document.getElementById('trashOverlay'); ov.style.display=show?'block':'none';
   if(show) renderTrash();
 }
@@ -511,9 +590,64 @@ function renderTrash(){
   vac.appendChild(vb); box.appendChild(vac);
 }
 function restoreTrash(idx){
-  let item=trash[idx]; if(!item) return;
-  pushUndo(); trash.splice(idx,1); save();
-  let kids=curChildren(); let pos=Math.min(selected+1, kids.length); kids.splice(pos,0,item.node); selected=pos; clearMulti(); save(); renderTrash(); render();
+  let item=trash[idx]; if(!item || !item.node) return;
+  let prevPath=[...path];
+  pushUndo();
+  let hasOrigin=Array.isArray(item.fromPath);
+  let rawPath=hasOrigin ? item.fromPath.filter(x=>typeof x==='string') : [...path];
+  // Resolver la ruta original: avanzar mientras cada id siga existiendo.
+  // Si un ancestro fue borrado, nos quedamos con el prefijo válido más largo.
+  let targetPath=[];
+  let cur={children:data};
+  let exact=true;
+  for(let id of rawPath){
+    let nxt=(cur.children||[]).find(n=>n.id===id);
+    if(!nxt){ exact=false; break; }
+    targetPath.push(id);
+    cur=nxt;
+  }
+  let targetKids;
+  if(hasOrigin){
+    targetKids=cur.children||[];
+  } else {
+    // Papelera vieja sin fromPath: mantener el comportamiento anterior (nivel actual).
+    targetPath=[...path];
+    targetKids=curChildren();
+  }
+  let pos;
+  if(typeof item.fromIndex==='number' && isFinite(item.fromIndex)){
+    // Los hermanos del mismo padre que todavía están en papelera no ocupan
+    // lugar aún, así que se descuentan ANTES de clampar. Esto hace que
+    // restaurar en cualquier orden (simple, múltiple o secuencial) deje
+    // el orden original intacto.
+    let mates=0;
+    if(hasOrigin && exact){
+      for(let j=0;j<trash.length;j++){
+        if(j===idx) continue;
+        let it=trash[j];
+        if(!it || !Array.isArray(it.fromPath)) continue;
+        if(it.fromPath.length!==rawPath.length) continue;
+        let same=true;
+        for(let k=0;k<rawPath.length;k++){ if(it.fromPath[k]!==rawPath[k]){ same=false; break; } }
+        if(!same) continue;
+        if(typeof it.fromIndex==='number' && it.fromIndex<item.fromIndex) mates++;
+      }
+    }
+    pos=Math.max(0, Math.min(Math.floor(item.fromIndex)-mates, targetKids.length));
+  } else if(!hasOrigin){
+    pos=Math.min(selected+1, targetKids.length);
+  } else {
+    pos=targetKids.length;
+  }
+  trash.splice(idx,1);
+  targetKids.splice(pos,0,item.node);
+  path=[...targetPath];
+  selected=pos; clearMulti(); editing=null; editingIsHeading=false; save(); renderTrash(); render();
+  if(hasOrigin && !exact){
+    showFootMsg('Ubicación original ya no existe, restaurado en el nivel más cercano');
+  } else if(hasOrigin && (prevPath.length!==targetPath.length || prevPath.some((v,i)=>v!==targetPath[i]))){
+    showFootMsg('Restaurado en su ubicación original');
+  }
 }
 function deleteTrashForever(idx){ trash.splice(idx,1); save(); renderTrash(); render(); }
 function render(){
@@ -632,10 +766,7 @@ function render(){
        clickEditTimer=null;
        if(selected!==targetIdx){ pendingCursorPos=null; return; }
        if(editing!==null){ pendingCursorPos=null; return; }
-       editing=targetIdx;
-       let k=curChildren();
-       editingOrig=k[targetIdx]?.text||'';
-       editingIsHeading=false; render();
+       startEdit();
      },150);
    };
    row.ondblclick=(ev)=>{ev.preventDefault();};
@@ -699,13 +830,14 @@ function extendSelection(dir){
  save(); render();
 }
 function buildTxtForSelected(){
+ // Fragmento para copiar / cortar: mismo formato TXT v2, sin titulo. Asi Ctrl + C / Ctrl + V conserva las notas.
  let kids=curChildren();
  let indices = multiSet ? [...multiSet].sort((a,b)=>a-b) : [selected];
  indices=indices.filter(i=>i>=0 && i<curChildren().length);
  let lines=[];
  function walk(n,d){
    lines.push('  '.repeat(d)+'- '+n.text.replace(/\n/g,' '));
-   if(n.note && n.note.trim()){ n.note.split('\n').forEach(nl=>{ if(nl.trim()) lines.push('  '.repeat(d+1)+nl); }); }
+   if(n.note && n.note.trim()){ n.note.split('\n').forEach(nl=>{ lines.push('  '.repeat(d+1)+(nl==='' ? '>' : '> '+nl)); }); }
    n.children.forEach(c=>walk(c,d+1));
  }
  indices.forEach(i=>{let n=kids[i]; if(n) walk(n,0);});
@@ -742,7 +874,7 @@ function insertBlank(atIdx){
  let pos = (atIdx==null? selected+1 : atIdx); if(pos>kids.length) pos=kids.length;
  kids.splice(pos,0,n); selected=pos; clearMulti(); editing=pos; editingIsHeading=false; editingOrig=''; save(); render();
 }
-function startEdit(){if(editingIsHeading) return; let kids=curChildren(); if(selected<0){insertBlank(0); return;} if(selected>=kids.length){insertBlank(selected); return;} editing=selected; editingOrig=kids[selected].text; render();}
+function startEdit(){if(editingIsHeading) return; if(editing!==null) return; let kids=curChildren(); if(selected<0){insertBlank(0); return;} if(selected>=kids.length){insertBlank(selected); return;} pushUndo(); editing=selected; editingOrig=kids[selected].text; render();}
 function finishEdit(saveIt){
  if(editingIsHeading){ if(!saveIt) setHeadingText(editingOrig); else { let _hn=headingNode(); if(_hn) detachSharedChildrenIfNeeded(_hn, editingOrig); } editingIsHeading=false; try{ linkNamesakes(); }catch(e){} save(); render(); return;}
  if(editing===null) return;
@@ -770,13 +902,30 @@ function splitEntry(){let ta=document.querySelector('.row textarea, .heading tex
 function deleteNode(){
   let kids=curChildren(); if(selected<0 && !(multiSet && multiSet.size>0)) return; if(selected>=kids.length && !(multiSet && multiSet.size>0)) return;
   pushUndo();
+  // fromIndex es lógico: si ya hay brasas del mismo padre en papelera con
+  // fromIndex <= i, ese hueco sigue reservado. Así dos borrados secuenciales
+  // (borrar B, luego borrar C que quedó en su lugar) no terminan con el mismo
+  // fromIndex y el orden original se puede reconstruir en cualquier orden.
+  let _baseTrash=trash.slice();
+  let _logicalIndex=(i)=>{
+    let adj=0;
+    for(let it of _baseTrash){
+      if(!it || !Array.isArray(it.fromPath)) continue;
+      if(it.fromPath.length!==path.length) continue;
+      let same=true;
+      for(let k=0;k<path.length;k++){ if(it.fromPath[k]!==path[k]){ same=false; break; } }
+      if(!same) continue;
+      if(typeof it.fromIndex==='number' && it.fromIndex<=i) adj++;
+    }
+    return i+adj;
+  };
   if(multiSet && multiSet.size>1){
     let idxs=[...multiSet].filter(i=>i>=0 && i<kids.length).sort((a,b)=>b-a);
-    idxs.forEach(i=>{ let n=kids[i]; if(n) trash.push({node:n, deletedAt:Date.now(), fromPath:[...path]}); });
+    idxs.forEach(i=>{ let n=kids[i]; if(n) trash.push({node:n, deletedAt:Date.now(), fromPath:[...path], fromIndex:_logicalIndex(i)}); });
     idxs.forEach(i=>kids.splice(i,1));
     clearMulti(); selected=Math.max(0, Math.min(selected, kids.length-1));
   } else {
-    let n=kids[selected]; if(n) trash.push({node:n, deletedAt:Date.now(), fromPath:[...path]});
+    let n=kids[selected]; if(n) trash.push({node:n, deletedAt:Date.now(), fromPath:[...path], fromIndex:_logicalIndex(selected)});
     kids.splice(selected,1); selected=Math.max(0,selected-1);
   }
   editing=null; save(); render();
@@ -790,17 +939,29 @@ function undo(){if(!undoStack.length) return; redoStack.push(JSON.stringify({tit
 function redo(){if(!redoStack.length) return; undoStack.push(JSON.stringify({title,data,path,selected})); let p=JSON.parse(redoStack.pop()); title=p.title; data=p.data; path=p.path; selected=p.selected; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
 
 function parsePasted(text){
-  let lines=text.split(/\r?\n/).filter(r=>r.trim());
+  // TXT v2 + compatibilidad:
+  // - "# Titulo" (primera linea) se ignora al pegar como fragmento; en importacion completa se extrae aparte.
+  // - "> nota" o ">" (linea vacia de nota) es nota, no brasa. Se acumula en la brasa padre.
+  // - "- brasa" / "1. brasa" / "• brasa" es brasa.
+  // - Linea sin marcador (listas externas y TXT viejo) se sigue tratando como brasa, como antes.
+  let rawLines=text.split(/\r?\n/);
+  let lines=rawLines.filter(r=>r.trim()!=='');
   if(!lines.length) return [];
-  // Detectar unidad de sangría: la sangría mínima mayor a 0 (2 o 4 espacios o tab)
   let indents=lines.map(raw=>{ let m=raw.match(/^(\s*)/); return m?m[1].replace(/\t/g,'    ').length:0; }).filter(n=>n>0);
   let unit=indents.length?Math.min(...indents):2; if(unit<2) unit=2; if(unit>4) unit=4;
   let items=[];
+  let first=true;
   lines.forEach(raw=>{
     let m=raw.match(/^(\s*)/); let indent=m?m[1].replace(/\t/g,'    ').length:0;
     let depth=Math.floor(indent/unit); if(depth<0) depth=0;
     let content=raw.trim();
-    // Quitar viñeta o número: - • * — – +  |  1.  1)  a.  a)
+    if(first && content.startsWith('# ')){ first=false; return; }
+    first=false;
+    if(content==='>' || content.startsWith('> ')){
+      let noteText = content==='>' ? '' : content.slice(2);
+      items.push({isNote:true, depth:depth, text:noteText, node:null});
+      return;
+    }
     content=content.replace(/^[-•*—–+\u2022]\s+/, '');
     content=content.replace(/^\d+[\.\)]\s+/, '');
     content=content.replace(/^[a-zA-Z][\.\)]\s+/, '');
@@ -812,12 +973,35 @@ function parsePasted(text){
 }
 function buildTreeFromItems(items){
   let roots=[]; let stack=[];
-  items.forEach(({node,depth})=>{
+  items.forEach((it)=>{
+    if(it.isNote){
+      let parent=null;
+      for(let i=stack.length-1;i>=0;i--){ if(stack[i].depth < it.depth){ parent=stack[i].node; break; } }
+      if(!parent){
+        let node={id:uid(),text:it.text,children:[],note:''};
+        while(stack.length && stack[stack.length-1].depth>=it.depth) stack.pop();
+        if(!stack.length) roots.push(node);
+        else stack[stack.length-1].node.children.push(node);
+        stack.push({node,depth:it.depth});
+        return;
+      }
+      if(!parent._noteLines) parent._noteLines=[];
+      parent._noteLines.push(it.text);
+      return;
+    }
+    let node=it.node, depth=it.depth;
     while(stack.length && stack[stack.length-1].depth>=depth) stack.pop();
     if(!stack.length) roots.push(node);
     else stack[stack.length-1].node.children.push(node);
     stack.push({node,depth});
   });
+  function finalize(arr){
+    arr.forEach(n=>{
+      if(n._noteLines){ n.note=n._noteLines.join('\n'); delete n._noteLines; }
+      if(n.children) finalize(n.children);
+    });
+  }
+  finalize(roots);
   return roots;
 }
 function insertPastedRoots(roots, afterIdx){
@@ -830,6 +1014,18 @@ function insertPastedRoots(roots, afterIdx){
 }
 function pasteMultipleIdeas(text){
   if(!text || !text.includes('\n')) return false;
+  // Si pegas un respaldo JSON completo navegando (no editando), no convertirlo en brasas: ofrecer restaurarlo.
+  if(editing===null && !editingIsHeading){
+    let t=text.trim();
+    if(t.startsWith('{') || t.startsWith('[')){
+      let parsed=parseBackupJson(t);
+      if(parsed.ok){
+        pendingBackupImport=parsed; pendingBackupImportKind='json'; pendingBackupImportName='pegado desde portapapeles';
+        showBackupOverlay(true); updateBackupConfirmUI();
+        return true;
+      }
+    }
+  }
   let items=parsePasted(text); if(!items.length) return false;
   let roots=buildTreeFromItems(items);
   if(editing!==null || editingIsHeading){
@@ -859,13 +1055,15 @@ async function pasteFromClipboardButton(){
   }
 }
 function showHelp(show){
-document.getElementById('helpOverlay').style.display=show?'block':'none'; if(show){let groups=[
+document.getElementById('helpOverlay').style.display=show?'block':'none'; if(show){ document.getElementById('backupOverlay').style.display='none'; } if(show){let groups=[
  ['Moverse', [['Home','entra'],['End','sale'],['Ctrl + Home','al título'],['↑ ↓','moverse'],['Shift + ↑ ↓','elegir varias'],['Alt + ↑ ↓','mover la brasa'],['← →','misma palabra en otro lugar'],['Espacio','entra']]],
  ['Escribir', [['Clic en el título grande','editar título principal'],['Enter','nueva brasa abajo'],['Shift + Enter','párrafo adentro'],['Ctrl + Enter','dividir la brasa'],['F2','editar'],['Backspace al inicio','juntar con la anterior'],['Del al final','juntar con la siguiente'],['Esc','deseleccionar TODO / salir'],['Shift + Esc','terminar y quedarse']]],
  ['Ver y leer', [['F4','texto largo'],...(DICTATION_ENABLED ? [['F8','dictar por voz']] : []),['Ctrl + B','ver todo, con notas adentro'],['Ctrl + K  /  /','buscar'],['Ctrl + / Ctrl -','agrandar / achicar letra'],['Ctrl + 0','letra normal'],['🔊 arriba','sonido de tecla on / off']]],
  ['Marcar y corregir', [['Ctrl + M  /  @','marcar'],['Ctrl + J','saltar a la marca'],['Ctrl + N','romper / reactivar namesake ≫'],['Ctrl + Z','deshacer'],['Ctrl + L','separador'],['Del','borrar']]],
  ['Namesakes ≫', [['Mismo texto 2 veces','se enlaza solo, mismos hijos'],['≫×2 en la brasa','indica que es namesake'],['Editar hijos en una','se ve en todas'],['Ctrl + N','romper el enlace (copia hijos)'],['← →','saltar entre namesakes']]],
- ['Copiar y compartir', [['Ctrl + C','copiar las elegidas'],['Ctrl + X','cortar las elegidas'],['Ctrl + V','pegar varias o lista'],['Ctrl + G','Gmail · .txt'],['Keep','mandar a Google Keep'],['F9','papelera']]]
+ ['Copiar y compartir', [['Ctrl + C','copiar las elegidas'],['Ctrl + X','cortar las elegidas'],['Ctrl + V','pegar varias o lista'],['Ctrl + G','Gmail · .txt'],['Keep','mandar a Google Keep'],['F9','papelera']]],
+ ['Respaldo', [['Ctrl + E','abrir Respaldo · JSON / TXT'],['JSON','respaldo completo: restaura todo'],['TXT','solo lectura: titulo, estructura y notas'],['Importar','reemplaza todo, con vista previa'],['Pegar JSON','pegar un respaldo ofrece restaurarlo']]],
+ ['Guardado', [['Guardando…','hay un guardado en curso'],['Guardado ✓','verificado por relectura'],['Error de almacenamiento','clic para reintentar, sigue en memoria'],['Necesita exportar…','clic para exportar JSON, no cierres sin copia']]]
 ]; document.getElementById('helpText').innerHTML=groups.map(g=>'<div class="helpGroup"><h3>'+g[0]+'</h3>'+g[1].map(x=>'<div class="helpRow"><span class="kbd">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+'</div>').join('');}}
 document.getElementById('helpOverlay').addEventListener('click',(e)=>{ if(e.target.id==='helpOverlay') showHelp(false); });
 document.getElementById('aerialOverlay').addEventListener('click',(e)=>{ if(e.target.id==='aerialOverlay') showAerial(false); });
@@ -878,6 +1076,7 @@ function showAerial(show){
   document.getElementById('searchOverlay').style.display='none';
   document.getElementById('trashOverlay').style.display='none';
   document.getElementById('gmailOverlay').style.display='none';
+  document.getElementById('backupOverlay').style.display='none';
   let box=document.getElementById('aerialText');
   box.innerHTML='';
   if(!title && !data.length){
@@ -919,12 +1118,15 @@ function showAerial(show){
   if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
 }
 function buildStructuredTxt(){
+  // TXT v2: titulo con "# ", brasas con "- ", notas con "> " en la misma sangria.
+  // La marca "> " es lo que permite distinguir una nota de una subbrasa al reimportar.
+  // TXT guarda titulo + estructura + notas. No guarda papelera, marca ni saltos de linea dentro de una brasa: para eso esta JSON.
   let lines=[];
-  if(title) lines.push(title);
+  if(title) lines.push('# '+title.replace(/\n/g,' '));
   function walk(arr,d){ arr.forEach(n=>{
     lines.push('  '.repeat(d)+'- '+n.text.replace(/\n/g,' '));
     if(n.note && n.note.trim()){
-      n.note.split('\n').forEach(nl=>{ if(nl.trim()) lines.push('  '.repeat(d+1)+nl); });
+      n.note.split('\n').forEach(nl=>{ lines.push('  '.repeat(d+1)+(nl==='' ? '>' : '> '+nl)); });
     }
     walk(n.children,d+1);
   }); }
@@ -936,8 +1138,172 @@ function downloadTxt(){
   let blob=new Blob([txt],{type:'text/plain;charset=utf-8'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='brasas-estructurado.txt'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
   return txt;
 }
+
+// ===== Respaldo JSON / TXT - Brasas 37 =====
+// JSON es la fuente de verdad. TXT es vista de lectura con notas marcadas con "> ".
+let pendingBackupImport=null;
+let pendingBackupImportKind='';
+let pendingBackupImportName='';
+function sanitizeBackupNode(raw, seen, depth){
+  if(!raw || typeof raw!=='object' || Array.isArray(raw)) return null;
+  if(depth>60) return null;
+  let text = typeof raw.text==='string' ? raw.text : '';
+  let note = typeof raw.note==='string' ? raw.note : '';
+  let id = (typeof raw.id==='string' && raw.id.trim()) ? raw.id.trim() : uid();
+  if(seen.has(id)) id=uid();
+  seen.add(id);
+  let children=[];
+  if(Array.isArray(raw.children)){
+    raw.children.forEach(c=>{ let n=sanitizeBackupNode(c, seen, depth+1); if(n) children.push(n); });
+  }
+  let node={id:id, text:text, children:children, note:note};
+  if(raw.namesakeOff===true) node.namesakeOff=true;
+  return node;
+}
+function countBackupNodes(arr){
+  let n=0;
+  (arr||[]).forEach(x=>{ n+=1; n+=countBackupNodes(x.children||[]); });
+  return n;
+}
+function countBackupNotes(arr){
+  let n=0;
+  (arr||[]).forEach(x=>{ if(x.note && x.note.trim()) n+=1; n+=countBackupNotes(x.children||[]); });
+  return n;
+}
+function buildBackupObject(){
+  let seen=new Set();
+  let cleanData=[];
+  (data||[]).forEach(n=>{ let s=sanitizeBackupNode(n, seen, 0); if(s) cleanData.push(s); });
+  let cleanTrash=[];
+  (trash||[]).forEach(it=>{
+    if(!it || typeof it!=='object') return;
+    let n=sanitizeBackupNode(it.node, seen, 0);
+    if(!n) return;
+    let _t={node:n, deletedAt:(typeof it.deletedAt==='number'?it.deletedAt:Date.now()), fromPath:(Array.isArray(it.fromPath)?it.fromPath.filter(x=>typeof x==='string'):[])}; if(typeof it.fromIndex==='number' && isFinite(it.fromIndex)) _t.fromIndex=Math.floor(it.fromIndex); cleanTrash.push(_t);
+  });
+  let allIds=new Set();
+  (function collect(arr){ arr.forEach(n=>{ allIds.add(n.id); collect(n.children||[]); }); })(cleanData);
+  return {app:'Brasas', version:1, exportedAt:new Date().toISOString(), title:title||'', data:cleanData, trash:cleanTrash, markedId:(markedId && allIds.has(markedId)?markedId:null)};
+}
+function buildBackupJson(){ return JSON.stringify(buildBackupObject(), null, 2); }
+function downloadBackupFile(filename, content, mime){
+  let blob=new Blob([content],{type:mime});
+  let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+}
+function backupFileDate(){ try{ return new Date().toISOString().slice(0,10); }catch(e){ return 'respaldo'; } }
+function downloadJson(){
+  downloadBackupFile('brasas-'+backupFileDate()+'.json', buildBackupJson(), 'application/json;charset=utf-8');
+  showFootMsg('JSON descargado: respaldo completo');
+}
+function parseBackupJson(text){
+  let obj;
+  try{ obj=JSON.parse(text); }catch(e){ return {ok:false, error:'No es un JSON valido: '+((e&&e.message)||e)}; }
+  let rawData, rawTitle='', rawTrash=[], rawMarked=null;
+  if(Array.isArray(obj)){ rawData=obj; }
+  else if(obj && typeof obj==='object'){
+    if(!Array.isArray(obj.data)) return {ok:false, error:'El JSON no tiene "data" con la lista de brasas.'};
+    rawData=obj.data;
+    rawTitle=(typeof obj.title==='string'?obj.title:'');
+    rawTrash=(Array.isArray(obj.trash)?obj.trash:[]);
+    rawMarked=(typeof obj.markedId==='string'?obj.markedId:null);
+  } else { return {ok:false, error:'Formato no reconocido.'}; }
+  let seen=new Set();
+  let cleanData=[];
+  rawData.forEach(n=>{ let s=sanitizeBackupNode(n, seen, 0); if(s) cleanData.push(s); });
+  let cleanTrash=[];
+  rawTrash.forEach(it=>{
+    if(!it || typeof it!=='object') return;
+    let n=sanitizeBackupNode(it.node, seen, 0);
+    if(!n) return;
+    let _t={node:n, deletedAt:(typeof it.deletedAt==='number'?it.deletedAt:Date.now()), fromPath:(Array.isArray(it.fromPath)?it.fromPath.filter(x=>typeof x==='string'):[])}; if(typeof it.fromIndex==='number' && isFinite(it.fromIndex)) _t.fromIndex=Math.floor(it.fromIndex); cleanTrash.push(_t);
+  });
+  let allIds=new Set();
+  (function collect(arr){ arr.forEach(n=>{ allIds.add(n.id); collect(n.children||[]); }); })(cleanData);
+  let markedClean=(rawMarked && allIds.has(rawMarked)?rawMarked:null);
+  return {ok:true, title:rawTitle, data:cleanData, trash:cleanTrash, markedId:markedClean};
+}
+function parseStructuredTxtForImport(text){
+  let lines=text.split(/\r?\n/);
+  let titleFromTxt='';
+  for(let raw of lines){
+    if(!raw.trim()) continue;
+    let c=raw.trim();
+    if(c.startsWith('# ')) titleFromTxt=c.slice(2);
+    break;
+  }
+  let items=parsePasted(text);
+  let roots=buildTreeFromItems(items);
+  return {ok:true, title:titleFromTxt, data:roots, trash:[], markedId:null};
+}
+function showBackupOverlay(show){
+  document.getElementById('helpOverlay').style.display='none';
+  document.getElementById('aerialOverlay').style.display='none';
+  document.getElementById('searchOverlay').style.display='none';
+  document.getElementById('trashOverlay').style.display='none';
+  document.getElementById('gmailOverlay').style.display='none';
+  let ov=document.getElementById('backupOverlay'); ov.style.display=show?'block':'none';
+  if(show){
+    let st=document.getElementById('backupStatus'); if(st && !pendingBackupImport) st.textContent='';
+    if(pendingBackupImport){ updateBackupConfirmUI(); }
+    else { let cf=document.getElementById('backupConfirm'); if(cf) cf.style.display='none'; }
+  }
+}
+function updateBackupConfirmUI(){
+  let cf=document.getElementById('backupConfirm');
+  let txt=document.getElementById('backupConfirmText');
+  let st=document.getElementById('backupStatus');
+  if(!pendingBackupImport || !cf || !txt) return;
+  let d=pendingBackupImport;
+  let total=countBackupNodes(d.data||[]);
+  let notes=countBackupNotes(d.data||[]);
+  let kindLabel = pendingBackupImportKind==='json' ? 'JSON - respaldo completo' : 'TXT - solo lectura';
+  let warn = pendingBackupImportKind==='json' ? 'Restaura titulo, brasas, notas, papelera y marca.' : 'Restaura titulo, estructura y notas. No restaura papelera ni marca, y pierde los saltos de linea dentro de una brasa.';
+  txt.innerHTML = '<b>'+kindLabel+'</b> - '+pendingBackupImportName+'<br>'+'Titulo: '+(d.title?escapeHtmlNote(d.title):'(sin titulo)')+' - '+total+' brasas - '+notes+' con nota - papelera: '+(d.trash||[]).length+'<br><span style="color:var(--muted)">'+warn+' Reemplazar todo el documento actual?</span>';
+  if(st) st.textContent='';
+  cf.style.display='block';
+}
+function handleBackupFileContent(content, name){
+  let t=(content||'').trim();
+  if(!t){ let st=document.getElementById('backupStatus'); if(st) st.textContent='El archivo esta vacio.'; return; }
+  let isJson = t.startsWith('{') || t.startsWith('[');
+  if(isJson){
+    let parsed=parseBackupJson(content);
+    if(!parsed.ok){ let st=document.getElementById('backupStatus'); if(st) st.textContent='No se pudo importar: '+parsed.error; return; }
+    pendingBackupImport=parsed; pendingBackupImportKind='json'; pendingBackupImportName=name||'archivo JSON';
+    updateBackupConfirmUI();
+  } else {
+    let parsed=parseStructuredTxtForImport(content);
+    pendingBackupImport=parsed; pendingBackupImportKind='txt'; pendingBackupImportName=name||'archivo TXT';
+    updateBackupConfirmUI();
+  }
+}
+function confirmBackupImport(){
+  if(!pendingBackupImport) return;
+  let d=pendingBackupImport;
+  try{ if(editingNoteIdx!==null) closeNote(true); else if(editing!==null || editingIsHeading) finishEdit(true); }catch(e){}
+  pushUndo();
+  title=d.title||'';
+  data=d.data||[];
+  trash=d.trash||[];
+  markedId=d.markedId||null;
+  path=[]; selected=0; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti();
+  pendingBackupImport=null; pendingBackupImportKind=''; pendingBackupImportName='';
+  let cf=document.getElementById('backupConfirm'); if(cf) cf.style.display='none';
+  let inp=document.getElementById('backupFileInput'); if(inp) inp.value='';
+  try{ linkNamesakes(); }catch(e){}
+  save(); render(); renderTrash();
+  showBackupOverlay(false);
+  showFootMsg('Respaldo restaurado - Ctrl + Z para deshacer');
+}
+function cancelBackupImport(){
+  pendingBackupImport=null; pendingBackupImportKind=''; pendingBackupImportName='';
+  let cf=document.getElementById('backupConfirm'); if(cf) cf.style.display='none';
+  let st=document.getElementById('backupStatus'); if(st) st.textContent='Importacion cancelada.';
+  let inp=document.getElementById('backupFileInput'); if(inp) inp.value='';
+}
+
 function showGmailOverlay(show){
-  document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('searchOverlay').style.display='none'; document.getElementById('trashOverlay').style.display='none';
+  document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('searchOverlay').style.display='none'; document.getElementById('trashOverlay').style.display='none'; document.getElementById('backupOverlay').style.display='none';
   let ov=document.getElementById('gmailOverlay'); ov.style.display=show?'block':'none';
   if(show){ let inp=document.getElementById('gmailToInput'); inp.value=safeGet('bs_gmail_to')||''; setTimeout(()=>{inp.focus(); inp.select();},0); }
 }
@@ -946,7 +1312,7 @@ function sendGmail(){
   let inp=document.getElementById('gmailToInput');
   let to=(inp.value||'').trim();
   if(to && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)){ inp.style.borderBottom='1px solid #ff6b6b'; inp.focus(); return; }
-  if(to) localStorage.setItem('bs_gmail_to', to);
+  if(to){ try{ localStorage.setItem('bs_gmail_to', to); }catch(e){} }
   let txt = buildStructuredTxt();
   let subj = 'Brasas - ' + (title || 'export .txt estructurado');
   if(txt.length>1800){
@@ -999,9 +1365,22 @@ function exportToKeep(){
 }
 document.getElementById('gmailBtn').onclick=exportToGmail;
 document.getElementById('keepBtn').onclick=exportToKeep;
+document.getElementById('backupBtn').onclick=()=>{ showBackupOverlay(true); };
+document.getElementById('backupDownloadJsonBtn').onclick=()=>{ downloadJson(); };
+document.getElementById('backupDownloadTxtBtn').onclick=()=>{ downloadTxt(); showFootMsg('TXT descargado: solo lectura'); };
+document.getElementById('backupConfirmReplaceBtn').onclick=()=>{ confirmBackupImport(); };
+document.getElementById('backupConfirmCancelBtn').onclick=()=>{ cancelBackupImport(); };
+document.getElementById('backupFileInput').addEventListener('change',(ev)=>{
+  let f=ev.target.files && ev.target.files[0]; if(!f) return;
+  let rd=new FileReader();
+  rd.onload=()=>{ handleBackupFileContent(String(rd.result||''), f.name); };
+  rd.onerror=()=>{ let st=document.getElementById('backupStatus'); if(st) st.textContent='No se pudo leer el archivo.'; };
+  rd.readAsText(f);
+});
+document.getElementById('backupOverlay').addEventListener('click',(e)=>{ if(e.target.id==='backupOverlay') showBackupOverlay(false); });
 
-(function(){var b=document.getElementById('btnNueva'); if(b) b.onclick=()=>{clearMulti(); insertBlank();}; var e=document.getElementById('btnEntrar'); if(e) e.onclick=()=>{promote();}; var s=document.getElementById('btnSalir'); if(s) s.onclick=()=>{demote();}; var ed=document.getElementById('btnEditar'); if(ed) ed.onclick=()=>{if(selected>=curChildren().length){insertBlank(selected);} else {startEdit();}}; var n=document.getElementById('btnNota'); if(n) n.onclick=()=>{openNote();}; var c=document.getElementById('btnCopiar'); if(c) c.onclick=()=>{copySelected();}; var g=document.getElementById('btnGmail'); if(g) g.onclick=()=>{exportToGmail();}; var md=document.getElementById('btnDictar'); if(md) md.onclick=()=>{toggleDictation();}; var fp=document.getElementById('btnFontPlus'); if(fp) fp.onclick=()=>{changeFont(0.15);}; var fm=document.getElementById('btnFontMinus'); if(fm) fm.onclick=()=>{changeFont(-0.15);}; var kp=document.getElementById('btnKeep'); if(kp) kp.onclick=()=>{exportToKeep();}; var pg=document.getElementById('btnPegar'); if(pg) pg.onclick=()=>{pasteFromClipboardButton();}; var ct=document.getElementById('btnCortar'); if(ct) ct.onclick=()=>{cutSelected();};})();
-document.getElementById('themeBtn').onclick=()=>{theme=theme==='dark'?'light':'dark'; document.body.dataset.theme=theme; localStorage.setItem('bs_theme',theme);};
+(function(){var b=document.getElementById('btnNueva'); if(b) b.onclick=()=>{clearMulti(); insertBlank();}; var e=document.getElementById('btnEntrar'); if(e) e.onclick=()=>{promote();}; var s=document.getElementById('btnSalir'); if(s) s.onclick=()=>{demote();}; var ed=document.getElementById('btnEditar'); if(ed) ed.onclick=()=>{if(selected>=curChildren().length){insertBlank(selected);} else {startEdit();}}; var n=document.getElementById('btnNota'); if(n) n.onclick=()=>{openNote();}; var c=document.getElementById('btnCopiar'); if(c) c.onclick=()=>{copySelected();}; var g=document.getElementById('btnGmail'); if(g) g.onclick=()=>{exportToGmail();}; var md=document.getElementById('btnDictar'); if(md) md.onclick=()=>{toggleDictation();}; var fp=document.getElementById('btnFontPlus'); if(fp) fp.onclick=()=>{changeFont(0.15);}; var fm=document.getElementById('btnFontMinus'); if(fm) fm.onclick=()=>{changeFont(-0.15);}; var kp=document.getElementById('btnKeep'); if(kp) kp.onclick=()=>{exportToKeep();}; var pg=document.getElementById('btnPegar'); if(pg) pg.onclick=()=>{pasteFromClipboardButton();}; var ct=document.getElementById('btnCortar'); if(ct) ct.onclick=()=>{cutSelected();}; var rb=document.getElementById('btnRespaldo'); if(rb) rb.onclick=()=>{showBackupOverlay(true);};})();
+document.getElementById('themeBtn').onclick=()=>{theme=theme==='dark'?'light':'dark'; document.body.dataset.theme=theme; try{ localStorage.setItem('bs_theme',theme); }catch(e){} };
 document.addEventListener('keydown',(e)=>{
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='b'){
    e.preventDefault(); e.stopPropagation();
@@ -1013,14 +1392,17 @@ document.addEventListener('keydown',(e)=>{
    else if(editing!==null || editingIsHeading){ finishEdit(true); }
    showAerial(true); return;
  }
- if(e.key==='F1'){e.preventDefault(); e.stopPropagation(); let h=document.getElementById('helpOverlay'); if(h.style.display==='block'){showHelp(false);} else {showAerial(false); closeSearch(); showTrash(false); showGmailOverlay(false); showHelp(true);} return;}
+ if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='e'){ e.preventDefault(); e.stopPropagation(); if(document.getElementById('backupOverlay').style.display==='block'){ showBackupOverlay(false); return; } if(dictListening){ try{ stopDictation(); }catch(err){} } if(editingNoteIdx!==null){ closeNote(true); } else if(editing!==null || editingIsHeading){ finishEdit(true); } showBackupOverlay(true); return; }
+ if(e.key==='F1'){e.preventDefault(); e.stopPropagation(); let h=document.getElementById('helpOverlay'); if(h.style.display==='block'){showHelp(false);} else {showAerial(false); closeSearch(); showTrash(false); showGmailOverlay(false); showBackupOverlay(false); showHelp(true);} return;}
  if(soundOn && ((e.key.length===1 && !e.ctrlKey && !e.metaKey && !e.altKey) || e.key==='Enter' || e.key==='Backspace' || e.key==='Delete')){ playTypeSound(); }
  let helpOpen=document.getElementById('helpOverlay').style.display==='block';
  let aerialOpen=document.getElementById('aerialOverlay').style.display==='block';
  let searchOpen=document.getElementById('searchOverlay').style.display==='block';
  let trashOpen=document.getElementById('trashOverlay').style.display==='block';
  let gmailOpen=document.getElementById('gmailOverlay').style.display==='block';
- if(helpOpen||aerialOpen||searchOpen||trashOpen||gmailOpen){if(e.key==='Escape'){showHelp(false); showAerial(false); closeSearch(); showTrash(false); showGmailOverlay(false);} return;}
+ let backupOpen=document.getElementById('backupOverlay').style.display==='block';
+ if(helpOpen||aerialOpen||searchOpen||trashOpen||gmailOpen||backupOpen){if(e.key==='Escape'){showHelp(false); showAerial(false); closeSearch(); showTrash(false); showGmailOverlay(false); showBackupOverlay(false);} return;}
+ if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='e'){ e.preventDefault(); if(editingNoteIdx!==null) closeNote(true); else if(editing!==null || editingIsHeading) finishEdit(true); showBackupOverlay(true); return; }
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='n'){ e.preventDefault(); breakNamesakeForSelected(); return; }
  if(e.key==='F8'){ if(!DICTATION_ENABLED) return; e.preventDefault(); toggleDictation(); return;}
  if((e.ctrlKey||e.metaKey) && (e.key==='+'||e.key==='=')){e.preventDefault(); changeFont(0.15); return;}
@@ -1049,7 +1431,7 @@ document.addEventListener('keydown',(e)=>{
      finishEdit(true);
      if(curText.trim()!==''){
        let kk=curChildren(); if(selected+1>=kk.length || kk[selected+1].text.trim()!==''){insertBlank(selected+1);}
-       else {selected=selected+1; editing=selected; editingOrig=''; render();}
+       else {selected=selected+1; startEdit();}
      }
      return;
    }
@@ -1122,7 +1504,7 @@ document.addEventListener('keydown',(e)=>{
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='l'){e.preventDefault(); pushUndo(); let kids=curChildren(); let n={id:uid(),text:'——————————',children:[],note:''}; kids.splice(selected+1,0,n); selected++; save(); render(); return;}
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z' && !e.shiftKey){e.preventDefault(); undo(); return;}
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z' && e.shiftKey){e.preventDefault(); redo(); return;}
- if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){e.preventDefault(); save(); return;}
+ if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){e.preventDefault(); flushSave(); return;}
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='w'){e.preventDefault(); downloadTxt(); return;}
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){e.preventDefault(); openSearch(); return;}
  if(e.key==='F9'){e.preventDefault(); showTrash(true); return;}
