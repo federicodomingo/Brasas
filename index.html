@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Brasas 37</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'none'; base-uri 'none'">
+<title>Brasas</title>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
@@ -128,7 +129,8 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 <div class="heading" id="heading"></div>
 <div class="list" id="list"></div>
 </div>
-<div class="foot"><span>Home entra &nbsp;·&nbsp; End sale</span><span><span id="gmailBtn">Gmail · .txt</span> &nbsp;·&nbsp; <span id="keepBtn">Keep</span> &nbsp;·&nbsp; <span id="backupBtn" style="cursor:pointer;text-decoration:underline">Respaldo · JSON</span> &nbsp;·&nbsp; <span id="trashBtn" style="cursor:pointer;text-decoration:underline">Papelera</span></span><span id="savedTag" aria-live="polite" role="status" title="Comprobando si el guardado quedó persistido…">Comprobando guardado…</span><span id="footRight" aria-live="polite" role="status">F1</span></div>
+<div class="foot"><span>Home entra &nbsp;·&nbsp; End sale</span><span><span id="gmailBtn">Gmail · .txt</span> &nbsp;·&nbsp; <span id="keepBtn">Keep</span> &nbsp;·&nbsp; <span id="backupBtn" style="cursor:pointer;text-decoration:underline">Respaldo · JSON</span> &nbsp;·&nbsp; <span id="trashBtn" style="cursor:pointer;text-decoration:underline">Papelera</span></span><span id="savedTag" aria-live="polite" role="status" title="Comprobando si el guardado quedó persistido…">Comprobando guardado…</span><span id="versionTag"></span><span id="footRight" aria-live="polite" role="status">F1</span></div>
+<details id="smokeTestsDetails" style="display:none;max-width:680px;margin:0 auto;padding:0 22px 20px"><summary style="cursor:pointer;font-size:13px;color:var(--muted)">Pruebas de humo (F10) — clic para ver / ocultar</summary><pre id="smokeTestsOutput" style="white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:13px;line-height:1.6;color:var(--text)"></pre></details>
 <div class="overlay" id="helpOverlay"><div class="in"><h2>Brasas · Teclas</h2><p class="helpSub">Todo con teclado. Sin mouse, sin menús. F1 abre esto.</p><div id="helpText" class="helpGrid"></div><div class="close">Esc para cerrar &nbsp;·&nbsp; o clic afuera</div></div></div>
 <div class="overlay" id="searchOverlay"><div class="in"><h2>Buscar &nbsp;·&nbsp; Ctrl+K / /</h2><input id="searchInput" class="searchInput" placeholder="Buscar en brasas y notas largas..." autocomplete="off" aria-label="Buscar en brasas y notas largas"><div id="searchResults"></div><div class="close">Enter para ir &nbsp;·&nbsp; ↑ ↓ para elegir &nbsp;·&nbsp; Esc para cerrar</div></div></div>
 <div class="overlay" id="trashOverlay"><div class="in"><h2>Papelera &nbsp;·&nbsp; F9</h2><div id="trashList"></div><div class="close">Esc para cerrar</div></div></div>
@@ -151,6 +153,8 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 </div>
 
 <script>
+const VERSION='41'; // UNICA FUENTE de la version de la app. No escribir el numero en ningun otro lado: <title>, versionTag y document.title se derivan de aca. El nombre del archivo (Brasas_40.html) se actualiza a mano al exportar, el codigo no lo puede leer. No confundir con version:1 del JSON de respaldo, que es la version del FORMATO de respaldo, no de la app.
+try{ let _vt=document.getElementById('versionTag'); if(_vt) _vt.textContent='Brasas v'+VERSION; }catch(_e){}
 let uid=()=>Math.random().toString(36).slice(2,9);
 // --- Dictado: solo online (https y no local) ---
 let bsDictHost = location.hostname||'';
@@ -162,7 +166,7 @@ function updateDictationVisibility(){
   if(!DICTATION_ENABLED){ if(b1) b1.style.display='none'; if(b2) b2.style.display='none'; }
   else { if(b1) b1.style.display=''; if(b2) b2.style.display=''; }
 }
-// Carga segura Brasas 35: si bs_data está corrupto, intenta con el respaldo. Nunca deja la pantalla en blanco.
+// Carga segura: si bs_data está corrupto, intenta con el respaldo. Nunca deja la pantalla en blanco.
 // El respaldo es HISTÓRICO: guarda la última versión confirmada, no la actual (ver saveNow).
 function safeGet(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
 function safeParse(str, fallback){ try{ let v=JSON.parse(str); return (v===null||v===undefined)?fallback:v; }catch(e){ return fallback; } }
@@ -194,6 +198,7 @@ let multiSet=null; let multiAnchor=null;
 let clickEditTimer=null; let lastClickTime=0; let lastClickIdx=-1;
 let dragMouseDown=false; let dragMoved=false; let dragStartY=0; let dragStartIdx=-1; let dragAnchor=-1; let _lastDragHover=-1;
 let pendingCursorPos=null;
+let pendingSelectionEnd=null;
 let soundOn = safeGet('bs_sound')!=='off';
 let audioCtx=null;
 let _typeNoiseBuf=null; function playTypeSound(){ if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); let t0=audioCtx.currentTime; let dur=0.035; if(!_typeNoiseBuf){ _typeNoiseBuf=audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate*dur), audioCtx.sampleRate); let dd=_typeNoiseBuf.getChannelData(0); for(let i=0;i<dd.length;i++){ dd[i]=(Math.random()*2-1)*(1-i/dd.length); } } let buf=_typeNoiseBuf; let d=buf.getChannelData(0); let src=audioCtx.createBufferSource(); src.buffer=buf; let f=audioCtx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1800+Math.random()*1200; f.Q.value=1.2; let g=audioCtx.createGain(); g.gain.setValueAtTime(0.10,t0); g.gain.exponentialRampToValueAtTime(0.001,t0+dur); src.connect(f); f.connect(g); g.connect(audioCtx.destination); src.start(t0); let o=audioCtx.createOscillator(); o.type='triangle'; o.frequency.value=220+Math.random()*60; let g2=audioCtx.createGain(); g2.gain.setValueAtTime(0.018,t0); g2.gain.exponentialRampToValueAtTime(0.001,t0+0.02); o.connect(g2); g2.connect(audioCtx.destination); o.start(t0); o.stop(t0+0.025); }catch(e){} }
@@ -206,6 +211,25 @@ function changeFont(delta){ fontScale=Math.round((fontScale+delta)*100)/100; if(
 function resetFont(){ fontScale=1; applyFontScale(); showFontFeedback(); }
 applyFontScale();
 let dictRec=null, dictListening=false, dictBase='', dictFinal='', dictMode='brasa', dictNode=null, dictPermissionDenied=false;
+let dictRetryCount=0; const dictMaxRetries=3; let dictRetryTimer=null; let dictLastError='';
+function dictClearRetryTimer(){ if(dictRetryTimer){ clearTimeout(dictRetryTimer); dictRetryTimer=null; } }
+function dictResetRetries(){ dictRetryCount=0; dictLastError=''; dictClearRetryTimer(); }
+function dictScheduleRetry(){
+  if(dictRetryTimer) return;
+  if(!dictListening || dictPermissionDenied) return;
+  if(dictRetryCount>dictMaxRetries) return;
+  let delay=Math.max(800, 800*dictRetryCount);
+  dictRetryTimer=setTimeout(()=>{
+    dictRetryTimer=null;
+    if(!dictListening || dictPermissionDenied) return;
+    if(!dictRec) return;
+    try{ dictRec.start(); }catch(e){
+      dictLastError='network'; dictRetryCount++;
+      if(dictRetryCount>dictMaxRetries){ dictListening=false; updateMicUI(); showFootMsg('Dictado interrumpido, toca F8 para reintentar'); return; }
+      dictScheduleRetry();
+    }
+  }, delay);
+}
 function updateMicUI(){
   if(!DICTATION_ENABLED){ updateDictationVisibility(); return; }
   let b1=document.getElementById('micBtn'); let b2=document.getElementById('btnDictar'); let fr=document.getElementById('footRight');
@@ -221,6 +245,7 @@ function updateMicUI(){
 }
 function stopDictation(){
   if(!dictListening) return;
+  dictResetRetries();
   dictListening=false; dictPermissionDenied=false;
   try{ if(dictRec) dictRec.stop(); }catch(e){}
   dictRec=null;
@@ -239,6 +264,7 @@ function startDictation(){
   let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){ showFootMsg('Dictado no soportado en este navegador, probá con Chrome o Edge'); return; }
   dictPermissionDenied=false;
+  dictResetRetries();
   if(editingNoteIdx!==null){
     let node=getNode(editingNotePath).children[editingNoteIdx];
     if(!node) return;
@@ -263,6 +289,7 @@ function startDictation(){
   }
   dictRec=new SR();
   dictRec.lang='es-AR'; dictRec.continuous=true; dictRec.interimResults=true;
+  dictRec.onstart=()=>{ dictLastError=''; };
   dictRec.onresult=(ev)=>{
     let interim='';
     for(let i=ev.resultIndex;i<ev.results.length;i++){
@@ -292,17 +319,21 @@ function startDictation(){
       let ta=document.querySelector('.row textarea');
       if(ta && !ta.dataset.isDot){ ta.value=full; ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px'; try{ ta.setSelectionRange(full.length, full.length); }catch(e){} }
     }
-    if(ev.results[ev.results.length-1] && ev.results[ev.results.length-1].isFinal) save();
+    if(ev.results[ev.results.length-1] && ev.results[ev.results.length-1].isFinal){ dictRetryCount=0; dictLastError=''; save(); }
   };
   dictRec.onend=()=>{
-    if(dictListening && !dictPermissionDenied){
-      setTimeout(()=>{ if(dictListening && !dictPermissionDenied && dictRec){ try{ dictRec.start(); }catch(e){} } },800);
-    } else {
-      updateMicUI();
+    if(!dictListening || dictPermissionDenied){ updateMicUI(); return; }
+    if(dictLastError==='network' || dictLastError==='aborted'){
+      // El reintento ya lo programo onerror. Solo programarlo aca si por algun motivo no hay timer.
+      if(!dictRetryTimer && dictRetryCount<=dictMaxRetries) dictScheduleRetry();
+      return;
     }
+    // Cierre normal (silencio): reinicio sin limite, como antes.
+    setTimeout(()=>{ if(dictListening && !dictPermissionDenied && dictRec){ try{ dictRec.start(); }catch(e){} } },800);
   };
   dictRec.onerror=(ev)=>{
     if(ev.error==='not-allowed'||ev.error==='service-not-allowed'||ev.error==='audio-capture'){
+      dictClearRetryTimer();
       dictPermissionDenied=true; dictListening=false;
       let rec=dictRec; dictRec=null; try{ if(rec) rec.stop(); }catch(e){}
       updateMicUI();
@@ -311,14 +342,30 @@ function startDictation(){
       } else {
         showFootMsg('Micrófono no permitido, en https queda permitido una sola vez');
       }
+    } else if(ev.error==='network' || ev.error==='aborted'){
+      // aborted con dictListening=false es parada manual (stopDictation llamo a rec.stop()), no es error.
+      if(ev.error==='aborted' && !dictListening) return;
+      dictLastError=ev.error;
+      dictRetryCount++;
+      if(dictRetryCount>dictMaxRetries){
+        dictListening=false;
+        let rec=dictRec; dictRec=null; try{ if(rec) rec.stop(); }catch(e){}
+        dictClearRetryTimer();
+        updateMicUI();
+        showFootMsg(ev.error==='network' ? 'Sin conexión para dictar, se paró después de 3 reintentos — tocá F8 para reintentar' : 'Dictado interrumpido, se paró después de 3 reintentos — tocá F8 para reintentar');
+        return;
+      }
+      showFootMsg(ev.error==='network' ? 'Se cortó la conexión, reintentando dictado ('+dictRetryCount+'/'+dictMaxRetries+')…' : 'Dictado interrumpido, reintentando ('+dictRetryCount+'/'+dictMaxRetries+')…');
+      dictScheduleRetry();
     }
+    // Cualquier otro error: se ignora como antes, onend hace el reinicio normal.
   };
   dictListening=true; updateMicUI();
   try{ dictRec.start(); }catch(e){ dictListening=false; updateMicUI(); }
 }
 function toggleDictation(){ if(!DICTATION_ENABLED) return; if(dictListening) stopDictation(); else startDictation(); }
 function clearMulti(){multiSet=null; multiAnchor=null;}
-// ===== BRASAS 35: SIN MAGIC PASTE NI LANZAR + SELECCION PERSISTE + ENTER EN BUSCAR/GMAIL NO CREA BRASA =====
+// ===== BRASAS 41: PARCHE URGENTE — flatten/findPath con guarda anticiclo, paste sin robar inputs/overlays, Ctrl+W/Ctrl+N reemplazados, undo incluye papelera+marca, F10 no rompe redo =====
 function showFootMsg(msg){let fr=document.getElementById('footRight'); if(!fr) return; fr.textContent=msg; clearTimeout(showFootMsg._t); showFootMsg._t=setTimeout(()=>{ try{ fr.textContent = path.length? 'Nivel '+path.length : 'F1'; }catch(e){} },3000);}
 function namesakeKey(txt){ if(!txt) return ''; let s=String(txt).trim(); if(!s) return ''; if(/^[-•*—–+·\s]+$/.test(s)) return ''; if(s.length<2) return ''; return s; }
 function getNamesakeGroups(){ let map=new Map(); let all=[]; try{ all=flatten(data); }catch(e){ return new Map(); } all.forEach(({node})=>{ if(!node || node.namesakeOff) return; let k=namesakeKey(node.text); if(!k) return; if(!map.has(k)) map.set(k,[]); map.get(k).push(node); }); let out=new Map(); map.forEach((arr,k)=>{ if(arr.length>1) out.set(k,arr); }); return out; }
@@ -360,7 +407,7 @@ function breakNamesakeForSelected(){
   if(grp && grp.includes(node)){
     node.namesakeOff=true;
     node.children=cloneChildrenDeep(node.children);
-    save(); render(); showFootMsg('Enlace roto ≫ Ctrl+N para volver a enlazar');
+    save(); render(); showFootMsg('Enlace roto ≫ Alt+N para volver a enlazar');
   } else if(node.namesakeOff){
     delete node.namesakeOff;
     linkNamesakes(); save(); render(); showFootMsg('Namesake reactivado ≫');
@@ -368,12 +415,12 @@ function breakNamesakeForSelected(){
     showFootMsg('No es namesake, aparece una sola vez');
   }
 }
-// Guardado Brasas 35 — estados honestos y respaldo histórico.
+// Guardado — estados honestos y respaldo histórico.
 // Principio: nunca mostrar "Guardado ✓" sin haber verificado la persistencia por relectura.
 // - Guardando: hay un guardado en curso / pendiente.
 // - Guardado correctamente: bs_data + título + papelera escritos SIN error y verificados por relectura.
 // - Error de almacenamiento: falló la escritura o la verificación. Los datos siguen en memoria, reintentá.
-// - Necesita exportar una copia de seguridad: el error persiste (2 fallos seguidos) o el almacenamiento no está disponible. Exportá con Ctrl+W / Gmail / Keep antes de cerrar.
+// - Necesita exportar una copia de seguridad: el error persiste (2 fallos seguidos) o el almacenamiento no está disponible. Exportá con Ctrl+Shift+E / Gmail / Keep antes de cerrar.
 // Respaldo: bs_data_backup NUNCA recibe la versión actual. Antes de sobrescribir bs_data, promueve a respaldo la última versión confirmada (_lastSavedDataStr). Si la versión nueva se corrompe, queda la anterior.
 let _saveTimer=null; let _lastPathSaved=''; let _lastSelectedSaved='';
 let _saveStatus='idle'; // idle | saving | saved | error | needs-export
@@ -386,7 +433,7 @@ function setSaveStatus(status, detail){
   if(status==='saving'){ el.classList.add('save-saving'); el.textContent='Guardando…'; el.title='Guardando los cambios…'; }
   else if(status==='saved'){ el.classList.add('save-ok'); el.textContent='Guardado ✓ '+hh+':'+mm; el.title='Guardado y verificado en este navegador a las '+hh+':'+mm; }
   else if(status==='error'){ el.classList.add('save-error'); el.textContent='Error de almacenamiento — clic para reintentar'; el.title='No se pudo confirmar el guardado. Tus cambios siguen en memoria. Clic para reintentar. '+((detail||_lastSaveError)||''); }
-  else if(status==='needs-export'){ el.classList.add('save-needs-export'); el.textContent='Necesita exportar una copia de seguridad — clic para exportar'; el.title='El almacenamiento sigue fallando. Exportá una copia con Ctrl+W / Gmail / Keep antes de cerrar esta pestaña. '+((detail||_lastSaveError)||''); }
+  else if(status==='needs-export'){ el.classList.add('save-needs-export'); el.textContent='Necesita exportar una copia de seguridad — clic para exportar'; el.title='El almacenamiento sigue fallando. Exportá una copia con Ctrl+Shift+E / Gmail / Keep antes de cerrar esta pestaña. '+((detail||_lastSaveError)||''); }
   else { el.textContent='Comprobando guardado…'; el.title='Comprobando si el guardado quedó persistido…'; }
 }
 function _trySet(key, value){ try{ localStorage.setItem(key, value); return true; }catch(e){ return e; } }
@@ -459,15 +506,16 @@ document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState=
     try{ if(localStorage.getItem('bs_data')===_lastSavedDataStr){ setSaveStatus('saved'); } else { setSaveStatus('error','La relectura inicial no coincidió.'); } }catch(e){ setSaveStatus('needs-export','No se pudo leer el almacenamiento.'); }
   }
 })();
-function pushUndo(){undoStack.push(JSON.stringify({title,data,path,selected})); if(undoStack.length>80) undoStack.shift(); redoStack=[];}
+function _snapshotState(){ try{ return JSON.stringify({title,data,path,selected,trash,markedId}); }catch(e){ try{ let seen=new Set(); let cleanData=(data||[]).map(n=>sanitizeBackupNode(n,seen,0)); let cleanTrash=(trash||[]).map(it=>{ if(!it||!it.node) return null; let nn=sanitizeBackupNode(it.node,seen,0); if(!nn) return null; return {node:nn, deletedAt:it.deletedAt, fromPath:it.fromPath, fromIndex:it.fromIndex}; }).filter(Boolean); return JSON.stringify({title,data:cleanData,path,selected,trash:cleanTrash,markedId}); }catch(e2){ return null; } } }
+function pushUndo(){let s=_snapshotState(); if(!s) return; undoStack.push(s); if(undoStack.length>80) undoStack.shift(); redoStack=[];}
 function getNode(p){let cur={children:data}; for(let id of p){cur=cur.children.find(n=>n.id===id); if(!cur) return {children:data};} return cur;}
 function curChildren(){return getNode(path).children;}
 function headingNode(){if(path.length===0) return null; let cur={children:data}; for(let id of path){cur=cur.children.find(n=>n.id===id);} return cur;}
 function getHeadingText(){ if(path.length===0) return title; let hn=headingNode(); return hn?hn.text:''; }
 function setHeadingText(v){ if(path.length===0){ title=v; } else { let hn=headingNode(); if(hn) hn.text=v; } }
 function startHeadingEdit(){ if(editingIsHeading) return; pushUndo(); if(editing!==null) finishEdit(true); if(editingNoteIdx!==null) closeNote(true); editingIsHeading=true; editing=null; editingOrig=getHeadingText(); render(); }
-function flatten(arr,depth=0){let out=[]; let stack=[]; for(let i=(arr||[]).length-1;i>=0;i--) stack.push({n:arr[i],d:depth}); while(stack.length){ let cur=stack.pop(); out.push({node:cur.n,depth:cur.d}); let ch=cur.n.children||[]; for(let i=ch.length-1;i>=0;i--) stack.push({n:ch[i],d:cur.d+1}); } return out;}
-function findPath(arr,target,acc=[]){for(let n of arr){if(n.id===target) return [...acc,n.id]; let s=findPath(n.children,target,[...acc,n.id]); if(s) return s;} return null;}
+function flatten(arr,depth=0){let out=[]; let stack=[]; for(let i=(arr||[]).length-1;i>=0;i--) stack.push({n:arr[i],d:depth,anc:new Set()}); while(stack.length){ let cur=stack.pop(); if(!cur.n||typeof cur.n!=='object') continue; if(cur.d>60) continue; let id=cur.n.id; if(id && cur.anc.has(id)) continue; out.push({node:cur.n,depth:cur.d}); let ch=cur.n.children||[]; let anc2=new Set(cur.anc); if(id) anc2.add(id); for(let i=ch.length-1;i>=0;i--) stack.push({n:ch[i],d:cur.d+1,anc:anc2}); } return out;}
+function findPath(arr,target,acc=[],_anc){let anc=_anc||new Set(); if((acc||[]).length>60) return null; for(let n of (arr||[])){if(!n) continue; if(n.id===target) return [...acc,n.id]; if(n.id && anc.has(n.id)) continue; let anc2=new Set(anc); if(n.id) anc2.add(n.id); let s=findPath(n.children,target,[...acc,n.id],anc2); if(s) return s;} return null;}
 function escapeHtmlNote(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function renderNoteHtml(txt){
   let esc=escapeHtmlNote(txt||'');
@@ -497,9 +545,10 @@ function renderBrasaHtml(txt){
     return '<a href="'+url+'" target="_blank" rel="noopener">'+url+'</a>'+trailing;
   });
 }
+function closeAllOverlays(exceptId){ ['helpOverlay','searchOverlay','trashOverlay','gmailOverlay','backupOverlay','aerialOverlay'].forEach(function(id){ if(id!==exceptId){ let el=document.getElementById(id); if(el) el.style.display='none'; } }); }
 let searchSel=0; let searchRes=[];
 function openSearch(){
-  document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('trashOverlay').style.display='none'; document.getElementById('backupOverlay').style.display='none';
+  closeAllOverlays('searchOverlay');
   let ov=document.getElementById('searchOverlay'); ov.style.display='block';
   let inp=document.getElementById('searchInput'); inp.value=''; searchSel=0; searchRes=[];
   renderSearchResults('');
@@ -567,7 +616,7 @@ function goToSearchResult(i){
   editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); closeSearch(); save(); render();
 }
 function showTrash(show){
-  document.getElementById('searchOverlay').style.display='none'; document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('backupOverlay').style.display='none';
+  if(show) closeAllOverlays('trashOverlay');
   let ov=document.getElementById('trashOverlay'); ov.style.display=show?'block':'none';
   if(show) renderTrash();
 }
@@ -586,7 +635,7 @@ function renderTrash(){
   });
   let vac=document.createElement('div'); vac.style.marginTop='16px';
   let vb=document.createElement('button'); vb.textContent='Vaciar papelera'; vb.className='danger'; vb.style.cssText='background:none;border:1px solid #ff6b6b;color:#ff6b6b;border-radius:999px;padding:6px 12px;cursor:pointer;font-size:12px';
-  vb.onclick=()=>{ if(confirm('¿Vaciar toda la papelera?')){ trash=[]; save(); renderTrash(); render(); } };
+  vb.onclick=()=>{ if(confirm('¿Vaciar toda la papelera?')){ pushUndo(); trash=[]; save(); renderTrash(); render(); } };
   vac.appendChild(vb); box.appendChild(vac);
 }
 function restoreTrash(idx){
@@ -649,14 +698,14 @@ function restoreTrash(idx){
     showFootMsg('Restaurado en su ubicación original');
   }
 }
-function deleteTrashForever(idx){ trash.splice(idx,1); save(); renderTrash(); render(); }
+function deleteTrashForever(idx){ if(!trash[idx]) return; pushUndo(); trash.splice(idx,1); save(); renderTrash(); render(); }
 function render(){
  let _nsGroups=getNamesakeGroups();
  let h=document.getElementById('heading'); h.innerHTML='';
  let hn=headingNode();
  let ic=document.createElement('span'); ic.className='ic'; ic.textContent=hn ? (hn.children.length?'═':'—') : '■';
  h.appendChild(ic);
- try{ document.title = title ? 'Brasas - '+title : 'Brasas'; }catch(e){}
+ try{ document.title = title ? 'Brasas '+VERSION+' - '+title : 'Brasas '+VERSION; }catch(e){}
  if(editingIsHeading){
    let ta=document.createElement('textarea'); ta.value=getHeadingText(); ta.rows=1; ta.placeholder = path.length===0 ? 'Título principal' : 'Título de este nivel';
    ta.oninput=()=>{ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px'; setHeadingText(ta.value); save();};
@@ -668,7 +717,7 @@ function render(){
    if(path.length===0 && !headingText){ t.textContent='Título principal — hacé clic para editar'; t.className='headingPlaceholder'; }
    else { t.textContent = headingText||' '; }
    h.appendChild(t);
-   try{ let _hn2=headingNode(); if(_hn2 && !_hn2.namesakeOff){ let _k2=namesakeKey(_hn2.text); let _g2=_k2?_nsGroups.get(_k2):null; if(_g2 && _g2.length>1){ let _nm=document.createElement('span'); _nm.className='namesakeMark'; _nm.textContent='  ≫×'+_g2.length; _nm.title='Namesake: este título aparece en '+_g2.length+' lugares con los mismos hijos. Ctrl+N para romper el enlace.'; t.appendChild(_nm); } } }catch(e){}
+   try{ let _hn2=headingNode(); if(_hn2 && !_hn2.namesakeOff){ let _k2=namesakeKey(_hn2.text); let _g2=_k2?_nsGroups.get(_k2):null; if(_g2 && _g2.length>1){ let _nm=document.createElement('span'); _nm.className='namesakeMark'; _nm.textContent='  ≫×'+_g2.length; _nm.title='Namesake: este título aparece en '+_g2.length+' lugares con los mismos hijos. Alt+N para romper el enlace.'; t.appendChild(_nm); } } }catch(e){}
    let btn=document.createElement('span'); btn.className='headingEditBtn'; btn.textContent='✎'; btn.title = path.length===0 ? 'Editar título principal' : 'Editar título de este nivel';
    btn.onclick=(ev)=>{ ev.stopPropagation(); pendingCursorPos=null; startHeadingEdit(); };
    h.appendChild(btn);
@@ -790,7 +839,7 @@ function render(){
      else { txt.textContent=node.text||''; }
      if(!isDot && node.note && node.note.trim()){let nm=document.createElement('span'); nm.className='noteDot'; nm.title='Tiene texto largo (F4)'; txt.appendChild(nm);}
      if(!isDot && node.id===markedId){let m=document.createElement('span'); m.className='mark'; m.textContent='  @'; txt.appendChild(m);}
-     if(!isDot && !node.namesakeOff){ let _k=namesakeKey(node.text); let _g=_k?_nsGroups.get(_k):null; if(_g && _g.length>1){ let _nm=document.createElement('span'); _nm.className='namesakeMark'; _nm.textContent='  ≫×'+_g.length; _nm.title='Namesake: aparece en '+_g.length+' lugares con los mismos hijos. Ctrl+N para romper el enlace. ← → para saltar.'; txt.appendChild(_nm); } }
+     if(!isDot && !node.namesakeOff){ let _k=namesakeKey(node.text); let _g=_k?_nsGroups.get(_k):null; if(_g && _g.length>1){ let _nm=document.createElement('span'); _nm.className='namesakeMark'; _nm.textContent='  ≫×'+_g.length; _nm.title='Namesake: aparece en '+_g.length+' lugares con los mismos hijos. Alt+N para romper el enlace. ← → para saltar.'; txt.appendChild(_nm); } }
      row.appendChild(txt);
    }
    list.appendChild(row);
@@ -934,9 +983,9 @@ function moveEntry(dir){let kids=curChildren(); if(selected<0 || selected>=kids.
 function toggleMark(){let kids=curChildren(); if(selected<0 || selected>=kids.length) return; markedId = (markedId===kids[selected].id)?null:kids[selected].id; save(); render();}
 function jumpToMark(){if(!markedId) return; let p=findPath(data,markedId,[]); if(!p) return; let curId=curChildren()[selected]?.id; path=p.slice(0,-1); let k=curChildren(); selected=k.findIndex(n=>n.id===markedId); if(curId) markedId=curId; editing=null; editingIsHeading=false; save(); render();}
 function namesake(dir){let kids=curChildren(); if(selected<0 || selected>=kids.length) return; let txt=kids[selected].text; if(!txt) return; let all=flatten(data); let matches=all.filter(x=>x.node.text===txt); if(matches.length<=1) return; let curId=kids[selected].id; let ci=matches.findIndex(m=>m.node.id===curId); let nxt=matches[(ci+dir+matches.length)%matches.length]; let p=findPath(data,nxt.node.id,[]); path=p.slice(0,-1); let k=curChildren(); selected=k.findIndex(n=>n.id===nxt.node.id); editing=null; save(); render();}
-function changeCase(){let ta=document.querySelector('textarea'); if(!ta) return; let s=ta.selectionStart, e=ta.selectionEnd; let val=ta.value; let sel=val.slice(s,e)||val; let ns = sel===sel.toLowerCase()? sel.toUpperCase() : sel===sel.toUpperCase()? sel.charAt(0).toUpperCase()+sel.slice(1).toLowerCase() : sel.toLowerCase(); if(s!==e){ta.value=val.slice(0,s)+ns+val.slice(e);} else {ta.value=ns;} if(editingIsHeading){setHeadingText(ta.value);} else {let kids=curChildren(); if(kids[editing]) kids[editing].text=ta.value;} save(); render();}
-function undo(){if(!undoStack.length) return; redoStack.push(JSON.stringify({title,data,path,selected})); let p=JSON.parse(undoStack.pop()); title=p.title; data=p.data; path=p.path; selected=p.selected; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
-function redo(){if(!redoStack.length) return; undoStack.push(JSON.stringify({title,data,path,selected})); let p=JSON.parse(redoStack.pop()); title=p.title; data=p.data; path=p.path; selected=p.selected; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
+function changeCase(){let ta=document.querySelector('textarea'); if(!ta) return; let s=ta.selectionStart, e=ta.selectionEnd; let val=ta.value; let sel=val.slice(s,e)||val; let ns = sel===sel.toLowerCase()? sel.toUpperCase() : sel===sel.toUpperCase()? sel.charAt(0).toUpperCase()+sel.slice(1).toLowerCase() : sel.toLowerCase(); let newVal, newS, newE; if(s!==e){ newVal=val.slice(0,s)+ns+val.slice(e); newS=s; newE=s+ns.length; } else { newVal=ns; newS=s; newE=s; } pushUndo(); if(editingIsHeading){setHeadingText(newVal);} else {let kids=curChildren(); if(kids[editing]) kids[editing].text=newVal;} pendingCursorPos=newS; pendingSelectionEnd=newE; save(); render(); setTimeout(()=>{ let nta=document.querySelector('textarea'); if(nta){ try{ nta.focus(); nta.setSelectionRange(newS,newE); }catch(_e){} } pendingSelectionEnd=null; },0);}
+function undo(){if(!undoStack.length) return; let cur=_snapshotState(); if(cur) redoStack.push(cur); let p; try{ p=JSON.parse(undoStack.pop()); }catch(e){ return; } if(!p) return; title=p.title; data=p.data; path=p.path; selected=p.selected; if(Array.isArray(p.trash)) trash=p.trash; if('markedId' in p) markedId=p.markedId; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
+function redo(){if(!redoStack.length) return; let cur=_snapshotState(); if(cur) undoStack.push(cur); let p; try{ p=JSON.parse(redoStack.pop()); }catch(e){ return; } if(!p) return; title=p.title; data=p.data; path=p.path; selected=p.selected; if(Array.isArray(p.trash)) trash=p.trash; if('markedId' in p) markedId=p.markedId; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
 
 function parsePasted(text){
   // TXT v2 + compatibilidad:
@@ -1054,29 +1103,113 @@ async function pasteFromClipboardButton(){
     showFootMsg('No pude leer el portapapeles, copiá y pegá con Ctrl + V');
   }
 }
+// ===== BRASAS 40: PRUEBAS DE HUMO (F10) =====
+// Solo corren con tecla explicita, nunca al abrir. Operan sobre un fixture
+// aislado y restauran el documento real tal cual estaba, incluso si un test
+// tira una excepcion. El fixture empuja un undo: se recorta al final para
+// que el test no contamine Ctrl+Z. No afirman ids (uid() es aleatorio),
+// solo texto, profundidad, notas y posiciones.
+function runSmokeTests(){
+  let results=[]; let pass=0;
+  function check(name, cond, detail){
+    results.push((cond?'✓ ':'✗ ')+name+(cond?'':(detail?' — '+detail:'')));
+    if(cond) pass++;
+  }
+  // Si estabas editando algo, guardarlo primero para que el fixture no lo pise.
+  try{
+    if(editingNoteIdx!==null) closeNote(true);
+    else if(editing!==null || editingIsHeading) finishEdit(true);
+  }catch(e){}
+  let snap={ data:data, trash:trash, path:[...path], selected:selected, title:title, markedId:markedId, undoLen:undoStack.length, redoLen:redoStack.length, undoStack:[...undoStack], redoStack:[...redoStack] };
+  try{
+    let items=parsePasted('- A\n  - B\n    > nota de B\n- C');
+    check('parsePasted: 4 items (A, B, nota, C)', items.length===4, 'largo='+items.length);
+    check('parsePasted: A depth 0', !!(items[0] && items[0].depth===0 && items[0].node && items[0].node.text==='A'));
+    check('parsePasted: B depth 1', !!(items[1] && items[1].depth===1 && items[1].node && items[1].node.text==='B'));
+    check('parsePasted: nota es isNote con depth 2 (mas honda que B)', !!(items[2] && items[2].isNote===true && items[2].depth===2 && items[2].text==='nota de B'), JSON.stringify(items[2]));
+    let roots=buildTreeFromItems(parsePasted('- A\n  - B\n    > nota de B\n- C'));
+    check('buildTree: 2 raices (A, C)', roots.length===2, 'raices='+roots.length);
+    check('buildTree: B es hija de A', !!(roots[0] && roots[0].children.length===1 && roots[0].children[0].text==='B'));
+    check('buildTree: nota de B quedo en B.note', !!(roots[0] && roots[0].children[0].note==='nota de B'), 'note='+JSON.stringify(roots[0] && roots[0].children[0].note));
+    check('buildTree: C sin hijos ni nota', !!(roots[1] && roots[1].text==='C' && roots[1].children.length===0 && !roots[1].note));
+    let items2=parsePasted('# Mi titulo\n1. Primero\n2. Segundo');
+    check('parsePasted: # titulo ignorado + numeracion limpia', !!(items2.length===2 && items2[0].node.text==='Primero' && items2[1].node.text==='Segundo'), 'largo='+items2.length);
+    let roots2=buildTreeFromItems(parsePasted('> nota suelta\n- A'));
+    check('buildTree: nota huerfana se vuelve brasa', !!(roots2.length===2 && roots2[0].text==='nota suelta'), 'raices='+roots2.map(function(r){return r.text;}).join(','));
+    let fixtureParent={id:'fx-parent', text:'Padre', children:[{id:'fx-keep', text:'Queda', children:[], note:''}], note:''};
+    let fixtureNode={id:'fx-restored', text:'Restaurada', children:[], note:''};
+    data=[fixtureParent];
+    trash=[{node:fixtureNode, deletedAt:Date.now(), fromPath:['fx-parent'], fromIndex:1}];
+    path=[]; selected=0;
+    restoreTrash(0);
+    check('restoreTrash: saca el item de papelera', trash.length===0);
+    check('restoreTrash: inserta en fromIndex 1 del padre', !!(fixtureParent.children.length===2 && fixtureParent.children[1].id==='fx-restored'), 'hijos='+fixtureParent.children.map(function(c){return c.id;}).join(','));
+    check('restoreTrash: path apunta al padre original', path.length===1 && path[0]==='fx-parent');
+    let orphan={id:'fx-orphan', text:'Huerfana', children:[], note:''};
+    data=[{id:'fx-other', text:'Otra', children:[], note:''}];
+    trash=[{node:orphan, deletedAt:Date.now(), fromPath:['fx-missing','fx-child'], fromIndex:0}];
+    path=[]; selected=0;
+    restoreTrash(0);
+    check('restoreTrash: ancestro faltante restaura en raiz respetando fromIndex 0', !!(data.length===2 && data[0].id==='fx-orphan'), 'data='+data.map(function(n){return n.id;}).join(','));
+    check('restoreTrash: papelera queda vacia', trash.length===0);
+    let cycA={id:'fx-cyc-a', text:'CycA', children:[], note:''}; let cycB={id:'fx-cyc-b', text:'CycB', children:[], note:''}; cycA.children=[cycB]; cycB.children=[cycA];
+    let flatCyc=flatten([cycA]);
+    check('flatten: ciclo A-B-A se corta por ancestro, no cuelga', flatCyc.length===2, 'largo='+flatCyc.length);
+    check('findPath: ciclo no cuelga', findPath([cycA],'fx-cyc-b',[])!==null);
+    let undoTrashNode={id:'fx-trash', text:'En papelera', children:[], note:''};
+    data=[{id:'fx-u', text:'U', children:[], note:''}];
+    trash=[{node:undoTrashNode, deletedAt:Date.now(), fromPath:[], fromIndex:0}];
+    markedId='fx-u';
+    pushUndo();
+    deleteTrashForever(0);
+    check('undo: borrar para siempre quita de papelera', trash.length===0);
+    undo();
+    check('undo: restaura papelera', !!(trash.length===1 && trash[0].node && trash[0].node.id==='fx-trash'), 'papelera='+trash.length);
+    check('undo: restaura marca', markedId==='fx-u', 'markedId='+String(markedId));
+    let backupObj=buildBackupObject();
+    let reparsed=parseBackupJson(JSON.stringify(backupObj));
+    check('respaldo: round-trip ok', reparsed.ok===true);
+    check('respaldo: round-trip conserva la brasa restaurada', !!(reparsed.ok && JSON.stringify(reparsed.data).indexOf('Huerfana')!==-1));
+  }catch(err){
+    results.push('✗ ERROR no esperado: '+((err && err.message) ? err.message : err));
+  }finally{
+    data=snap.data; trash=snap.trash; path=snap.path; selected=snap.selected; title=snap.title; markedId=snap.markedId;
+    try{ undoStack.length=0; snap.undoStack.forEach(s=>undoStack.push(s)); redoStack.length=0; snap.redoStack.forEach(s=>redoStack.push(s)); }catch(e){}
+    try{ save(); renderTrash(); render(); }catch(e){}
+  }
+  check('tests: documento real intacto (misma referencia)', data===snap.data && trash===snap.trash);
+  let total=results.length;
+  let summary='Pruebas de humo: '+pass+'/'+total+' ✓';
+  let out=summary+'\n'+results.join('\n');
+  try{ console.log('[Brasas] '+out); }catch(e){}
+  try{
+    let det=document.getElementById('smokeTestsDetails');
+    let pre=document.getElementById('smokeTestsOutput');
+    if(pre) pre.textContent=out;
+    if(det){ det.style.display='block'; det.open=true; }
+  }catch(e){}
+  showFootMsg(summary+' — F10 para ver detalle');
+  return {pass:pass, total:total, results:results};
+}
 function showHelp(show){
-document.getElementById('helpOverlay').style.display=show?'block':'none'; if(show){ document.getElementById('backupOverlay').style.display='none'; } if(show){let groups=[
+if(show) closeAllOverlays('helpOverlay'); document.getElementById('helpOverlay').style.display=show?'block':'none'; if(show){let groups=[
  ['Moverse', [['Home','entra'],['End','sale'],['Ctrl + Home','al título'],['↑ ↓','moverse'],['Shift + ↑ ↓','elegir varias'],['Alt + ↑ ↓','mover la brasa'],['← →','misma palabra en otro lugar'],['Espacio','entra']]],
  ['Escribir', [['Clic en el título grande','editar título principal'],['Enter','nueva brasa abajo'],['Shift + Enter','párrafo adentro'],['Ctrl + Enter','dividir la brasa'],['F2','editar'],['Backspace al inicio','juntar con la anterior'],['Del al final','juntar con la siguiente'],['Esc','deseleccionar TODO / salir'],['Shift + Esc','terminar y quedarse']]],
  ['Ver y leer', [['F4','texto largo'],...(DICTATION_ENABLED ? [['F8','dictar por voz']] : []),['Ctrl + B','ver todo, con notas adentro'],['Ctrl + K  /  /','buscar'],['Ctrl + / Ctrl -','agrandar / achicar letra'],['Ctrl + 0','letra normal'],['🔊 arriba','sonido de tecla on / off']]],
- ['Marcar y corregir', [['Ctrl + M  /  @','marcar'],['Ctrl + J','saltar a la marca'],['Ctrl + N','romper / reactivar namesake ≫'],['Ctrl + Z','deshacer'],['Ctrl + L','separador'],['Del','borrar']]],
- ['Namesakes ≫', [['Mismo texto 2 veces','se enlaza solo, mismos hijos'],['≫×2 en la brasa','indica que es namesake'],['Editar hijos en una','se ve en todas'],['Ctrl + N','romper el enlace (copia hijos)'],['← →','saltar entre namesakes']]],
+ ['Marcar y corregir', [['Ctrl + M  /  @','marcar'],['Ctrl + J','saltar a la marca'],['Alt + N','romper / reactivar namesake ≫'],['Ctrl + Z','deshacer'],['Ctrl + L','separador'],['Del','borrar']]],
+ ['Namesakes ≫', [['Mismo texto 2 veces','se enlaza solo, mismos hijos'],['≫×2 en la brasa','indica que es namesake'],['Editar hijos en una','se ve en todas'],['Alt + N','romper el enlace (copia hijos)'],['← →','saltar entre namesakes']]],
  ['Copiar y compartir', [['Ctrl + C','copiar las elegidas'],['Ctrl + X','cortar las elegidas'],['Ctrl + V','pegar varias o lista'],['Ctrl + G','Gmail · .txt'],['Keep','mandar a Google Keep'],['F9','papelera']]],
- ['Respaldo', [['Ctrl + E','abrir Respaldo · JSON / TXT'],['JSON','respaldo completo: restaura todo'],['TXT','solo lectura: titulo, estructura y notas'],['Importar','reemplaza todo, con vista previa'],['Pegar JSON','pegar un respaldo ofrece restaurarlo']]],
- ['Guardado', [['Guardando…','hay un guardado en curso'],['Guardado ✓','verificado por relectura'],['Error de almacenamiento','clic para reintentar, sigue en memoria'],['Necesita exportar…','clic para exportar JSON, no cierres sin copia']]]
+ ['Respaldo', [['Ctrl + E','abrir Respaldo · JSON / TXT'],['Ctrl + Shift + E','exportar TXT directo'],['JSON','respaldo completo: restaura todo'],['TXT','solo lectura: titulo, estructura y notas'],['Importar','reemplaza todo, con vista previa'],['Pegar JSON','pegar un respaldo ofrece restaurarlo']]],
+ ['Guardado', [['Guardando…','hay un guardado en curso'],['Guardado ✓','verificado por relectura'],['Error de almacenamiento','clic para reintentar, sigue en memoria'],['Necesita exportar…','clic para exportar JSON, no cierres sin copia'],['F10','pruebas de humo, no tocan tu documento']]]
 ]; document.getElementById('helpText').innerHTML=groups.map(g=>'<div class="helpGroup"><h3>'+g[0]+'</h3>'+g[1].map(x=>'<div class="helpRow"><span class="kbd">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+'</div>').join('');}}
 document.getElementById('helpOverlay').addEventListener('click',(e)=>{ if(e.target.id==='helpOverlay') showHelp(false); });
 document.getElementById('aerialOverlay').addEventListener('click',(e)=>{ if(e.target.id==='aerialOverlay') showAerial(false); });
 function showAerial(show){
+  if(show) closeAllOverlays('aerialOverlay');
   let ov=document.getElementById('aerialOverlay');
   ov.style.display=show?'block':'none';
   if(!show) return;
-  // Solo para mirar: cerrar cualquier otro overlay para que no quede nada encima
-  document.getElementById('helpOverlay').style.display='none';
-  document.getElementById('searchOverlay').style.display='none';
-  document.getElementById('trashOverlay').style.display='none';
-  document.getElementById('gmailOverlay').style.display='none';
-  document.getElementById('backupOverlay').style.display='none';
+  // Solo para mirar: los demás overlays ya se cerraron arriba con closeAllOverlays
   let box=document.getElementById('aerialText');
   box.innerHTML='';
   if(!title && !data.length){
@@ -1090,8 +1223,9 @@ function showAerial(show){
     // Orden: brasa -> su nota larga completa -> sus hijas, en ese orden, recursivo.
     // Un div por brasa/nota (no un solo texto) para que al envolverse la línea
     // la sangría se mantenga y quede bien ordenado.
-    function walk(arr,d){
-      arr.forEach(n=>{
+    function walk(arr,d,anc){
+      let a=anc||new Set(); if(d>60) return;
+      (arr||[]).forEach(n=>{ if(!n||typeof n!=='object') return; if(n.id && a.has(n.id)) return;
         let row=document.createElement('div'); row.className='aerialRow';
         row.style.paddingLeft=(d*22)+'px';
         let dash=document.createElement('span'); dash.className='aerialDash'; dash.textContent='— ';
@@ -1109,7 +1243,7 @@ function showAerial(show){
           note.textContent=n.note;
           box.appendChild(note);
         }
-        walk(n.children||[], d+1);
+        let a2=new Set(a); if(n.id) a2.add(n.id); walk(n.children||[], d+1, a2);
       });
     }
     walk(data, title?1:0);
@@ -1123,12 +1257,12 @@ function buildStructuredTxt(){
   // TXT guarda titulo + estructura + notas. No guarda papelera, marca ni saltos de linea dentro de una brasa: para eso esta JSON.
   let lines=[];
   if(title) lines.push('# '+title.replace(/\n/g,' '));
-  function walk(arr,d){ arr.forEach(n=>{
+  function walk(arr,d,anc){ let a=anc||new Set(); if(d>60) return; (arr||[]).forEach(n=>{ if(!n||typeof n!=='object') return; if(n.id && a.has(n.id)) return;
     lines.push('  '.repeat(d)+'- '+n.text.replace(/\n/g,' '));
     if(n.note && n.note.trim()){
       n.note.split('\n').forEach(nl=>{ lines.push('  '.repeat(d+1)+(nl==='' ? '>' : '> '+nl)); });
     }
-    walk(n.children,d+1);
+    let a2=new Set(a); if(n.id) a2.add(n.id); walk(n.children,d+1,a2);
   }); }
   walk(data, title?1:0);
   return lines.join('\n');
@@ -1139,7 +1273,7 @@ function downloadTxt(){
   return txt;
 }
 
-// ===== Respaldo JSON / TXT - Brasas 37 =====
+// ===== Respaldo JSON / TXT =====
 // JSON es la fuente de verdad. TXT es vista de lectura con notas marcadas con "> ".
 let pendingBackupImport=null;
 let pendingBackupImportKind='';
@@ -1160,16 +1294,8 @@ function sanitizeBackupNode(raw, seen, depth){
   if(raw.namesakeOff===true) node.namesakeOff=true;
   return node;
 }
-function countBackupNodes(arr){
-  let n=0;
-  (arr||[]).forEach(x=>{ n+=1; n+=countBackupNodes(x.children||[]); });
-  return n;
-}
-function countBackupNotes(arr){
-  let n=0;
-  (arr||[]).forEach(x=>{ if(x.note && x.note.trim()) n+=1; n+=countBackupNotes(x.children||[]); });
-  return n;
-}
+function countBackupNodes(arr,_anc,_depth){ let n=0; let anc=_anc||new Set(); let d=_depth||0; if(d>60) return 0; (arr||[]).forEach(x=>{ if(!x||typeof x!=='object') return; if(x.id && anc.has(x.id)) return; n+=1; let anc2=new Set(anc); if(x.id) anc2.add(x.id); n+=countBackupNodes(x.children||[],anc2,d+1); }); return n; }
+function countBackupNotes(arr,_anc,_depth){ let n=0; let anc=_anc||new Set(); let d=_depth||0; if(d>60) return 0; (arr||[]).forEach(x=>{ if(!x||typeof x!=='object') return; if(x.id && anc.has(x.id)) return; if(x.note && x.note.trim()) n+=1; let anc2=new Set(anc); if(x.id) anc2.add(x.id); n+=countBackupNotes(x.children||[],anc2,d+1); }); return n; }
 function buildBackupObject(){
   let seen=new Set();
   let cleanData=[];
@@ -1236,11 +1362,7 @@ function parseStructuredTxtForImport(text){
   return {ok:true, title:titleFromTxt, data:roots, trash:[], markedId:null};
 }
 function showBackupOverlay(show){
-  document.getElementById('helpOverlay').style.display='none';
-  document.getElementById('aerialOverlay').style.display='none';
-  document.getElementById('searchOverlay').style.display='none';
-  document.getElementById('trashOverlay').style.display='none';
-  document.getElementById('gmailOverlay').style.display='none';
+  if(show) closeAllOverlays('backupOverlay');
   let ov=document.getElementById('backupOverlay'); ov.style.display=show?'block':'none';
   if(show){
     let st=document.getElementById('backupStatus'); if(st && !pendingBackupImport) st.textContent='';
@@ -1303,7 +1425,7 @@ function cancelBackupImport(){
 }
 
 function showGmailOverlay(show){
-  document.getElementById('helpOverlay').style.display='none'; document.getElementById('aerialOverlay').style.display='none'; document.getElementById('searchOverlay').style.display='none'; document.getElementById('trashOverlay').style.display='none'; document.getElementById('backupOverlay').style.display='none';
+  if(show) closeAllOverlays('gmailOverlay');
   let ov=document.getElementById('gmailOverlay'); ov.style.display=show?'block':'none';
   if(show){ let inp=document.getElementById('gmailToInput'); inp.value=safeGet('bs_gmail_to')||''; setTimeout(()=>{inp.focus(); inp.select();},0); }
 }
@@ -1382,6 +1504,7 @@ document.getElementById('backupOverlay').addEventListener('click',(e)=>{ if(e.ta
 (function(){var b=document.getElementById('btnNueva'); if(b) b.onclick=()=>{clearMulti(); insertBlank();}; var e=document.getElementById('btnEntrar'); if(e) e.onclick=()=>{promote();}; var s=document.getElementById('btnSalir'); if(s) s.onclick=()=>{demote();}; var ed=document.getElementById('btnEditar'); if(ed) ed.onclick=()=>{if(selected>=curChildren().length){insertBlank(selected);} else {startEdit();}}; var n=document.getElementById('btnNota'); if(n) n.onclick=()=>{openNote();}; var c=document.getElementById('btnCopiar'); if(c) c.onclick=()=>{copySelected();}; var g=document.getElementById('btnGmail'); if(g) g.onclick=()=>{exportToGmail();}; var md=document.getElementById('btnDictar'); if(md) md.onclick=()=>{toggleDictation();}; var fp=document.getElementById('btnFontPlus'); if(fp) fp.onclick=()=>{changeFont(0.15);}; var fm=document.getElementById('btnFontMinus'); if(fm) fm.onclick=()=>{changeFont(-0.15);}; var kp=document.getElementById('btnKeep'); if(kp) kp.onclick=()=>{exportToKeep();}; var pg=document.getElementById('btnPegar'); if(pg) pg.onclick=()=>{pasteFromClipboardButton();}; var ct=document.getElementById('btnCortar'); if(ct) ct.onclick=()=>{cutSelected();}; var rb=document.getElementById('btnRespaldo'); if(rb) rb.onclick=()=>{showBackupOverlay(true);};})();
 document.getElementById('themeBtn').onclick=()=>{theme=theme==='dark'?'light':'dark'; document.body.dataset.theme=theme; try{ localStorage.setItem('bs_theme',theme); }catch(e){} };
 document.addEventListener('keydown',(e)=>{
+ if((e.ctrlKey||e.metaKey) && e.shiftKey && e.key.toLowerCase()==='e'){ e.preventDefault(); e.stopPropagation(); if(editingNoteIdx!==null){ closeNote(true); } else if(editing!==null || editingIsHeading){ finishEdit(true); } downloadTxt(); return; }
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='b'){
    e.preventDefault(); e.stopPropagation();
    // Si ya está abierta, Ctrl+B la cierra (alternar)
@@ -1392,8 +1515,9 @@ document.addEventListener('keydown',(e)=>{
    else if(editing!==null || editingIsHeading){ finishEdit(true); }
    showAerial(true); return;
  }
- if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='e'){ e.preventDefault(); e.stopPropagation(); if(document.getElementById('backupOverlay').style.display==='block'){ showBackupOverlay(false); return; } if(dictListening){ try{ stopDictation(); }catch(err){} } if(editingNoteIdx!==null){ closeNote(true); } else if(editing!==null || editingIsHeading){ finishEdit(true); } showBackupOverlay(true); return; }
- if(e.key==='F1'){e.preventDefault(); e.stopPropagation(); let h=document.getElementById('helpOverlay'); if(h.style.display==='block'){showHelp(false);} else {showAerial(false); closeSearch(); showTrash(false); showGmailOverlay(false); showBackupOverlay(false); showHelp(true);} return;}
+ if((e.ctrlKey||e.metaKey) && !e.shiftKey && e.key.toLowerCase()==='e'){ e.preventDefault(); e.stopPropagation(); if(document.getElementById('backupOverlay').style.display==='block'){ showBackupOverlay(false); return; } if(dictListening){ try{ stopDictation(); }catch(err){} } if(editingNoteIdx!==null){ closeNote(true); } else if(editing!==null || editingIsHeading){ finishEdit(true); } showBackupOverlay(true); return; }
+ if(e.key==='F1'){e.preventDefault(); e.stopPropagation(); let h=document.getElementById('helpOverlay'); if(h.style.display==='block'){showHelp(false);} else {showHelp(true);} return;}
+ if(e.key==='F10' || ((e.ctrlKey||e.metaKey) && e.altKey && e.key.toLowerCase()==='t')){e.preventDefault(); e.stopPropagation(); runSmokeTests(); return;}
  if(soundOn && ((e.key.length===1 && !e.ctrlKey && !e.metaKey && !e.altKey) || e.key==='Enter' || e.key==='Backspace' || e.key==='Delete')){ playTypeSound(); }
  let helpOpen=document.getElementById('helpOverlay').style.display==='block';
  let aerialOpen=document.getElementById('aerialOverlay').style.display==='block';
@@ -1401,9 +1525,8 @@ document.addEventListener('keydown',(e)=>{
  let trashOpen=document.getElementById('trashOverlay').style.display==='block';
  let gmailOpen=document.getElementById('gmailOverlay').style.display==='block';
  let backupOpen=document.getElementById('backupOverlay').style.display==='block';
- if(helpOpen||aerialOpen||searchOpen||trashOpen||gmailOpen||backupOpen){if(e.key==='Escape'){showHelp(false); showAerial(false); closeSearch(); showTrash(false); showGmailOverlay(false); showBackupOverlay(false);} return;}
- if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='e'){ e.preventDefault(); if(editingNoteIdx!==null) closeNote(true); else if(editing!==null || editingIsHeading) finishEdit(true); showBackupOverlay(true); return; }
- if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='n'){ e.preventDefault(); breakNamesakeForSelected(); return; }
+ if(helpOpen||aerialOpen||searchOpen||trashOpen||gmailOpen||backupOpen){if(e.key==='Escape'){closeAllOverlays();} return;}
+ if(e.altKey && !e.shiftKey && e.key.toLowerCase()==='n'){ e.preventDefault(); breakNamesakeForSelected(); return; }
  if(e.key==='F8'){ if(!DICTATION_ENABLED) return; e.preventDefault(); toggleDictation(); return;}
  if((e.ctrlKey||e.metaKey) && (e.key==='+'||e.key==='=')){e.preventDefault(); changeFont(0.15); return;}
  if((e.ctrlKey||e.metaKey) && e.key==='-'){e.preventDefault(); changeFont(-0.15); return;}
@@ -1439,8 +1562,8 @@ document.addEventListener('keydown',(e)=>{
    if(e.key==='Enter' && e.ctrlKey){e.preventDefault(); splitEntry(); return;}
    if(e.key==='Escape' && !e.shiftKey){e.preventDefault(); finishEdit(false); return;}
    if(e.key==='Escape' && e.shiftKey){e.preventDefault(); finishEdit(true); return;}
-   if(e.key==='Backspace' && ta && ta.selectionStart===0 && ta.selectionEnd===0 && !editingIsHeading){e.preventDefault(); let kids=curChildren(); if(editing>0){pushUndo(); let prev=kids[editing-1]; let cur=kids[editing]; prev.text=prev.text+" "+cur.text; kids.splice(editing,1); selected=editing-1; editing=selected; editingOrig=prev.text; save(); render();} return;}
-   if(e.key==='Delete' && ta && ta.selectionStart===ta.value.length && !editingIsHeading){e.preventDefault(); let kids=curChildren(); if(editing<kids.length-1){pushUndo(); let cur=kids[editing]; let nxt=kids[editing+1]; cur.text=cur.text+" "+nxt.text; kids.splice(editing+1,1); save(); render();} return;}
+   if(e.key==='Backspace' && ta && ta.selectionStart===0 && ta.selectionEnd===0 && !editingIsHeading){e.preventDefault(); let kids=curChildren(); if(editing>0){pushUndo(); let prev=kids[editing-1]; let cur=kids[editing]; let _oldText=prev.text; prev.text=prev.text+" "+cur.text; kids.splice(editing,1); selected=editing-1; editing=selected; editingOrig=prev.text; try{ detachSharedChildrenIfNeeded(prev,_oldText); }catch(_e){} try{ linkNamesakes(); }catch(_e){} save(); render();} return;}
+   if(e.key==='Delete' && ta && ta.selectionStart===ta.value.length && !editingIsHeading){e.preventDefault(); let kids=curChildren(); if(editing<kids.length-1){pushUndo(); let cur=kids[editing]; let nxt=kids[editing+1]; let _oldText=cur.text; cur.text=cur.text+" "+nxt.text; kids.splice(editing+1,1); editingOrig=cur.text; try{ detachSharedChildrenIfNeeded(cur,_oldText); }catch(_e){} try{ linkNamesakes(); }catch(_e){} save(); render();} return;}
    if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='u'){e.preventDefault(); changeCase(); return;}
    if(e.key==='Tab'){e.preventDefault(); return;}
    if((e.key==='ArrowDown' || e.key==='ArrowUp') && !e.shiftKey){
@@ -1505,7 +1628,7 @@ document.addEventListener('keydown',(e)=>{
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z' && !e.shiftKey){e.preventDefault(); undo(); return;}
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z' && e.shiftKey){e.preventDefault(); redo(); return;}
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){e.preventDefault(); flushSave(); return;}
- if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='w'){e.preventDefault(); downloadTxt(); return;}
+ // Ctrl+W eliminado: el navegador lo reserva para cerrar la pestana y no se puede interceptar. Exportar TXT es Ctrl+Shift+E.
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){e.preventDefault(); openSearch(); return;}
  if(e.key==='F9'){e.preventDefault(); showTrash(true); return;}
  if(e.key==='/' && !e.ctrlKey && !e.metaKey && !e.altKey){e.preventDefault(); openSearch(); return;}
@@ -1558,6 +1681,12 @@ document.addEventListener('mouseup',()=>{
 });
 document.addEventListener('paste',(e)=>{
   if(editingNoteIdx!==null) return;
+  let _pt=e.target;
+  if(_pt && _pt.closest && _pt.closest('input, select, [contenteditable="true"]')) return;
+  // TEXTAREA: solo el textarea de edicion de brasa/titulo sigue al flujo de abajo (multilinea -> varias brasas). Cualquier otro textarea pega nativo.
+  if(_pt && _pt.closest && _pt.closest('textarea') && editing===null && !editingIsHeading) return;
+  let _ovOpen=['helpOverlay','aerialOverlay','searchOverlay','trashOverlay','gmailOverlay','backupOverlay'].some(id=>{ let el=document.getElementById(id); return !!(el && el.style.display==='block'); });
+  if(_ovOpen) return;
   let text=(e.clipboardData||window.clipboardData)?.getData('text');
   if(!text) return;
   // Editando: solo listas multilínea se convierten en brasas, una línea se pega normal en el textarea
