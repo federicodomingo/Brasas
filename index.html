@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src https:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'none'">
 <title>Brasas</title>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
-:root{--bg:#0E1116;--text:#E8EAF0;--muted:#6B7484;--faint:#3A414D;--accent:#FF8A00;--mark:#FFD166;--bs-scale:1}
-body[data-theme="light"]{--bg:#FAFAF7;--text:#1A1C1E;--muted:#8A8F98;--faint:#D8D8D0;--accent:#FF6A00}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'Ubuntu',sans-serif;touch-action:manipulation}
+:root{--bg:#0E1116;--text:#E8EAF0;--muted:#9AA3B2;--faint:#3A414D;--accent:#FF8A00;--mark:#FFD166;--bs-scale:1}
+body[data-theme="light"]{--bg:#FAFAF7;--text:#1A1C1E;--muted:#5A606B;--faint:#D8D8D0;--accent:#C24E00;--mark:#8A5A00}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;touch-action:manipulation}
 .top{max-width:680px;margin:0 auto;padding:22px 22px 0;display:flex;justify-content:space-between;align-items:center}
-.top span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.top span{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .top .brand{display:flex;align-items:center;gap:7px}
 .ember{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px rgba(255,138,0,.7);animation:emberPulse 3.2s ease-in-out infinite}
 @keyframes emberPulse{0%,100%{opacity:.75;box-shadow:0 0 4px rgba(255,138,0,.45)}50%{opacity:1;box-shadow:0 0 9px rgba(255,138,0,.9)}}
 @media (prefers-reduced-motion: reduce){.ember{animation:none}}
-.top button{background:none;border:1px solid var(--faint);color:var(--muted);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:11px;line-height:1}
+.top button{background:none;border:1px solid var(--faint);color:var(--muted);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:12px;line-height:1}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .wrap{max-width:680px;margin:0 auto;padding:28px 22px 40px}
+.breadcrumb{font-size:12px;color:var(--muted);min-height:16px;padding:2px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.breadcrumb span{cursor:pointer}.breadcrumb span:hover{color:var(--accent);text-decoration:underline}.breadcrumb .sep{color:var(--muted);cursor:default;padding:0 4px}.breadcrumb .sep:hover{text-decoration:none}
 .heading{font-size:calc(28px * var(--bs-scale));font-weight:500;line-height:1.25;min-height:38px;padding:10px 0 14px;border-bottom:1px solid var(--faint);display:flex;gap:10px;align-items:baseline;cursor:pointer;white-space:pre-wrap;word-break:break-word}
 .heading:hover{background:rgba(127,127,127,.10)}
 .headingEditBtn{font-size:15px;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:6px;flex-shrink:0;line-height:1}
@@ -35,7 +35,7 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 .row.sel .txt{color:var(--accent)}
 .row.sel .ic{color:var(--accent)}
 .row:hover{background:rgba(255,255,255,.03)}
-.ic{font-family:'Ubuntu Mono',monospace;font-size:15px;color:var(--muted);width:18px;text-align:center;flex-shrink:0}
+.ic{font-family:ui-monospace, 'SF Mono', Consolas, monospace;font-size:15px;color:var(--muted);width:18px;text-align:center;flex-shrink:0}
 .txt{flex:1;font-size:calc(17px * var(--bs-scale));line-height:1.45;white-space:pre-wrap;word-break:break-word;color:var(--text)}
 .txt.muted{color:var(--muted)}
 .row textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:calc(17px * var(--bs-scale));line-height:1.45;resize:none;overflow:hidden;padding:0}
@@ -44,7 +44,7 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 .noteMark{color:var(--accent);font-size:13px;margin-left:6px} .noteDot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-left:8px;vertical-align:middle;flex-shrink:0;box-shadow:0 0 5px rgba(255,138,0,.7)} .searchNote{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5} .searchNote b{color:var(--accent);font-weight:400}
 .noteEdit{margin:2px 0 14px 28px;padding:10px 12px;border:1px solid var(--faint);border-radius:8px}
 .noteEdit textarea{width:100%;min-height:120px;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:calc(15px * var(--bs-scale));line-height:1.6;resize:vertical;padding:0}
-.noteEdit .hint{font-size:11px;color:var(--muted);margin-top:6px}
+.noteEdit .hint{font-size:12px;color:var(--muted);margin-top:6px}
 .noteView{margin:2px 0 12px 28px;padding:8px 10px;border:1px solid var(--faint);border-radius:8px;font-size:calc(14px * var(--bs-scale));line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--text)}
 .noteView a{color:var(--accent);word-break:break-all}
 .notePreview{margin-top:10px;padding-top:8px;border-top:1px solid var(--faint);font-size:calc(14px * var(--bs-scale));line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--text)}
@@ -53,32 +53,32 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 .searchInput{width:100%;background:transparent;border:none;border-bottom:1px solid var(--faint);outline:none;color:var(--text);font-family:inherit;font-size:18px;padding:10px 0}
 .searchItem{padding:10px 0;border-bottom:1px solid var(--faint);cursor:pointer;font-size:15px;line-height:1.5}
 .searchItem.sel{background:rgba(255,138,0,.08)}
-.searchItem .sp{font-size:11px;color:var(--muted);display:block}
+.searchItem .sp{font-size:12px;color:var(--muted);display:block}
 .searchItem a{color:var(--accent)}
 .trashItem{padding:10px 0;border-bottom:1px solid var(--faint);font-size:15px;line-height:1.5}
-.trashItem .tp{font-size:11px;color:var(--muted);display:block}
+.trashItem .tp{font-size:12px;color:var(--muted);display:block}
 .trashItem button{background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:4px 10px;margin:6px 6px 0 0;cursor:pointer;font-size:12px}
 .trashItem button.danger{color:#ff6b6b;border-color:#ff6b6b}
 .txt a{color:var(--accent);word-break:break-all}
-.foot{max-width:680px;margin:0 auto;padding:0 22px 24px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 12px} #savedTag{white-space:nowrap;opacity:1} #savedTag.save-saving{color:var(--muted)} #savedTag.save-ok{color:var(--muted)} #savedTag.save-error{color:#ff6b6b;font-weight:500;cursor:pointer;text-decoration:underline} #savedTag.save-needs-export{color:#FF8A00;font-weight:500;cursor:pointer;text-decoration:underline}
+.foot{max-width:680px;margin:0 auto;padding:0 22px 24px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 12px} #savedTag{white-space:nowrap;opacity:1} #savedTag.save-saving{color:var(--muted)} #savedTag.save-ok{color:var(--muted)} #savedTag.save-error{color:#ff6b6b;font-weight:500;cursor:pointer;text-decoration:underline} #savedTag.save-needs-export{color:#FF8A00;font-weight:500;cursor:pointer;text-decoration:underline}
 .foot span{opacity:.6}
 .foot #gmailBtn,.foot #keepBtn{cursor:pointer;text-decoration:underline}
 .overlay{position:fixed;inset:0;background:var(--bg);display:none;z-index:20;overflow:auto}
 .overlay .in{max-width:640px;margin:0 auto;padding:40px 22px}
 .overlay h2{font-size:14px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:400;margin:0 0 22px}
 .overlay p{font-size:14px;line-height:2;color:var(--text);margin:0}
-.overlay p b{font-family:'Ubuntu Mono',monospace;font-weight:400;color:var(--muted);display:inline-block;min-width:110px}
-.overlay .close{font-size:11px;color:var(--muted);margin-top:28px}
+.overlay p b{font-family:ui-monospace, 'SF Mono', Consolas, monospace;font-weight:400;color:var(--muted);display:inline-block;min-width:110px}
+.overlay .close{font-size:12px;color:var(--muted);margin-top:28px}
 .helpSub{font-size:13px;line-height:1.5;color:var(--muted);margin:-12px 0 24px}
 .helpGrid{columns:2;column-gap:28px}
 .helpGroup{break-inside:avoid;margin-bottom:22px}
-.helpGroup h3{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);font-weight:500;margin:0 0 10px;padding-bottom:6px;border-bottom:1px solid var(--faint)}
+.helpGroup h3{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);font-weight:500;margin:0 0 10px;padding-bottom:6px;border-bottom:1px solid var(--faint)}
 .helpRow{display:flex;gap:10px;align-items:baseline;padding:5px 0;font-size:13.5px;line-height:1.4}
-.kbd{font-family:'Ubuntu Mono',monospace;font-size:12px;background:rgba(127,127,127,.10);border:1px solid var(--faint);border-radius:6px;padding:2px 7px;white-space:nowrap;color:var(--text);min-width:92px;text-align:center;flex-shrink:0}
+.kbd{font-family:ui-monospace, 'SF Mono', Consolas, monospace;font-size:12px;background:rgba(127,127,127,.10);border:1px solid var(--faint);border-radius:6px;padding:2px 7px;white-space:nowrap;color:var(--text);min-width:92px;text-align:center;flex-shrink:0}
 @media (max-width:600px){.helpGrid{columns:1}}
 #aerialOverlay .in{max-width:720px}
-.aerial{font-family:'Ubuntu Mono',monospace;font-size:13px;line-height:1.6}
-.aerialTitle{font-family:'Ubuntu',sans-serif;font-size:22px;font-weight:500;line-height:1.3;padding-bottom:12px;margin-bottom:10px;border-bottom:1px solid var(--faint);white-space:pre-wrap;word-break:break-word}
+.aerial{font-family:ui-monospace, 'SF Mono', Consolas, monospace;font-size:13px;line-height:1.6}
+.aerialTitle{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;font-size:22px;font-weight:500;line-height:1.3;padding-bottom:12px;margin-bottom:10px;border-bottom:1px solid var(--faint);white-space:pre-wrap;word-break:break-word}
 .aerialRow{padding:2px 0;white-space:pre-wrap;word-break:break-word}
 .aerialRow .aerialDash{color:var(--muted)}
 .aerialNote{color:var(--muted);font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;border-left:2px solid var(--faint);padding:2px 0 2px 10px;margin:3px 0 6px}
@@ -94,21 +94,21 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
   .foot{padding-bottom:96px}
   .mobileBar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;gap:6px;padding:10px 10px calc(10px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--faint);overflow-x:auto;-webkit-overflow-scrolling:touch}
   .mobileBar button{flex:0 0 auto;min-height:44px;padding:0 14px;border:1px solid var(--faint);background:var(--bg);color:var(--text);border-radius:999px;font-family:inherit;font-size:14px;white-space:nowrap;cursor:pointer}
-  .mobileBar button.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500}
+  .mobileBar button.primary{background:var(--accent);color:#1A1C1E;border-color:var(--accent);font-weight:500}
 }
 @media (pointer:coarse) and (max-width:600px){
   .top{padding:16px 16px 0}
   .wrap{padding:20px 16px 96px}
 }
- .top button.listening{background:var(--accent);color:#fff;border-color:var(--accent)} .mobileBar button.listening{background:var(--accent);color:#fff;border-color:var(--accent)} #micBtn{width:auto;padding:0 10px;border-radius:999px;font-size:12px} .namesakeMark{color:var(--mark);font-size:12px;margin-left:6px;white-space:nowrap} .namesakeMark:hover{color:var(--accent)}
+ .top button.listening{background:var(--accent);color:#1A1C1E;border-color:var(--accent)} .mobileBar button.listening{background:var(--accent);color:#1A1C1E;border-color:var(--accent)} #micBtn{width:auto;padding:0 10px;border-radius:999px;font-size:12px} .namesakeMark{color:var(--mark);font-size:12px;margin-left:6px;white-space:nowrap} .namesakeMark:hover{color:var(--accent)}
  .no-dict #micBtn, .no-dict #btnDictar{display:none!important}
 
 .backupBtn{background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:8px 16px;cursor:pointer;font-size:13px;font-family:inherit}
-.backupBtn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.backupBtn.primary{background:var(--accent);border-color:var(--accent);color:#1A1C1E;font-weight:500}
 .backupBtn.danger{border-color:#ff6b6b;color:#ff6b6b}
 .backupHint{font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 10px}
 .backupHint b{color:var(--text);font-weight:500}
-.backupHint code{font-family:'Ubuntu Mono',monospace;font-size:12px;background:rgba(127,127,127,.12);padding:1px 6px;border-radius:4px;color:var(--text)}
+.backupHint code{font-family:ui-monospace, 'SF Mono', Consolas, monospace;font-size:12px;background:rgba(127,127,127,.12);padding:1px 6px;border-radius:4px;color:var(--text)}
 .backupStatus{font-size:13px;line-height:1.5;color:var(--accent);min-height:20px;margin:6px 0}
 .backupConfirm{margin:14px 0;padding:12px;border:1px solid var(--faint);border-radius:8px;font-size:13px;line-height:1.6}
 </style>
@@ -126,6 +126,7 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 <body data-theme="dark">
 <div class="top"><span class="brand" title="Brasas es el nombre de la app — el título principal editable es el de abajo"><i class="ember" aria-hidden="true"></i>Brasas</span><span style="display:flex;gap:6px"><button id="micBtn" title="Dictar por voz (F8)" aria-label="Dictar por voz">🎤 Dictar</button><button id="soundBtn" title="Sonido de tecla (clic para apagar)" aria-label="Sonido de tecla, clic para apagar o prender">🔊</button><button id="themeBtn" title="Claro / Oscuro" aria-label="Cambiar tema claro u oscuro">○</button></span></div>
 <div class="wrap">
+<div class="breadcrumb" id="breadcrumb"></div>
 <div class="heading" id="heading"></div>
 <div class="list" id="list"></div>
 </div>
@@ -134,8 +135,8 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 <div class="overlay" id="helpOverlay"><div class="in"><h2>Brasas · Teclas</h2><p class="helpSub">Todo con teclado. Sin mouse, sin menús. F1 abre esto.</p><div id="helpText" class="helpGrid"></div><div class="close">Esc para cerrar &nbsp;·&nbsp; o clic afuera</div></div></div>
 <div class="overlay" id="searchOverlay"><div class="in"><h2>Buscar &nbsp;·&nbsp; Ctrl+K / /</h2><input id="searchInput" class="searchInput" placeholder="Buscar en brasas y notas largas..." autocomplete="off" aria-label="Buscar en brasas y notas largas"><div id="searchResults"></div><div class="close">Enter para ir &nbsp;·&nbsp; ↑ ↓ para elegir &nbsp;·&nbsp; Esc para cerrar</div></div></div>
 <div class="overlay" id="trashOverlay"><div class="in"><h2>Papelera &nbsp;·&nbsp; F9</h2><div id="trashList"></div><div class="close">Esc para cerrar</div></div></div>
-<div class="overlay" id="gmailOverlay"><div class="in"><h2>Gmail &nbsp;·&nbsp; .txt</h2><p style="font-size:13px;color:var(--muted);margin-bottom:12px">¿A qué correo lo querés mandar?</p><input id="gmailToInput" class="searchInput" placeholder="ejemplo@correo.com" autocomplete="email" inputmode="email" aria-label="Correo destinatario"><div style="margin-top:18px"><button id="gmailSendBtn" aria-label="Abrir Gmail para enviar" style="background:var(--accent);border:none;color:#fff;border-radius:999px;padding:8px 18px;cursor:pointer;font-size:13px">Abrir Gmail</button> <button id="gmailCancelBtn" aria-label="Cancelar envío por Gmail" style="background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:8px 16px;cursor:pointer;font-size:13px">Cancelar</button></div><div class="close">Enter para abrir Gmail &nbsp;·&nbsp; Esc para cerrar</div></div></div>
-<div class="overlay" id="backupOverlay"><div class="in"><h2>Respaldo · JSON / TXT</h2><p class="backupHint"><b>JSON es el respaldo completo.</b> Guarda título, brasas, notas largas completas, papelera y marca. Es el único que restaura todo tal cual.<br><b>TXT es solo lectura.</b> Sirve para leer, mandar por Gmail o Keep y pegar. Guarda título, estructura y notas, pero no guarda papelera, marca, ni saltos de línea dentro de una brasa.</p><p class="backupHint">En TXT las notas se marcan con <code>&gt;</code> para que no se confundan con subbrasas. Ejemplo:<br><code>- Idea<br>&nbsp;&nbsp;&gt; esta es la nota<br>&nbsp;&nbsp;- Subbrasa</code></p><div style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0"><button id="backupDownloadJsonBtn" class="backupBtn primary">Descargar JSON · respaldo completo</button><button id="backupDownloadTxtBtn" class="backupBtn">Descargar TXT · solo lectura</button><label class="backupBtn" style="cursor:pointer">Importar archivo…<input id="backupFileInput" type="file" accept=".json,application/json,.txt,text/plain" style="display:none"></label></div><div id="backupStatus" class="backupStatus" aria-live="polite"></div><div id="backupConfirm" class="backupConfirm" style="display:none"><div id="backupConfirmText"></div><div style="display:flex;gap:8px;margin-top:12px"><button id="backupConfirmReplaceBtn" class="backupBtn danger">Reemplazar todo</button><button id="backupConfirmCancelBtn" class="backupBtn">Cancelar</button></div><p class="backupHint" style="margin-top:10px">Antes de reemplazar, el documento actual queda en deshacer (Ctrl + Z).</p></div><div class="close">Esc para cerrar &nbsp;·&nbsp; o clic afuera &nbsp;·&nbsp; Ctrl + E para abrir</div></div></div>
+<div class="overlay" id="gmailOverlay"><div class="in"><h2>Gmail &nbsp;·&nbsp; .txt</h2><p style="font-size:13px;color:var(--muted);margin-bottom:12px">¿A qué correo lo querés mandar?</p><input id="gmailToInput" class="searchInput" placeholder="ejemplo@correo.com" autocomplete="email" inputmode="email" aria-label="Correo destinatario"><div style="margin-top:18px"><button id="gmailSendBtn" aria-label="Abrir Gmail para enviar" style="background:var(--accent);border:none;color:#1A1C1E;border-radius:999px;padding:8px 18px;cursor:pointer;font-size:13px">Abrir Gmail</button> <button id="gmailCancelBtn" aria-label="Cancelar envío por Gmail" style="background:none;border:1px solid var(--faint);color:var(--text);border-radius:999px;padding:8px 16px;cursor:pointer;font-size:13px">Cancelar</button></div><div class="close">Enter para abrir Gmail &nbsp;·&nbsp; Esc para cerrar</div></div></div>
+<div class="overlay" id="backupOverlay"><div class="in"><h2>Respaldo · JSON / TXT</h2><p class="backupHint"><b>JSON es el respaldo completo.</b> Guarda título, brasas, notas largas completas, papelera y marca. Es el único que restaura todo tal cual.<br><b>TXT es solo lectura.</b> Sirve para leer, mandar por Gmail o Keep y pegar. Guarda título, estructura y notas, pero no guarda papelera, marca, ni saltos de línea dentro de una brasa.</p><p class="backupHint">En TXT las notas se marcan con <code>&gt;</code> para que no se confundan con subbrasas. Ejemplo:<br><code>- Idea<br>&nbsp;&nbsp;&gt; esta es la nota<br>&nbsp;&nbsp;- Subbrasa</code></p><div style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0"><button id="backupDownloadJsonBtn" class="backupBtn primary">Descargar JSON · respaldo completo</button><button id="backupDownloadTxtBtn" class="backupBtn">Descargar TXT · solo lectura</button><button id="backupSaveFileBtn" class="backupBtn">Guardar en archivo…</button><button id="backupOpenFileBtn" class="backupBtn">Abrir archivo…</button><button id="backupRestoreIdbBtn" class="backupBtn">Recuperar desde IndexedDB</button><label class="backupBtn" style="cursor:pointer">Importar archivo…<input id="backupFileInput" type="file" accept=".json,application/json,.txt,text/plain" style="display:none"></label></div><div id="backupStatus" class="backupStatus" aria-live="polite"></div><div id="backupConfirm" class="backupConfirm" style="display:none"><div id="backupConfirmText"></div><div style="display:flex;gap:8px;margin-top:12px"><button id="backupConfirmReplaceBtn" class="backupBtn danger">Reemplazar todo</button><button id="backupConfirmCancelBtn" class="backupBtn">Cancelar</button></div><p class="backupHint" style="margin-top:10px">Antes de reemplazar, el documento actual queda en deshacer (Ctrl + Z).</p></div><div class="close">Esc para cerrar &nbsp;·&nbsp; o clic afuera &nbsp;·&nbsp; Ctrl + E para abrir</div></div></div>
 <div class="overlay" id="aerialOverlay"><div class="in"><h2>Vista aérea &nbsp;·&nbsp; Ctrl+B</h2><div class="aerial" id="aerialText"></div><div class="close">Esc para volver &nbsp;·&nbsp; o clic afuera &nbsp;·&nbsp; Ctrl+B para cerrar</div></div></div>
 
 <div class="mobileBar" id="mobileBar">
@@ -153,7 +154,7 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outli
 </div>
 
 <script>
-const VERSION='41'; // UNICA FUENTE de la version de la app. No escribir el numero en ningun otro lado: <title>, versionTag y document.title se derivan de aca. El nombre del archivo (Brasas_40.html) se actualiza a mano al exportar, el codigo no lo puede leer. No confundir con version:1 del JSON de respaldo, que es la version del FORMATO de respaldo, no de la app.
+const VERSION='43'; // UNICA FUENTE de la version de la app. No escribir el numero en ningun otro lado: <title>, versionTag y document.title se derivan de aca. El nombre del archivo (Brasas_40.html) se actualiza a mano al exportar, el codigo no lo puede leer. No confundir con version:1 del JSON de respaldo, que es la version del FORMATO de respaldo, no de la app.
 try{ let _vt=document.getElementById('versionTag'); if(_vt) _vt.textContent='Brasas v'+VERSION; }catch(_e){}
 let uid=()=>Math.random().toString(36).slice(2,9);
 // --- Dictado: solo online (https y no local) ---
@@ -175,7 +176,7 @@ let _rawMain=safeGet('bs_data'); let _rawBackup=safeGet('bs_data_backup');
 let title = safeGet('bs_title')||'';
 let data = null;
 let _loadedFromBackup=false;
-let _lastSavedDataStr=null; // última versión confirmada en bs_data. Se promueve a respaldo en el próximo guardado distinto.
+let _lastSavedDataStr=null; let _lastSavedTitleStr=null; let _lastSavedTrashStr=null; let _revision=0; try{ _revision=parseInt(safeGet('bs_revision')||'0',10)||0; }catch(e){ _revision=0; }
 try{
   data = safeParse(_rawMain, null);
   if(!Array.isArray(data)){
@@ -191,7 +192,7 @@ let path=[]; let selected=0; let editing=null; let editingIsHeading=false; let e
 let markedId=null; try{ let _m=safeGet('bs_marked'); if(_m) markedId=_m; }catch(e){} let undoStack=[], redoStack=[];
 let trash=safeParse(safeGet('bs_trash'), []);
 if(!Array.isArray(trash)) trash=[];
-let theme=safeGet('bs_theme')||'dark';
+let theme=safeGet('bs_theme')||((typeof matchMedia!=='undefined' && matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark');
 document.body.dataset.theme=theme;
 let editingNoteIdx=null; let editingNoteOrig=''; let editingNotePath=[];
 let multiSet=null; let multiAnchor=null;
@@ -206,7 +207,7 @@ function toggleSound(){ soundOn=!soundOn; try{ localStorage.setItem('bs_sound', 
 function syncSoundBtn(){ let b=document.getElementById('soundBtn'); if(b){ b.textContent=soundOn?'🔊':'🔇'; b.title=soundOn?'Sonido de tecla (clic para apagar)':'Sonido apagado (clic para prender)'; } }
 let fontScale=parseFloat(safeGet('bs_font_scale')||'1'); if(isNaN(fontScale)||fontScale<0.8||fontScale>1.6) fontScale=1;
 function applyFontScale(){ document.documentElement.style.setProperty('--bs-scale', String(fontScale)); try{ localStorage.setItem('bs_font_scale', String(fontScale)); }catch(e){} }
-function showFontFeedback(){ let fr=document.getElementById('footRight'); if(fr && !dictListening){ fr.textContent='Letra '+Math.round(fontScale*100)+'%'; setTimeout(()=>{ if(!dictListening) fr.textContent = path.length? 'Nivel '+path.length : 'F1'; },1200); } }
+function showFontFeedback(){ if(!dictListening) showFootMsg('Letra '+Math.round(fontScale*100)+'%'); }
 function changeFont(delta){ fontScale=Math.round((fontScale+delta)*100)/100; if(fontScale<0.8) fontScale=0.8; if(fontScale>1.6) fontScale=1.6; applyFontScale(); showFontFeedback(); }
 function resetFont(){ fontScale=1; applyFontScale(); showFontFeedback(); }
 applyFontScale();
@@ -365,25 +366,26 @@ function startDictation(){
 }
 function toggleDictation(){ if(!DICTATION_ENABLED) return; if(dictListening) stopDictation(); else startDictation(); }
 function clearMulti(){multiSet=null; multiAnchor=null;}
-// ===== BRASAS 41: PARCHE URGENTE — flatten/findPath con guarda anticiclo, paste sin robar inputs/overlays, Ctrl+W/Ctrl+N reemplazados, undo incluye papelera+marca, F10 no rompe redo =====
+// ===== BRASAS 43: persistencia archivo/IndexedDB + fuente sistema + contraste + foco + nombre escapado + confirmar fusion namesake =====
 function showFootMsg(msg){let fr=document.getElementById('footRight'); if(!fr) return; fr.textContent=msg; clearTimeout(showFootMsg._t); showFootMsg._t=setTimeout(()=>{ try{ fr.textContent = path.length? 'Nivel '+path.length : 'F1'; }catch(e){} },3000);}
 function namesakeKey(txt){ if(!txt) return ''; let s=String(txt).trim(); if(!s) return ''; if(/^[-•*—–+·\s]+$/.test(s)) return ''; if(s.length<2) return ''; return s; }
-function getNamesakeGroups(){ let map=new Map(); let all=[]; try{ all=flatten(data); }catch(e){ return new Map(); } all.forEach(({node})=>{ if(!node || node.namesakeOff) return; let k=namesakeKey(node.text); if(!k) return; if(!map.has(k)) map.set(k,[]); map.get(k).push(node); }); let out=new Map(); map.forEach((arr,k)=>{ if(arr.length>1) out.set(k,arr); }); return out; }
-function cloneNodeDeep(n){ return {id:uid(), text:n.text, children:(n.children||[]).map(cloneNodeDeep), note:n.note||'', namesakeOff: n.namesakeOff?true:undefined}; }
+function getNamesakeGroups(){ let map=new Map(); let all=[]; try{ all=flatten(data); }catch(e){ return new Map(); } all.forEach(({node})=>{ if(!node || node.namesakeOff || node.linkId===null) return; let k=namesakeKey(node.text); if(!k) return; if(!map.has(k)) map.set(k,[]); map.get(k).push(node); }); let out=new Map(); map.forEach((arr,k)=>{ if(arr.length>1) out.set(k,arr); }); return out; }
+function cloneNodeDeep(n){ let c={id:uid(), text:n.text, children:(n.children||[]).map(cloneNodeDeep), note:n.note||''}; if(n.namesakeOff) c.namesakeOff=true; if(n.linkId===null) c.linkId=null; return c; }
 function cloneChildrenDeep(ch){ return (ch||[]).map(cloneNodeDeep); }
+function _isAncestorOf(ancestorId, descendantId){ if(!ancestorId || !descendantId || ancestorId===descendantId) return false; let p=null; try{ p=findPath(data, descendantId, []); }catch(e){ return false; } if(!p) return false; return p.slice(0,-1).includes(ancestorId); }
+function _partitionSafeGroup(nodes){ let safe=[]; let excluded=[]; nodes.forEach(n=>{ let bad=nodes.some(o=>o!==n && _isAncestorOf(o.id, n.id)); if(bad) excluded.push(n); else safe.push(n); }); return {safe, excluded}; }
+function _linkGroup(nodes, linkId){ let id=linkId||('ns-'+uid()); let canonical=null; for(let n of nodes){ if(n.children && n.children.length>0){ canonical=n.children; break; } } if(!canonical) canonical=nodes[0].children; if(!canonical) return; nodes.forEach(n=>{ if(n.children!==canonical && n.children && n.children.length>0){ n.children.forEach(child=>{ if(!canonical.find(c=>c.id===child.id)) canonical.push(child); }); } }); nodes.forEach(n=>{ n.children=canonical; n.linkId=id; delete n.namesakeOff; }); }
 function linkNamesakes(){
+  // 1) Enlaces explicitos por linkId: el JSON los trae, aca se restaura el compartir.
+  try{ let byLink=new Map(); flatten(data).forEach(({node})=>{ if(!node || node.namesakeOff || node.linkId===null || !node.linkId) return; if(!byLink.has(node.linkId)) byLink.set(node.linkId,[]); byLink.get(node.linkId).push(node); }); byLink.forEach((nodes, linkId)=>{ if(nodes.length<2) return; let part=_partitionSafeGroup(nodes); if(part.safe.length>=2) _linkGroup(part.safe, linkId); part.excluded.forEach(n=>{ n.children=cloneChildrenDeep(n.children||[]); n.linkId=null; n.namesakeOff=true; }); }); }catch(e){}
+  // 2) Migracion / nuevos duplicados por texto: solo nodos sin linkId asignado.
   let groups=getNamesakeGroups(); if(!groups.size) return;
   groups.forEach((nodes)=>{
-    let canonical=null;
-    for(let n of nodes){ if(n.children && n.children.length>0){ canonical=n.children; break; } }
-    if(!canonical) canonical=nodes[0].children;
-    if(!canonical) return;
-    nodes.forEach(n=>{
-      if(n.children!==canonical && n.children && n.children.length>0){
-        n.children.forEach(child=>{ if(!canonical.find(c=>c.id===child.id)) canonical.push(child); });
-      }
-    });
-    nodes.forEach(n=>{ n.children=canonical; });
+    let fresh=nodes.filter(n=>!n.linkId);
+    if(fresh.length<2) return;
+    let part=_partitionSafeGroup(fresh);
+    if(part.safe.length>=2) _linkGroup(part.safe, null);
+    part.excluded.forEach(n=>{ n.children=cloneChildrenDeep(n.children||[]); n.linkId=null; n.namesakeOff=true; });
   });
 }
 function detachSharedChildrenIfNeeded(node, oldText){
@@ -391,10 +393,12 @@ function detachSharedChildrenIfNeeded(node, oldText){
   if((oldText||'').trim()===(node.text||'').trim()) return;
   let all=[]; try{ all=flatten(data); }catch(e){ return; }
   let shared=all.some(o=>o.node!==node && o.node.children===node.children);
-  if(shared){ node.children=cloneChildrenDeep(node.children); }
+  let linked=!!node.linkId;
+  if(shared || linked){ node.children=cloneChildrenDeep(node.children||[]); if(node.linkId) delete node.linkId; }
 }
 function syncNamesakeNotes(node, noteText){
   if(!node) return;
+  if(node.linkId){ try{ flatten(data).forEach(({node:o})=>{ if(o!==node && o.linkId===node.linkId) o.note=noteText; }); }catch(e){} return; }
   let k=namesakeKey(node.text); if(!k) return;
   let groups=getNamesakeGroups(); let grp=groups.get(k); if(!grp) return;
   grp.forEach(o=>{ if(o!==node) o.note=noteText; });
@@ -405,11 +409,11 @@ function breakNamesakeForSelected(){
   let k=namesakeKey(node.text);
   let groups=getNamesakeGroups(); let grp=k?groups.get(k):null;
   if(grp && grp.includes(node)){
-    node.namesakeOff=true;
+    node.namesakeOff=true; node.linkId=null;
     node.children=cloneChildrenDeep(node.children);
     save(); render(); showFootMsg('Enlace roto ≫ Alt+N para volver a enlazar');
-  } else if(node.namesakeOff){
-    delete node.namesakeOff;
+  } else if(node.namesakeOff || node.linkId===null){
+    delete node.namesakeOff; delete node.linkId;
     linkNamesakes(); save(); render(); showFootMsg('Namesake reactivado ≫');
   } else {
     showFootMsg('No es namesake, aparece una sola vez');
@@ -445,6 +449,7 @@ function saveNow(){
   try{ dataStr=JSON.stringify(data); }catch(e){ _lastSaveError='No se pudo serializar los datos: '+((e&&e.message)||e); _saveFailCount++; setSaveStatus((!_storageAvailable||_saveFailCount>=2)?'needs-export':'error', _lastSaveError); return false; }
   let titleStr=title||'';
   let trashStr; try{ trashStr=JSON.stringify(trash); }catch(e){ trashStr='[]'; }
+  if(_lastSavedDataStr!==null && dataStr===_lastSavedDataStr && titleStr===_lastSavedTitleStr && trashStr===_lastSavedTrashStr){ setSaveStatus('saved'); return true; }
   // 1) Respaldo HISTÓRICO: promover la versión anterior confirmada, NO la actual.
   // Si es el primer guardado tras cargar desde el respaldo, NO pisamos el respaldo: todavía no hay versión principal confirmada distinta.
   if(_lastSavedDataStr && _lastSavedDataStr!==dataStr){
@@ -468,7 +473,9 @@ function saveNow(){
   // 3) Verificación por relectura: la única condición para decir "Guardado".
   let verified=_verify('bs_data', dataStr) && _verify('bs_title', titleStr) && _verify('bs_trash', trashStr);
   if(verified && errors.length===0){
-    _lastSavedDataStr=dataStr; _saveFailCount=0; _lastSaveError='';
+    let _changed=(_lastSavedDataStr!==dataStr || _lastSavedTitleStr!==titleStr || _lastSavedTrashStr!==trashStr);
+    _lastSavedDataStr=dataStr; _lastSavedTitleStr=titleStr; _lastSavedTrashStr=trashStr; _saveFailCount=0; _lastSaveError='';
+    if(_changed){ _revision++; try{ localStorage.setItem('bs_revision', String(_revision)); }catch(e){} try{ _broadcastSave(); }catch(e){} try{ _idbPutSnapshot(); }catch(e){} try{ autoSaveToFile(); }catch(e){} }
     setSaveStatus('saved');
     return true;
   }
@@ -482,9 +489,87 @@ function save(){
   // Mostrar "Guardando…" de inmediato, no solo cuando termina el debounce.
   if(_saveStatus!=='saving') setSaveStatus('saving');
   if(_saveTimer) clearTimeout(_saveTimer);
-  _saveTimer=setTimeout(()=>{ _saveTimer=null; saveNow(); }, 250);
+  _saveTimer=setTimeout(()=>{ _saveTimer=null; saveNow(); }, 500);
 }
 function flushSave(){ if(_saveTimer){ clearTimeout(_saveTimer); _saveTimer=null; } return saveNow(); }
+let _bc=null;
+function _broadcastSave(){ if(!_bc) return; try{ _bc.postMessage({type:'brasas-saved', revision:_revision}); }catch(e){} }
+function _onRemoteSave(){
+  if(editing!==null || editingIsHeading || editingNoteIdx!==null || dictListening){ showFootMsg('Otra pestana guardo cambios — termina y recarga para verlos'); return; }
+  try{
+    let raw=safeGet('bs_data'); if(!raw) return;
+    let parsed=safeParse(raw, null); if(!Array.isArray(parsed)) return;
+    data=parsed; title=safeGet('bs_title')||title; trash=safeParse(safeGet('bs_trash'), []); if(!Array.isArray(trash)) trash=[];
+    let _m=safeGet('bs_marked'); if(_m) markedId=_m;
+    _lastSavedDataStr=raw; _lastSavedTitleStr=safeGet('bs_title')||''; _lastSavedTrashStr=safeGet('bs_trash')||'';
+    path=[]; selected=0;
+    try{ linkNamesakes(); }catch(e){}
+    render(); renderTrash(); showFootMsg('Otra pestana guardo — documento actualizado');
+  }catch(e){ showFootMsg('Otra pestana guardo cambios — recarga para verlos'); }
+}
+try{ if(typeof BroadcastChannel!=='undefined'){ _bc=new BroadcastChannel('brasas-sync'); _bc.onmessage=(ev)=>{ let m=ev&&ev.data; if(!m||m.type!=='brasas-saved') return; if(typeof m.revision!=='number'||m.revision<=_revision) return; _revision=m.revision; _onRemoteSave(); }; } }catch(e){}
+try{ window.addEventListener('storage', (ev)=>{ if(ev.key==='bs_revision' && ev.newValue){ let r=parseInt(ev.newValue,10); if(!isNaN(r)&&r>_revision){ _revision=r; _onRemoteSave(); } } }); }catch(e){}
+let _idbPromise=null;
+function _idbOpen(){
+  if(_idbPromise) return _idbPromise;
+  _idbPromise=new Promise((resolve)=>{
+    try{
+      if(!('indexedDB' in window)){ resolve(null); return; }
+      let req=indexedDB.open('brasas-db',1);
+      req.onupgradeneeded=()=>{ try{ let db=req.result; if(!db.objectStoreNames.contains('kv')) db.createObjectStore('kv'); if(!db.objectStoreNames.contains('handles')) db.createObjectStore('handles'); }catch(e){} };
+      req.onsuccess=()=>resolve(req.result);
+      req.onerror=()=>resolve(null);
+      req.onblocked=()=>resolve(null);
+    }catch(e){ resolve(null); }
+  });
+  return _idbPromise;
+}
+function _idbPut(store, key, value){ _idbOpen().then(db=>{ if(!db) return; try{ let tx=db.transaction(store,'readwrite'); tx.objectStore(store).put(value,key); }catch(e){} }); }
+function _idbGet(store, key){ return _idbOpen().then(db=>{ return new Promise(res=>{ if(!db){ res(null); return; } try{ let tx=db.transaction(store,'readonly'); let rq=tx.objectStore(store).get(key); rq.onsuccess=()=>res(rq.result||null); rq.onerror=()=>res(null); }catch(e){ res(null); } }); }); }
+function _idbPutSnapshot(){ try{ let snap={title:title, data:JSON.parse(JSON.stringify(data)), trash:JSON.parse(JSON.stringify(trash)), markedId:markedId, revision:_revision, savedAt:Date.now()}; _idbPut('kv','snapshot',snap); }catch(e){} }
+function _idbRestoreIfNeeded(){
+  if((data && data.length) || title) return;
+  _idbGet('kv','snapshot').then(snap=>{
+    if(!snap || !Array.isArray(snap.data) || !snap.data.length) return;
+    try{ pushUndo(); data=snap.data; title=snap.title||''; trash=Array.isArray(snap.trash)?snap.trash:[]; if(snap.markedId) markedId=snap.markedId; if(typeof snap.revision==='number') _revision=Math.max(_revision, snap.revision); try{ linkNamesakes(); }catch(e){} save(); render(); renderTrash(); showFootMsg('Recuperado desde IndexedDB'); }catch(e){}
+  });
+}
+function _idbRestoreManual(){
+  _idbGet('kv','snapshot').then(snap=>{
+    if(!snap || !Array.isArray(snap.data)){ showFootMsg('No hay copia en IndexedDB'); return; }
+    try{ pushUndo(); data=snap.data; title=snap.title||''; trash=Array.isArray(snap.trash)?snap.trash:[]; if(snap.markedId) markedId=snap.markedId; try{ linkNamesakes(); }catch(e){} save(); render(); renderTrash(); showFootMsg('Restaurado desde IndexedDB — Ctrl+Z para deshacer'); }catch(e){ showFootMsg('No pude restaurar desde IndexedDB'); }
+  });
+}
+let _fileHandle=null;
+async function saveToFile(){
+  try{
+    if(!('showSaveFilePicker' in window)){ downloadJson(); showFootMsg('Este navegador no tiene guardado en archivo, descargue JSON'); return; }
+    if(!_fileHandle){
+      _fileHandle=await window.showSaveFilePicker({suggestedName:'brasas-respaldo.json', types:[{description:'Respaldo Brasas JSON', accept:{'application/json':['.json']}}]});
+      if(_fileHandle) _idbPut('handles','file',_fileHandle);
+    }
+    if(!_fileHandle) return;
+    let perm=await _fileHandle.queryPermission({mode:'readwrite'});
+    if(perm!=='granted'){ perm=await _fileHandle.requestPermission({mode:'readwrite'}); if(perm!=='granted'){ showFootMsg('Sin permiso para ese archivo'); _fileHandle=null; return; } }
+    let writable=await _fileHandle.createWritable();
+    await writable.write(JSON.stringify(buildBackupObject(), null, 2));
+    await writable.close();
+    showFootMsg('Guardado en archivo');
+  }catch(e){ if(e && e.name!=='AbortError') showFootMsg('No se pudo guardar en archivo'); }
+}
+async function autoSaveToFile(){
+  if(!_fileHandle) return;
+  try{ let perm=await _fileHandle.queryPermission({mode:'readwrite'}); if(perm!=='granted') return; let writable=await _fileHandle.createWritable(); await writable.write(JSON.stringify(buildBackupObject(), null, 2)); await writable.close(); }catch(e){}
+}
+async function openFromFile(){
+  try{
+    if(!('showOpenFilePicker' in window)){ showFootMsg('Este navegador no tiene abrir archivo, usa Importar archivo'); return; }
+    let handles=await window.showOpenFilePicker({types:[{description:'Respaldo Brasas', accept:{'application/json':['.json'], 'text/plain':['.txt']}}], multiple:false});
+    if(!handles || !handles.length) return;
+    let file=await handles[0].getFile(); let text=await file.text(); handleBackupFileContent(text, file.name);
+  }catch(e){ if(e && e.name!=='AbortError') showFootMsg('No se pudo abrir el archivo'); }
+}
+async function _idbRestoreFileHandle(){ try{ let h=await _idbGet('handles','file'); if(h && h.kind==='file') _fileHandle=h; }catch(e){} }
 function retrySave(){ return saveNow(); }
 function exportBackupNow(){ try{ downloadJson(); }catch(e){ try{ downloadTxt(); }catch(e2){} } return false; }
 (function(){
@@ -545,16 +630,31 @@ function renderBrasaHtml(txt){
     return '<a href="'+url+'" target="_blank" rel="noopener">'+url+'</a>'+trailing;
   });
 }
-function closeAllOverlays(exceptId){ ['helpOverlay','searchOverlay','trashOverlay','gmailOverlay','backupOverlay','aerialOverlay'].forEach(function(id){ if(id!==exceptId){ let el=document.getElementById(id); if(el) el.style.display='none'; } }); }
+let _lastFocusedEl=null;
+function _storeFocus(){ try{ _lastFocusedEl=(document.activeElement && document.activeElement!==document.body)?document.activeElement:null; }catch(e){ _lastFocusedEl=null; } }
+function _restoreFocus(){ try{ if(_lastFocusedEl && _lastFocusedEl.focus) _lastFocusedEl.focus(); }catch(e){} _lastFocusedEl=null; }
+function _focusFirstInOverlay(id){ try{ let ov=document.getElementById(id); if(!ov) return; let els=[...ov.querySelectorAll('input, button, textarea, select, [tabindex]:not([tabindex="-1"])')].filter(el=>!el.disabled && el.offsetParent!==null); if(els.length){ els[0].focus(); return; } if(!ov.hasAttribute('tabindex')) ov.setAttribute('tabindex','-1'); ov.focus(); }catch(e){} }
+function _trapTabInOverlay(e){
+  if(e.key!=='Tab') return false;
+  let openId=null; ['helpOverlay','aerialOverlay','searchOverlay','trashOverlay','gmailOverlay','backupOverlay'].forEach(id=>{ let el=document.getElementById(id); if(el && el.style.display==='block') openId=id; });
+  if(!openId) return false;
+  let ov=document.getElementById(openId); if(!ov) return false;
+  let focusables=[...ov.querySelectorAll('input, button, textarea, select, [tabindex]:not([tabindex="-1"])')].filter(el=>!el.disabled && el.offsetParent!==null);
+  if(!focusables.length) return false;
+  let idx=focusables.indexOf(document.activeElement); e.preventDefault();
+  if(e.shiftKey){ focusables[idx<=0?focusables.length-1:idx-1].focus(); } else { focusables[idx<0||idx>=focusables.length-1?0:idx+1].focus(); }
+  return true;
+}
+function closeAllOverlays(exceptId){ let closed=false; ['helpOverlay','searchOverlay','trashOverlay','gmailOverlay','backupOverlay','aerialOverlay'].forEach(function(id){ if(id!==exceptId){ let el=document.getElementById(id); if(el && el.style.display==='block'){ el.style.display='none'; closed=true; } } }); if(closed && !exceptId) _restoreFocus(); }
 let searchSel=0; let searchRes=[];
 function openSearch(){
-  closeAllOverlays('searchOverlay');
+  closeAllOverlays('searchOverlay'); _storeFocus();
   let ov=document.getElementById('searchOverlay'); ov.style.display='block';
   let inp=document.getElementById('searchInput'); inp.value=''; searchSel=0; searchRes=[];
   renderSearchResults('');
   setTimeout(()=>{inp.focus();},0);
 }
-function closeSearch(){ document.getElementById('searchOverlay').style.display='none'; }
+function closeSearch(){ document.getElementById('searchOverlay').style.display='none'; _restoreFocus(); }
 function getBreadcrumb(id){
   let p=findPath(data,id,[]); if(!p) return '';
   let cur={children:data}; let parts=[];
@@ -564,13 +664,14 @@ function getBreadcrumb(id){
 function buildBreadcrumbMap(){
   let map=new Map();
   let stack=[];
-  for(let i=(data||[]).length-1;i>=0;i--) stack.push({n:data[i],parts:[]});
+  for(let i=(data||[]).length-1;i>=0;i--) stack.push({n:data[i],parts:[],anc:new Set(),d:0});
   while(stack.length){
     let cur=stack.pop();
+    if(!cur.n||typeof cur.n!=='object') continue; if(cur.d>60) continue; if(cur.n.id && cur.anc.has(cur.n.id)) continue;
     let full=[...cur.parts, cur.n.text||'(sin texto)'];
     map.set(cur.n.id, full.join('  >  '));
-    let ch=cur.n.children||[];
-    for(let i=ch.length-1;i>=0;i--) stack.push({n:ch[i],parts:full});
+    let ch=cur.n.children||[]; let anc2=new Set(cur.anc); if(cur.n.id) anc2.add(cur.n.id);
+    for(let i=ch.length-1;i>=0;i--) stack.push({n:ch[i],parts:full,anc:anc2,d:cur.d+1});
   }
   return map;
 }
@@ -618,7 +719,7 @@ function goToSearchResult(i){
 function showTrash(show){
   if(show) closeAllOverlays('trashOverlay');
   let ov=document.getElementById('trashOverlay'); ov.style.display=show?'block':'none';
-  if(show) renderTrash();
+  if(show){ _storeFocus(); renderTrash(); _focusFirstInOverlay('trashOverlay'); } else _restoreFocus();
 }
 function renderTrash(){
   let box=document.getElementById('trashList'); box.innerHTML='';
@@ -699,7 +800,43 @@ function restoreTrash(idx){
   }
 }
 function deleteTrashForever(idx){ if(!trash[idx]) return; pushUndo(); trash.splice(idx,1); save(); renderTrash(); render(); }
+function renderBreadcrumb(){
+  let bc=document.getElementById('breadcrumb'); if(!bc) return; bc.innerHTML='';
+  let mk=(label, level)=>{
+    let s=document.createElement('span'); s.textContent=label||'(sin titulo)'; s.title='Ir a este nivel';
+    s.onclick=(ev)=>{ ev.stopPropagation(); try{ if(editingNoteIdx!==null) closeNote(true); else if(editing!==null || editingIsHeading) finishEdit(true); }catch(e){} path=path.slice(0, level); selected=0; editing=null; editingIsHeading=false; clearMulti(); save(); render(); };
+    return s;
+  };
+  let sep=()=>{ let s=document.createElement('span'); s.className='sep'; s.textContent='>'; return s; };
+  bc.appendChild(mk(title||'Raiz', 0));
+  let cur={children:data};
+  path.forEach((pid, idx)=>{
+    let n=(cur.children||[]).find(x=>x.id===pid); if(!n) return; cur=n;
+    bc.appendChild(sep()); bc.appendChild(mk(n.text||'(sin texto)', idx+1));
+  });
+}
+function indentEntry(){
+  let kids=curChildren(); if(selected<0 || selected>=kids.length) return;
+  if(selected===0){ showFootMsg('Ya es la primera, no puede sangrarse'); return; }
+  pushUndo(); clearMulti();
+  let node=kids[selected]; let prev=kids[selected-1];
+  kids.splice(selected,1);
+  prev.children=prev.children||[]; prev.children.push(node);
+  path.push(prev.id); selected=prev.children.length-1; editing=null; editingIsHeading=false;
+  save(); render();
+}
+function outdentEntry(){
+  let kids=curChildren(); if(selected<0 || selected>=kids.length) return;
+  if(path.length===0){ showFootMsg('Ya esta en el nivel superior'); return; }
+  pushUndo(); clearMulti();
+  let node=kids[selected]; let parentId=path[path.length-1];
+  kids.splice(selected,1); path.pop();
+  let parentKids=curChildren(); let pi=parentKids.findIndex(n=>n.id===parentId);
+  let at=(pi<0?parentKids.length:pi+1); parentKids.splice(at,0,node); selected=at; editing=null; editingIsHeading=false;
+  save(); render();
+}
 function render(){
+  try{ renderBreadcrumb(); }catch(e){}
  let _nsGroups=getNamesakeGroups();
  let h=document.getElementById('heading'); h.innerHTML='';
  let hn=headingNode();
@@ -895,7 +1032,7 @@ function buildTxtForSelected(){
 function fallbackCopy(txt){let ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);}
 function copySelected(){
  let txt=buildTxtForSelected(); if(!txt) return;
- let done=()=>{let fr=document.getElementById('footRight'); fr.textContent='Copiado'; setTimeout(()=>{fr.textContent = path.length? 'Nivel '+path.length : 'F1';},1200);};
+ let done=()=>{ showFootMsg('Copiado'); };
  if(navigator.clipboard && navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(()=>{fallbackCopy(txt); done();});}
  else {fallbackCopy(txt); done();}
 }
@@ -913,7 +1050,7 @@ function cutSelected(){
  selected=Math.max(0, Math.min(selected, kids.length-1));
  if(kids.length===0) selected=0;
  save(); render();
- let fr=document.getElementById('footRight'); fr.textContent='Cortado'; setTimeout(()=>{fr.textContent = path.length? 'Nivel '+path.length : 'F1';},1200);
+ showFootMsg('Cortado');
 }
 function promote(){let kids=curChildren(); if(!kids[selected]) return; clearMulti(); path.push(kids[selected].id); selected=0; editing=null; editingIsHeading=false; save(); render();}
 function demote(){if(path.length===0) return; clearMulti(); path.pop(); selected=0; editing=null; editingIsHeading=false; save(); render();}
@@ -924,12 +1061,30 @@ function insertBlank(atIdx){
  kids.splice(pos,0,n); selected=pos; clearMulti(); editing=pos; editingIsHeading=false; editingOrig=''; save(); render();
 }
 function startEdit(){if(editingIsHeading) return; if(editing!==null) return; let kids=curChildren(); if(selected<0){insertBlank(0); return;} if(selected>=kids.length){insertBlank(selected); return;} pushUndo(); editing=selected; editingOrig=kids[selected].text; render();}
+function _childrenSig(children){ return (children||[]).map(c=>c.id+':'+(c.text||'')).sort().join('|'); }
+function namesakeMergeNeedsConfirm(node, oldText){
+  if(!node || (oldText||'').trim()===(node.text||'').trim()) return null;
+  let k=namesakeKey(node.text); if(!k) return null;
+  let others=[];
+  try{ flatten(data).forEach(({node:o})=>{ if(o!==node && !o.namesakeOff && o.linkId!==null && namesakeKey(o.text)===k) others.push(o); }); }catch(e){ return null; }
+  if(!others.length) return null;
+  let mySig=_childrenSig(node.children);
+  for(let o of others){ if(_childrenSig(o.children)!==mySig && ((node.children||[]).length>0 || (o.children||[]).length>0)) return o; }
+  return null;
+}
+function _confirmNamesakeMergeIfNeeded(node, oldText){
+  let other=namesakeMergeNeedsConfirm(node, oldText); if(!other) return;
+  try{
+    let ok=window.confirm('Esta brasa se va a enlazar con otra que tiene hijos distintos y los hijos se van a fusionar. ¿Fusionar hijos? Si cancelas, queda desvinculada.');
+    if(!ok){ node.namesakeOff=true; node.linkId=null; }
+  }catch(e){}
+}
 function finishEdit(saveIt){
- if(editingIsHeading){ if(!saveIt) setHeadingText(editingOrig); else { let _hn=headingNode(); if(_hn) detachSharedChildrenIfNeeded(_hn, editingOrig); } editingIsHeading=false; try{ linkNamesakes(); }catch(e){} save(); render(); return;}
+ if(editingIsHeading){ if(!saveIt) setHeadingText(editingOrig); else { let _hn=headingNode(); if(_hn){ _confirmNamesakeMergeIfNeeded(_hn, editingOrig); detachSharedChildrenIfNeeded(_hn, editingOrig); } } editingIsHeading=false; try{ linkNamesakes(); }catch(e){} save(); render(); return;}
  if(editing===null) return;
  let kids=curChildren(); let node=kids[editing];
  if(!node) {editing=null; render(); return;}
- if(!saveIt) node.text=editingOrig; else detachSharedChildrenIfNeeded(node, editingOrig);
+ if(!saveIt) node.text=editingOrig; else { _confirmNamesakeMergeIfNeeded(node, editingOrig); detachSharedChildrenIfNeeded(node, editingOrig); }
  if(node && node.text.trim()===''){kids.splice(editing,1); selected=Math.max(0,editing-1);}
  editing=null; try{ linkNamesakes(); }catch(e){} save(); render();
 }
@@ -948,6 +1103,7 @@ function closeNote(saveIt){
  editingNoteIdx=null; save(); render();
 }
 function splitEntry(){let ta=document.querySelector('.row textarea, .heading textarea'); if(!ta) return; if(editingIsHeading) return; let kids=curChildren(); let node=kids[editing]; let pos=ta.selectionStart||0; let left=node.text.slice(0,pos); let right=node.text.slice(pos).trimStart(); pushUndo(); node.text=left; let n={id:uid(),text:right,children:[],note:''}; kids.splice(editing+1,0,n); selected=editing+1; editing=selected; editingOrig=right; try{ linkNamesakes(); }catch(e){} save(); render();}
+function _capTrash(){ if(trash.length>200) trash.splice(0, trash.length-200); }
 function deleteNode(){
   let kids=curChildren(); if(selected<0 && !(multiSet && multiSet.size>0)) return; if(selected>=kids.length && !(multiSet && multiSet.size>0)) return;
   pushUndo();
@@ -977,15 +1133,15 @@ function deleteNode(){
     let n=kids[selected]; if(n) trash.push({node:n, deletedAt:Date.now(), fromPath:[...path], fromIndex:_logicalIndex(selected)});
     kids.splice(selected,1); selected=Math.max(0,selected-1);
   }
-  editing=null; save(); render();
+  _capTrash(); editing=null; save(); render();
 }
 function moveEntry(dir){let kids=curChildren(); if(selected<0 || selected>=kids.length) return; let ni=selected+dir; if(ni<0||ni>=kids.length) return; pushUndo(); [kids[selected],kids[ni]]=[kids[ni],kids[selected]]; selected=ni; save(); render();}
 function toggleMark(){let kids=curChildren(); if(selected<0 || selected>=kids.length) return; markedId = (markedId===kids[selected].id)?null:kids[selected].id; save(); render();}
 function jumpToMark(){if(!markedId) return; let p=findPath(data,markedId,[]); if(!p) return; let curId=curChildren()[selected]?.id; path=p.slice(0,-1); let k=curChildren(); selected=k.findIndex(n=>n.id===markedId); if(curId) markedId=curId; editing=null; editingIsHeading=false; save(); render();}
-function namesake(dir){let kids=curChildren(); if(selected<0 || selected>=kids.length) return; let txt=kids[selected].text; if(!txt) return; let all=flatten(data); let matches=all.filter(x=>x.node.text===txt); if(matches.length<=1) return; let curId=kids[selected].id; let ci=matches.findIndex(m=>m.node.id===curId); let nxt=matches[(ci+dir+matches.length)%matches.length]; let p=findPath(data,nxt.node.id,[]); path=p.slice(0,-1); let k=curChildren(); selected=k.findIndex(n=>n.id===nxt.node.id); editing=null; save(); render();}
+function jumpNamesake(dir){let kids=curChildren(); if(selected<0 || selected>=kids.length) return; let txt=kids[selected].text; if(!txt) return; let all=flatten(data); let matches=all.filter(x=>x.node.text===txt && !x.node.namesakeOff && x.node.linkId!==null); if(matches.length<=1) return; let curId=kids[selected].id; let ci=matches.findIndex(m=>m.node.id===curId); let nxt=matches[(ci+dir+matches.length)%matches.length]; let p=findPath(data,nxt.node.id,[]); path=p.slice(0,-1); let k=curChildren(); selected=k.findIndex(n=>n.id===nxt.node.id); editing=null; save(); render();}
 function changeCase(){let ta=document.querySelector('textarea'); if(!ta) return; let s=ta.selectionStart, e=ta.selectionEnd; let val=ta.value; let sel=val.slice(s,e)||val; let ns = sel===sel.toLowerCase()? sel.toUpperCase() : sel===sel.toUpperCase()? sel.charAt(0).toUpperCase()+sel.slice(1).toLowerCase() : sel.toLowerCase(); let newVal, newS, newE; if(s!==e){ newVal=val.slice(0,s)+ns+val.slice(e); newS=s; newE=s+ns.length; } else { newVal=ns; newS=s; newE=s; } pushUndo(); if(editingIsHeading){setHeadingText(newVal);} else {let kids=curChildren(); if(kids[editing]) kids[editing].text=newVal;} pendingCursorPos=newS; pendingSelectionEnd=newE; save(); render(); setTimeout(()=>{ let nta=document.querySelector('textarea'); if(nta){ try{ nta.focus(); nta.setSelectionRange(newS,newE); }catch(_e){} } pendingSelectionEnd=null; },0);}
-function undo(){if(!undoStack.length) return; let cur=_snapshotState(); if(cur) redoStack.push(cur); let p; try{ p=JSON.parse(undoStack.pop()); }catch(e){ return; } if(!p) return; title=p.title; data=p.data; path=p.path; selected=p.selected; if(Array.isArray(p.trash)) trash=p.trash; if('markedId' in p) markedId=p.markedId; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
-function redo(){if(!redoStack.length) return; let cur=_snapshotState(); if(cur) undoStack.push(cur); let p; try{ p=JSON.parse(redoStack.pop()); }catch(e){ return; } if(!p) return; title=p.title; data=p.data; path=p.path; selected=p.selected; if(Array.isArray(p.trash)) trash=p.trash; if('markedId' in p) markedId=p.markedId; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
+function undo(){if(!undoStack.length) return; let cur=_snapshotState(); if(cur){ redoStack.push(cur); if(redoStack.length>80) redoStack.shift(); } let p; try{ p=JSON.parse(undoStack.pop()); }catch(e){ return; } if(!p) return; title=p.title; data=p.data; path=p.path; selected=p.selected; if(Array.isArray(p.trash)) trash=p.trash; if('markedId' in p) markedId=p.markedId; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
+function redo(){if(!redoStack.length) return; let cur=_snapshotState(); if(cur){ undoStack.push(cur); if(undoStack.length>80) undoStack.shift(); } let p; try{ p=JSON.parse(redoStack.pop()); }catch(e){ return; } if(!p) return; title=p.title; data=p.data; path=p.path; selected=p.selected; if(Array.isArray(p.trash)) trash=p.trash; if('markedId' in p) markedId=p.markedId; editing=null; editingIsHeading=false; editingNoteIdx=null; clearMulti(); try{ linkNamesakes(); }catch(e){} save(); render();}
 
 function parsePasted(text){
   // TXT v2 + compatibilidad:
@@ -1166,6 +1322,70 @@ function runSmokeTests(){
     undo();
     check('undo: restaura papelera', !!(trash.length===1 && trash[0].node && trash[0].node.id==='fx-trash'), 'papelera='+trash.length);
     check('undo: restaura marca', markedId==='fx-u', 'markedId='+String(markedId));
+    // --- BRASAS 42: linkId, ancestro, sangrado, topes ---
+    let lk1={id:'fx-lk1', text:'Duplicada', children:[{id:'fx-lk-child', text:'Hija', children:[], note:''}], note:''};
+    let lk2={id:'fx-lk2', text:'Duplicada', children:[], note:''};
+    data=[lk1, lk2]; path=[]; selected=0; trash=[];
+    linkNamesakes();
+    check('linkId: duplicados comparten linkId', !!(lk1.linkId && lk1.linkId===lk2.linkId), 'linkId='+String(lk1.linkId)+' / '+String(lk2.linkId));
+    check('linkId: duplicados comparten hijos (misma referencia)', lk1.children===lk2.children);
+    let ancChild={id:'fx-anc-child', text:'Misma', children:[], note:''};
+    let ancParent={id:'fx-anc-parent', text:'Misma', children:[ancChild], note:''};
+    data=[ancParent]; path=[]; selected=0;
+    linkNamesakes();
+    check('linkId: ancestro/descendiente con mismo texto NO se enlaza', !!(ancChild.linkId===null && ancChild.namesakeOff===true), 'hijo linkId='+String(ancChild.linkId));
+    check('linkId: ancestro no crea ciclo', flatten(data).length<=3, 'flatten='+flatten(data).length);
+    // break / reactivar via seleccion
+    data=[{id:'fx-br1', text:'Romper', children:[{id:'fx-br-c', text:'C', children:[], note:''}], note:''}, {id:'fx-br2', text:'Romper', children:[], note:''}];
+    path=[]; selected=0; linkNamesakes();
+    let _brNode=curChildren()[0]; let _brLink=_brNode.linkId;
+    breakNamesakeForSelected();
+    check('linkId: Alt+N rompe y pone linkId null', _brNode.linkId===null && _brNode.namesakeOff===true);
+    breakNamesakeForSelected();
+    check('linkId: Alt+N de nuevo reactiva y vuelve a compartir', !!(_brNode.linkId && _brNode.linkId!==null && curChildren()[0].children===curChildren()[1].children), 'linkId='+String(_brNode.linkId));
+    // detach al renombrar
+    let detNode=curChildren()[0]; let detOld=detNode.text; detNode.text='Otro texto'; detachSharedChildrenIfNeeded(detNode, detOld);
+    check('linkId: renombrar desvincula sin namesakeOff', !detNode.linkId && !detNode.namesakeOff, 'linkId='+String(detNode.linkId));
+    // sanitize preserva linkId
+    let san=sanitizeBackupNode({id:'fx-san', text:'S', children:[], note:'', linkId:'ns-abc'}, new Set(), 0);
+    check('linkId: sanitize preserva linkId en JSON', !!(san && san.linkId==='ns-abc'), 'linkId='+String(san && san.linkId));
+    let sanOff=sanitizeBackupNode({id:'fx-san2', text:'S', children:[], note:'', namesakeOff:true}, new Set(), 0);
+    check('linkId: sanitize convierte namesakeOff viejo a linkId null', !!(sanOff && sanOff.linkId===null));
+    // sangrado
+    data=[{id:'fx-in-a', text:'A', children:[], note:''}, {id:'fx-in-b', text:'B', children:[], note:''}];
+    path=[]; selected=1;
+    indentEntry();
+    check('sangrado: Alt+Der mete B debajo de A', !!(data.length===1 && data[0].children.length===1 && data[0].children[0].id==='fx-in-b' && path.length===1 && path[0]==='fx-in-a'), 'path='+path.join(','));
+    outdentEntry();
+    check('sangrado: Alt+Izq devuelve B a raiz despues de A', !!(data.length===2 && data[1].id==='fx-in-b' && path.length===0), 'data='+data.map(n=>n.id).join(','));
+    // topes
+    trash=[]; for(let _i=0;_i<205;_i++) trash.push({node:{id:'fx-t'+_i, text:'T', children:[], note:''}, deletedAt:Date.now(), fromPath:[], fromIndex:0});
+    _capTrash();
+    check('tope: papelera se capa en 200', trash.length===200, 'papelera='+trash.length);
+    check('Esc: handleEscapeKey existe y es unico', typeof handleEscapeKey==='function');
+    check('breadcrumb: existe el elemento', !!document.getElementById('breadcrumb'));
+    check('multi-pestana: _revision es numero', typeof _revision==='number');
+    // --- BRASAS 43: fuente, contraste, foco, persistencia, nombre escapado, confirmar fusion ---
+    check('fuente sistema: sin Google Fonts', !document.querySelector('link[href*="fonts.googleapis"]'));
+    let _muted43=''; try{ _muted43=getComputedStyle(document.documentElement).getPropertyValue('--muted').trim().toUpperCase(); }catch(e){}
+    check('contraste: --muted nuevo, no el viejo de bajo contraste', _muted43==='#9AA3B2' || _muted43==='#5A606B', 'muted='+_muted43);
+    check('salto namesake: jumpNamesake existe', typeof jumpNamesake==='function');
+    check('fusion: helpers de confirmar fusion existen', typeof namesakeMergeNeedsConfirm==='function' && typeof _childrenSig==='function');
+    let _m1={id:'fx-m1', text:'Fusion', children:[{id:'fx-mc1', text:'A', children:[], note:''}], note:''};
+    let _m2={id:'fx-m2', text:'Fusion', children:[{id:'fx-mc2', text:'B', children:[], note:''}], note:''};
+    data=[_m1, _m2]; path=[]; selected=0;
+    check('fusion: hijos distintos piden confirmar', !!namesakeMergeNeedsConfirm(_m2, 'Otro texto'), 'otro='+String(namesakeMergeNeedsConfirm(_m2, 'Otro texto') && namesakeMergeNeedsConfirm(_m2, 'Otro texto').id));
+    check('fusion: mismo texto sin cambio no pide confirmar', !namesakeMergeNeedsConfirm(_m2, 'Fusion'));
+    check('foco: helpers de foco existen', typeof _storeFocus==='function' && typeof _restoreFocus==='function' && typeof _trapTabInOverlay==='function');
+    check('persistencia: helpers IDB y archivo existen', typeof _idbOpen==='function' && typeof _idbPutSnapshot==='function' && typeof saveToFile==='function' && typeof openFromFile==='function');
+    check('persistencia: botones de archivo existen', !!(document.getElementById('backupSaveFileBtn') && document.getElementById('backupOpenFileBtn') && document.getElementById('backupRestoreIdbBtn')));
+    let _oldP43=pendingBackupImport, _oldK43=pendingBackupImportKind, _oldN43=pendingBackupImportName;
+    pendingBackupImport={title:'T', data:[], trash:[], backupVersion:2}; pendingBackupImportKind='json'; pendingBackupImportName='<img src=x onerror=alert(1)>';
+    try{ updateBackupConfirmUI(); }catch(e){}
+    let _html43=''; try{ _html43=document.getElementById('backupConfirmText').innerHTML||''; }catch(e){}
+    check('nombre escapado: filename malicioso no queda como HTML', _html43.indexOf('<img src=x')===-1 && _html43.indexOf('&lt;img')!==-1, 'html='+_html43.slice(0,120));
+    pendingBackupImport=_oldP43; pendingBackupImportKind=_oldK43; pendingBackupImportName=_oldN43;
+    try{ let _cf43=document.getElementById('backupConfirm'); if(_cf43) _cf43.style.display='none'; }catch(e){}
     let backupObj=buildBackupObject();
     let reparsed=parseBackupJson(JSON.stringify(backupObj));
     check('respaldo: round-trip ok', reparsed.ok===true);
@@ -1192,20 +1412,20 @@ function runSmokeTests(){
   return {pass:pass, total:total, results:results};
 }
 function showHelp(show){
-if(show) closeAllOverlays('helpOverlay'); document.getElementById('helpOverlay').style.display=show?'block':'none'; if(show){let groups=[
- ['Moverse', [['Home','entra'],['End','sale'],['Ctrl + Home','al título'],['↑ ↓','moverse'],['Shift + ↑ ↓','elegir varias'],['Alt + ↑ ↓','mover la brasa'],['← →','misma palabra en otro lugar'],['Espacio','entra']]],
+if(show) closeAllOverlays('helpOverlay'); if(show) _storeFocus(); if(!show) _restoreFocus(); document.getElementById('helpOverlay').style.display=show?'block':'none'; if(show){let groups=[
+ ['Moverse', [['Home','entra'],['End','sale'],['Ctrl + Home','al título'],['↑ ↓','moverse'],['Shift + ↑ ↓','elegir varias'],['Alt + ↑ ↓','mover la brasa'],['Alt + →','sangrar (hija de la anterior)'],['Alt + ←','quitar sangrado'],['← →','misma palabra en otro lugar'],['Espacio','entra']]],
  ['Escribir', [['Clic en el título grande','editar título principal'],['Enter','nueva brasa abajo'],['Shift + Enter','párrafo adentro'],['Ctrl + Enter','dividir la brasa'],['F2','editar'],['Backspace al inicio','juntar con la anterior'],['Del al final','juntar con la siguiente'],['Esc','deseleccionar TODO / salir'],['Shift + Esc','terminar y quedarse']]],
  ['Ver y leer', [['F4','texto largo'],...(DICTATION_ENABLED ? [['F8','dictar por voz']] : []),['Ctrl + B','ver todo, con notas adentro'],['Ctrl + K  /  /','buscar'],['Ctrl + / Ctrl -','agrandar / achicar letra'],['Ctrl + 0','letra normal'],['🔊 arriba','sonido de tecla on / off']]],
  ['Marcar y corregir', [['Ctrl + M  /  @','marcar'],['Ctrl + J','saltar a la marca'],['Alt + N','romper / reactivar namesake ≫'],['Ctrl + Z','deshacer'],['Ctrl + L','separador'],['Del','borrar']]],
  ['Namesakes ≫', [['Mismo texto 2 veces','se enlaza solo, mismos hijos'],['≫×2 en la brasa','indica que es namesake'],['Editar hijos en una','se ve en todas'],['Alt + N','romper el enlace (copia hijos)'],['← →','saltar entre namesakes']]],
  ['Copiar y compartir', [['Ctrl + C','copiar las elegidas'],['Ctrl + X','cortar las elegidas'],['Ctrl + V','pegar varias o lista'],['Ctrl + G','Gmail · .txt'],['Keep','mandar a Google Keep'],['F9','papelera']]],
- ['Respaldo', [['Ctrl + E','abrir Respaldo · JSON / TXT'],['Ctrl + Shift + E','exportar TXT directo'],['JSON','respaldo completo: restaura todo'],['TXT','solo lectura: titulo, estructura y notas'],['Importar','reemplaza todo, con vista previa'],['Pegar JSON','pegar un respaldo ofrece restaurarlo']]],
+ ['Respaldo', [['Ctrl + E','abrir Respaldo · JSON / TXT'],['Ctrl + Shift + E','exportar TXT directo'],['Ctrl + Shift + S','guardar en archivo (File System)'],['JSON','respaldo completo: restaura todo'],['TXT','solo lectura: titulo, estructura y notas'],['Importar','reemplaza todo, con vista previa'],['Pegar JSON','pegar un respaldo ofrece restaurarlo']]],
  ['Guardado', [['Guardando…','hay un guardado en curso'],['Guardado ✓','verificado por relectura'],['Error de almacenamiento','clic para reintentar, sigue en memoria'],['Necesita exportar…','clic para exportar JSON, no cierres sin copia'],['F10','pruebas de humo, no tocan tu documento']]]
-]; document.getElementById('helpText').innerHTML=groups.map(g=>'<div class="helpGroup"><h3>'+g[0]+'</h3>'+g[1].map(x=>'<div class="helpRow"><span class="kbd">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+'</div>').join('');}}
+]; document.getElementById('helpText').innerHTML=groups.map(g=>'<div class="helpGroup"><h3>'+g[0]+'</h3>'+g[1].map(x=>'<div class="helpRow"><span class="kbd">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+'</div>').join(''); _focusFirstInOverlay('helpOverlay');}}
 document.getElementById('helpOverlay').addEventListener('click',(e)=>{ if(e.target.id==='helpOverlay') showHelp(false); });
 document.getElementById('aerialOverlay').addEventListener('click',(e)=>{ if(e.target.id==='aerialOverlay') showAerial(false); });
 function showAerial(show){
-  if(show) closeAllOverlays('aerialOverlay');
+  if(show) closeAllOverlays('aerialOverlay'); if(show) _storeFocus(); if(!show) _restoreFocus();
   let ov=document.getElementById('aerialOverlay');
   ov.style.display=show?'block':'none';
   if(!show) return;
@@ -1291,7 +1511,9 @@ function sanitizeBackupNode(raw, seen, depth){
     raw.children.forEach(c=>{ let n=sanitizeBackupNode(c, seen, depth+1); if(n) children.push(n); });
   }
   let node={id:id, text:text, children:children, note:note};
-  if(raw.namesakeOff===true) node.namesakeOff=true;
+  if(typeof raw.linkId==='string' && raw.linkId.trim()) node.linkId=raw.linkId.trim();
+  else if(raw.linkId===null) node.linkId=null;
+  if(raw.namesakeOff===true){ node.namesakeOff=true; if(!('linkId' in node)) node.linkId=null; }
   return node;
 }
 function countBackupNodes(arr,_anc,_depth){ let n=0; let anc=_anc||new Set(); let d=_depth||0; if(d>60) return 0; (arr||[]).forEach(x=>{ if(!x||typeof x!=='object') return; if(x.id && anc.has(x.id)) return; n+=1; let anc2=new Set(anc); if(x.id) anc2.add(x.id); n+=countBackupNodes(x.children||[],anc2,d+1); }); return n; }
@@ -1362,12 +1584,13 @@ function parseStructuredTxtForImport(text){
   return {ok:true, title:titleFromTxt, data:roots, trash:[], markedId:null};
 }
 function showBackupOverlay(show){
-  if(show) closeAllOverlays('backupOverlay');
+  if(show) closeAllOverlays('backupOverlay'); if(show) _storeFocus(); if(!show) _restoreFocus();
   let ov=document.getElementById('backupOverlay'); ov.style.display=show?'block':'none';
   if(show){
     let st=document.getElementById('backupStatus'); if(st && !pendingBackupImport) st.textContent='';
     if(pendingBackupImport){ updateBackupConfirmUI(); }
     else { let cf=document.getElementById('backupConfirm'); if(cf) cf.style.display='none'; }
+    _focusFirstInOverlay('backupOverlay');
   }
 }
 function updateBackupConfirmUI(){
@@ -1380,7 +1603,7 @@ function updateBackupConfirmUI(){
   let notes=countBackupNotes(d.data||[]);
   let kindLabel = pendingBackupImportKind==='json' ? 'JSON - respaldo completo' : 'TXT - solo lectura';
   let warn = pendingBackupImportKind==='json' ? 'Restaura titulo, brasas, notas, papelera y marca.' : 'Restaura titulo, estructura y notas. No restaura papelera ni marca, y pierde los saltos de linea dentro de una brasa.';
-  txt.innerHTML = '<b>'+kindLabel+'</b> - '+pendingBackupImportName+'<br>'+'Titulo: '+(d.title?escapeHtmlNote(d.title):'(sin titulo)')+' - '+total+' brasas - '+notes+' con nota - papelera: '+(d.trash||[]).length+'<br><span style="color:var(--muted)">'+warn+' Reemplazar todo el documento actual?</span>';
+  txt.innerHTML = '<b>'+kindLabel+'</b> - '+escapeHtmlNote(pendingBackupImportName||'')+'<br>'+'Titulo: '+(d.title?escapeHtmlNote(d.title):'(sin titulo)')+' - '+total+' brasas - '+notes+' con nota - papelera: '+(d.trash||[]).length+'<br><span style="color:var(--muted)">'+warn+' Reemplazar todo el documento actual?</span>';
   if(st) st.textContent='';
   cf.style.display='block';
 }
@@ -1425,7 +1648,7 @@ function cancelBackupImport(){
 }
 
 function showGmailOverlay(show){
-  if(show) closeAllOverlays('gmailOverlay');
+  if(show) closeAllOverlays('gmailOverlay'); if(show) _storeFocus(); if(!show) _restoreFocus();
   let ov=document.getElementById('gmailOverlay'); ov.style.display=show?'block':'none';
   if(show){ let inp=document.getElementById('gmailToInput'); inp.value=safeGet('bs_gmail_to')||''; setTimeout(()=>{inp.focus(); inp.select();},0); }
 }
@@ -1466,7 +1689,7 @@ function fallbackKeep(txt){
   copyTextRobust(txt);
   // 2. Abrir Keep en el mismo clic (si lo dejamos para después, el navegador lo bloquea como popup)
   window.open('https://keep.google.com/','_blank');
-  let fr=document.getElementById('footRight'); fr.textContent='Copiado, en Keep apretá Pegar'; setTimeout(()=>{fr.textContent = path.length? 'Nivel '+path.length : 'F1';},3500);
+  showFootMsg('Copiado, en Keep apretá Pegar');
 }
 function exportToKeep(){
   let txt = buildStructuredTxt();
@@ -1477,18 +1700,21 @@ function exportToKeep(){
   if(isTouch && navigator.share){
     navigator.share({title:'Brasas - '+(title||''), text:txt}).catch(()=>{
       window.open('https://keep.google.com/','_blank');
-      let fr=document.getElementById('footRight'); fr.textContent='Copiado, en Keep apretá Pegar'; setTimeout(()=>{fr.textContent = path.length? 'Nivel '+path.length : 'F1';},3500);
+      showFootMsg('Copiado, en Keep apretá Pegar');
     });
     return;
   }
   // En PC: copiar + abrir Keep directo, sin pasar por Compartir de Windows
   window.open('https://keep.google.com/','_blank');
-  let fr=document.getElementById('footRight'); fr.textContent='Copiado, en Keep apretá Pegar'; setTimeout(()=>{fr.textContent = path.length? 'Nivel '+path.length : 'F1';},3500);
+  showFootMsg('Copiado, en Keep apretá Pegar');
 }
 document.getElementById('gmailBtn').onclick=exportToGmail;
 document.getElementById('keepBtn').onclick=exportToKeep;
 document.getElementById('backupBtn').onclick=()=>{ showBackupOverlay(true); };
 document.getElementById('backupDownloadJsonBtn').onclick=()=>{ downloadJson(); };
+document.getElementById('backupSaveFileBtn').onclick=()=>{ saveToFile(); };
+document.getElementById('backupOpenFileBtn').onclick=()=>{ openFromFile(); };
+document.getElementById('backupRestoreIdbBtn').onclick=()=>{ _idbRestoreManual(); };
 document.getElementById('backupDownloadTxtBtn').onclick=()=>{ downloadTxt(); showFootMsg('TXT descargado: solo lectura'); };
 document.getElementById('backupConfirmReplaceBtn').onclick=()=>{ confirmBackupImport(); };
 document.getElementById('backupConfirmCancelBtn').onclick=()=>{ cancelBackupImport(); };
@@ -1503,8 +1729,19 @@ document.getElementById('backupOverlay').addEventListener('click',(e)=>{ if(e.ta
 
 (function(){var b=document.getElementById('btnNueva'); if(b) b.onclick=()=>{clearMulti(); insertBlank();}; var e=document.getElementById('btnEntrar'); if(e) e.onclick=()=>{promote();}; var s=document.getElementById('btnSalir'); if(s) s.onclick=()=>{demote();}; var ed=document.getElementById('btnEditar'); if(ed) ed.onclick=()=>{if(selected>=curChildren().length){insertBlank(selected);} else {startEdit();}}; var n=document.getElementById('btnNota'); if(n) n.onclick=()=>{openNote();}; var c=document.getElementById('btnCopiar'); if(c) c.onclick=()=>{copySelected();}; var g=document.getElementById('btnGmail'); if(g) g.onclick=()=>{exportToGmail();}; var md=document.getElementById('btnDictar'); if(md) md.onclick=()=>{toggleDictation();}; var fp=document.getElementById('btnFontPlus'); if(fp) fp.onclick=()=>{changeFont(0.15);}; var fm=document.getElementById('btnFontMinus'); if(fm) fm.onclick=()=>{changeFont(-0.15);}; var kp=document.getElementById('btnKeep'); if(kp) kp.onclick=()=>{exportToKeep();}; var pg=document.getElementById('btnPegar'); if(pg) pg.onclick=()=>{pasteFromClipboardButton();}; var ct=document.getElementById('btnCortar'); if(ct) ct.onclick=()=>{cutSelected();}; var rb=document.getElementById('btnRespaldo'); if(rb) rb.onclick=()=>{showBackupOverlay(true);};})();
 document.getElementById('themeBtn').onclick=()=>{theme=theme==='dark'?'light':'dark'; document.body.dataset.theme=theme; try{ localStorage.setItem('bs_theme',theme); }catch(e){} };
+function handleEscapeKey(e){
+  let _ov=['helpOverlay','aerialOverlay','searchOverlay','trashOverlay','gmailOverlay','backupOverlay'].some(id=>{ let el=document.getElementById(id); return !!(el && el.style.display==='block'); });
+  if(_ov){ closeAllOverlays(); return true; }
+  if(dictListening){ try{ stopDictation(); }catch(err){} return true; }
+  if(editingNoteIdx!==null){ closeNote(true); return true; }
+  if(editing!==null || editingIsHeading){ if(e && e.shiftKey) finishEdit(true); else finishEdit(false); return true; }
+  if(multiSet && multiSet.size>0){ clearMulti(); selected=-1; save(); render(); return true; }
+  if(selected!==-1){ selected=-1; save(); render(); return true; }
+  demote(); return true;
+}
 document.addEventListener('keydown',(e)=>{
  if((e.ctrlKey||e.metaKey) && e.shiftKey && e.key.toLowerCase()==='e'){ e.preventDefault(); e.stopPropagation(); if(editingNoteIdx!==null){ closeNote(true); } else if(editing!==null || editingIsHeading){ finishEdit(true); } downloadTxt(); return; }
+ if((e.ctrlKey||e.metaKey) && e.shiftKey && e.key.toLowerCase()==='s'){ e.preventDefault(); e.stopPropagation(); if(editingNoteIdx!==null){ closeNote(true); } else if(editing!==null || editingIsHeading){ finishEdit(true); } saveToFile(); return; }
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='b'){
    e.preventDefault(); e.stopPropagation();
    // Si ya está abierta, Ctrl+B la cierra (alternar)
@@ -1525,16 +1762,16 @@ document.addEventListener('keydown',(e)=>{
  let trashOpen=document.getElementById('trashOverlay').style.display==='block';
  let gmailOpen=document.getElementById('gmailOverlay').style.display==='block';
  let backupOpen=document.getElementById('backupOverlay').style.display==='block';
- if(helpOpen||aerialOpen||searchOpen||trashOpen||gmailOpen||backupOpen){if(e.key==='Escape'){closeAllOverlays();} return;}
+ if(e.key==='Escape'){ e.preventDefault(); handleEscapeKey(e); return; }
+ if(e.key==='Tab' && (helpOpen||aerialOpen||searchOpen||trashOpen||gmailOpen||backupOpen)){ if(_trapTabInOverlay(e)) return; }
+ if(helpOpen||aerialOpen||searchOpen||trashOpen||gmailOpen||backupOpen){ return; }
  if(e.altKey && !e.shiftKey && e.key.toLowerCase()==='n'){ e.preventDefault(); breakNamesakeForSelected(); return; }
  if(e.key==='F8'){ if(!DICTATION_ENABLED) return; e.preventDefault(); toggleDictation(); return;}
  if((e.ctrlKey||e.metaKey) && (e.key==='+'||e.key==='=')){e.preventDefault(); changeFont(0.15); return;}
  if((e.ctrlKey||e.metaKey) && e.key==='-'){e.preventDefault(); changeFont(-0.15); return;}
  if((e.ctrlKey||e.metaKey) && e.key==='0'){e.preventDefault(); resetFont(); return;}
- if(dictListening && e.key==='Escape'){e.preventDefault(); stopDictation(); return;}
  if(dictListening && e.key==='Enter'){e.preventDefault(); stopDictation(); return;}
  if(editingNoteIdx!==null){
-   if(e.key==='Escape'){e.preventDefault(); closeNote(true); return;}
    if(e.key==='F4'){e.preventDefault(); closeNote(true); return;}
    return;
  }
@@ -1560,8 +1797,6 @@ document.addEventListener('keydown',(e)=>{
    }
    if(e.key==='Enter' && e.shiftKey){e.preventDefault(); let pos=ta.selectionStart; let v=ta.value; ta.value=v.slice(0,pos)+"\n"+v.slice(pos); if(editingIsHeading) setHeadingText(ta.value); else {let k=curChildren(); if(k[editing]) k[editing].text=ta.value;} save(); ta.selectionStart=ta.selectionEnd=pos+1; return;}
    if(e.key==='Enter' && e.ctrlKey){e.preventDefault(); splitEntry(); return;}
-   if(e.key==='Escape' && !e.shiftKey){e.preventDefault(); finishEdit(false); return;}
-   if(e.key==='Escape' && e.shiftKey){e.preventDefault(); finishEdit(true); return;}
    if(e.key==='Backspace' && ta && ta.selectionStart===0 && ta.selectionEnd===0 && !editingIsHeading){e.preventDefault(); let kids=curChildren(); if(editing>0){pushUndo(); let prev=kids[editing-1]; let cur=kids[editing]; let _oldText=prev.text; prev.text=prev.text+" "+cur.text; kids.splice(editing,1); selected=editing-1; editing=selected; editingOrig=prev.text; try{ detachSharedChildrenIfNeeded(prev,_oldText); }catch(_e){} try{ linkNamesakes(); }catch(_e){} save(); render();} return;}
    if(e.key==='Delete' && ta && ta.selectionStart===ta.value.length && !editingIsHeading){e.preventDefault(); let kids=curChildren(); if(editing<kids.length-1){pushUndo(); let cur=kids[editing]; let nxt=kids[editing+1]; let _oldText=cur.text; cur.text=cur.text+" "+nxt.text; kids.splice(editing+1,1); editingOrig=cur.text; try{ detachSharedChildrenIfNeeded(cur,_oldText); }catch(_e){} try{ linkNamesakes(); }catch(_e){} save(); render();} return;}
    if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='u'){e.preventDefault(); changeCase(); return;}
@@ -1603,19 +1838,14 @@ document.addEventListener('keydown',(e)=>{
  if(e.key==='PageUp' && e.shiftKey){e.preventDefault(); for(let i=0;i<5;i++) extendSelection(-1); return;}
  if(e.key==='PageDown'){e.preventDefault(); clearMulti(); selected = (selected<0?0:Math.min(curChildren().length, selected+5)); save(); render(); return;}
  if(e.key==='PageUp'){e.preventDefault(); clearMulti(); selected = (selected<0?0:Math.max(0, selected-5)); save(); render(); return;}
- if(e.key==='ArrowLeft'){e.preventDefault(); clearMulti(); namesake(-1); return;}
- if(e.key==='ArrowRight'){e.preventDefault(); clearMulti(); namesake(1); return;}
+ if(e.key==='ArrowLeft'){e.preventDefault(); clearMulti(); jumpNamesake(-1); return;}
+ if(e.key==='ArrowRight'){e.preventDefault(); clearMulti(); jumpNamesake(1); return;}
  if(e.key==='Delete'){e.preventDefault(); deleteNode(); return;}
- if(e.key==='Escape'){
-   e.preventDefault();
-   // Primer Esc: deselecciona ABSOLUTAMENTE todo, ninguna queda marcada, y te quedás en el mismo nivel
-   if(multiSet && multiSet.size>0){ clearMulti(); selected=-1; save(); render(); return; }
-   if(selected!==-1){ selected=-1; save(); render(); return; }
-   // Ya no hay nada seleccionado, segundo Esc sale del nivel como siempre
-   demote(); return;
- }
+ // Esc se maneja arriba con handleEscapeKey(e)
  if(e.key==='@'){e.preventDefault(); toggleMark(); return;}
  if(e.key==='F3'){e.preventDefault(); openSearch(); return;}
+ if(e.altKey && e.key==='ArrowRight'){e.preventDefault(); clearMulti(); indentEntry(); return;}
+ if(e.altKey && e.key==='ArrowLeft'){e.preventDefault(); clearMulti(); outdentEntry(); return;}
  if(e.altKey && e.key==='ArrowDown'){e.preventDefault(); moveEntry(1); return;}
  if(e.altKey && e.key==='ArrowUp'){e.preventDefault(); moveEntry(-1); return;}
  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='c'){e.preventDefault(); copySelected(); return;}
@@ -1738,6 +1968,9 @@ try{
 }catch(e){}
 try{ linkNamesakes(); }catch(e){}
 render();
+try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{}); }catch(e){}
+try{ _idbRestoreFileHandle(); }catch(e){}
+try{ _idbRestoreIfNeeded(); }catch(e){}
 if(data.length===0 && !title){
   selected=0; editing=null; editingIsHeading=false;
   let firstHandler=(ev)=>{
